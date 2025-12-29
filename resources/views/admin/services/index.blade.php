@@ -15,10 +15,10 @@
                             <thead>
                             <tr>
                                 <th>S/N</th>
-                                <th>Slider Title</th>
-                                <th>Slider Description</th>
-                                <th>Slider Image</th>
-                                <th>Slider Icon</th>
+                                <th>Service Title</th>
+                                <th>Service Description</th>
+                                <th>Service Image</th>
+{{--                                <th>Slider Icon</th>--}}
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -31,11 +31,11 @@
                                     <td>{{ $item->title }}</td>
                                     <td>{{ str()->limit($item->short_desc, 30) }}</td>
                                     <td>
-                                        <img src="{{ asset($item->image) }}" height="50">
+                                        <img src="{{ asset($item->image) }}" height="50" alt="">
                                     </td>
-                                    <td>
-                                        <img src="{{ asset($item->icon) }}" height="50">
-                                    </td>
+{{--                                    <td>--}}
+{{--                                        <img src="{{ asset($item->icon) }}" height="50" alt="">--}}
+{{--                                    </td>--}}
                                     <td>
                                         <form method="POST" action="{{ route('services.destroy', $item->id) }}">
                                             @method('DELETE') @csrf

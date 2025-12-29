@@ -12,7 +12,7 @@ class HomeServicesController extends Controller
     {
         $services = Service::all();
         $contact = Contact::first();
-        return view('landing.services.index', compact('services', 'contact'));
+        return view('services.index', compact('services', 'contact'));
     }
 
     public function show($id)
@@ -20,6 +20,6 @@ class HomeServicesController extends Controller
         $service = Service::findOrFail($id);
         $services = Service::where('id', '!=', $id)->limit(6)->get();
         $contact = Contact::first();
-        return view('landing.services.show', compact('service', 'services', 'contact'));
+        return view('services.show', compact('service', 'services', 'contact'));
     }
 }

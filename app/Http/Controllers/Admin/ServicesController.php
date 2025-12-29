@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Service;
 use App\Models\ServiceMulitImage;
+use App\Models\ServiceMultiImage;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -63,7 +64,7 @@ class ServicesController extends Controller
                 $icon_manager->read($icon)->scale(558, 591)->toPng()->save('upload/services/icon/'.$icon_name);
                 $icon_name = 'upload/services/icon/'.$icon_name;
 
-                ServiceMulitImage::create([
+                ServiceMultiImage::create([
                     'service_id' => $service->id,
                     'image' => $icon_name
                 ]);

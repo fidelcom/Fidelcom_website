@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ProjectMultiImage;
-use App\Models\ServiceMulitImage;
+use App\Models\ServiceMultiImage;
 use Illuminate\Http\Request;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
@@ -21,7 +20,7 @@ class ServiceMultiImageController extends Controller
             $manager->read($img)->resize(533, 299)->toPng()->save('upload/services/icon/'.$image_name);
             $filename = 'upload/services/icon/'.$image_name;
 
-            ServiceMulitImage::create([
+            ServiceMultiImage::create([
                 'service_id' => $request->service_id,
                 'image' => $filename
             ]);
@@ -35,11 +34,10 @@ class ServiceMultiImageController extends Controller
 
     public function destroy(string $id)
     {
-        $data = ServiceMulitImage::findOrFail($id);
+        $data = ServiceMultiImage::findOrFail($id);
 
-        if ($data->image)
-        {
-            unlink($data->image);
+        if ($data->image && file_exists($data->image)) {
+            unlink(public_path($data->image));
         }
         $data->delete();
 

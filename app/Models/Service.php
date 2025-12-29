@@ -13,6 +13,6 @@ class Service extends Model
 
     public function multiImage() : HasMany
     {
-        return $this->hasMany(ServiceMulitImage::class);
+        return $this->hasMany(ServiceMultiImage::class);
     }
 }
