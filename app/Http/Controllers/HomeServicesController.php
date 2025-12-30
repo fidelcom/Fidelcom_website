@@ -18,7 +18,7 @@ class HomeServicesController extends Controller
     public function show($id)
     {
         $service = Service::findOrFail($id);
-        $services = Service::where('id', '!=', $id)->limit(6)->get();
+        $services = Service::where('id', '!=', $id)->limit(4)->get();
         $contact = Contact::first();
         return view('services.show', compact('service', 'services', 'contact'));
     }

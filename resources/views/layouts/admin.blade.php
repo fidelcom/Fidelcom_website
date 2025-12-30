@@ -4,9 +4,9 @@
 <head>
 
     <meta charset="utf-8" />
-    <title>Dashboard | ONEIXCONSULT - Admin Dashboard </title>
+    <title>Dashboard | {{ env('app_name') }} - Admin Dashboard </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta content="ONEIXCONSULT - Admin Dashboard" name="description" />
+    <meta content="{{ env('app_name') }} - Admin Dashboard" name="description" />
     <meta content="fidelcom system limited" name="author" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}">

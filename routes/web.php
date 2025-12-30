@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminAboutController;
+use App\Http\Controllers\Admin\AdminContactController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\CommentController;
@@ -37,8 +38,8 @@ Route::get('/', [LandingController::class, 'index'])->name('home');
 
 Route::get('/about', [AboutController::class, 'index'])->name('about.home');
 Route::get('/contact-us', [ContactController::class, 'index'])->name('contact.home');
-Route::get('/services', [HomeServicesController::class, 'index'])->name('service.home');
-Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio.home');
+Route::resource('/all-services', HomeServicesController::class);
+Route::resource('/portfolio', PortfolioController::class);
 
 
 
@@ -86,7 +87,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('/admin')->group(function () {
     Route::resource('/blog/posts', PostController::class);
     Route::resource('/project/multi-image', ProjectMultiImageController::class);
     Route::resource('/Services/multiple-image', ServiceMultiImageController::class);
-    Route::resource('/contact', ContactController::class);
+    Route::resource('/contact', AdminContactController::class);
     Route::get('/contact-us', [ContactController::class, 'show'])->name('contact.us.show');
     Route::get('/contact-us/{id}', [ContactController::class, 'edit'])->name('contact.us.edit');
     Route::delete('/contact-us/{id}', [ContactController::class, 'destroy'])->name('contact.us.destroy');

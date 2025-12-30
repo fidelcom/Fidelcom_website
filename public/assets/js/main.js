@@ -14,7 +14,7 @@
             this._body = $('body'),
             this._html = $('html')
         },
-        
+
         methods: function (e) {
             invJs.shapeMove();
             invJs.sideBarTwoshow();
@@ -53,27 +53,27 @@
             invJs.smoothScroll();
             invJs.onepageMultipage();
         },
-        
+
 
         shapeMove: function(){
             $('.shape-move').mousemove(function(e){
-        
+
               var wx = $(window).width();
               var wy = $(window).height();
-              
+
               var x = e.pageX - this.offsetLeft;
               var y = e.pageY - this.offsetTop;
-              
+
               var newx = x - wx/2;
               var newy = y - wy/2;
-              
+
               $('.shape-image .shape').each(function(){
                 var speed = $(this).attr('data-speed');
                 if($(this).attr('data-revert')) speed *= -1;
                 TweenMax.to($(this), 1, {x: (1 - newx*speed), y: (1 - newy*speed)});
-                
+
               });
-              
+
             });
         },
         sideBarTwoshow: function () {
@@ -92,7 +92,7 @@
           });
 
 
-          
+
           $(function () {
             $(".button").on("click", function () {
               var $button = $(this);
@@ -275,13 +275,13 @@
           })
 
 
-          
+
         },
 
         portfoliobounceAnimation: function () {
 
             if (device_width > 991) {
-          // each wrapper loop 
+          // each wrapper loop
           document.querySelectorAll(".tmp_jump_animation-wrapper").forEach(wrapper => {
             let jump_items = wrapper.querySelectorAll(".tmp-jump__item");
 
@@ -328,7 +328,7 @@
               }
             });
           }
-          // To check If it is in Viewport 
+          // To check If it is in Viewport
           var $window = $(window);
           function check_if_in_view() {
             $('.countervalue').each(function () {
@@ -394,11 +394,11 @@
 
 
         },
-        
+
         masonryActivation: function() {
           // Run other animations immediately
           this.initOtherAnimations();
-          
+
           // Wait for window load only for Isotope
           $(window).on('load', function() {
             $('.masonary-wrapper-activation').imagesLoaded(function() {
@@ -417,7 +417,7 @@
                 $(this).addClass('is-checked');
                 $grid.isotope({ filter: filterValue });
               });
-              
+
               // Refresh ScrollTrigger after Isotope
               ScrollTrigger.refresh();
             });
@@ -489,7 +489,7 @@
           });
 
         },
-        
+
 
         slickSliderActivation: function () {
             $('.testimonial-activation').not('.slick-initialized').slick({
@@ -564,7 +564,7 @@
                 adaptiveHeight: true,
                 cssEase: 'linear',
                 fade: true,
-                autoplay: true, 
+                autoplay: true,
                 autoplaySpeed: 4000,
                 pauseOnHover: false,
                 prevArrow: '<button class="slide-arrow prev-arrow"><i class="feather-arrow-left"></i></button>',
@@ -580,7 +580,7 @@
                 adaptiveHeight: true,
                 cssEase: 'linear',
                 fade: true,
-                autoplay: true, 
+                autoplay: true,
                 autoplaySpeed: 3000,
             });
 
@@ -735,28 +735,66 @@
               _self.find('.error-msg').remove();
               _self.closest('div').find('button[type="submit"]').attr('disabled', 'disabled');
               var data = $(this).serialize();
-              $.ajax({
-                url: 'mail.php',
-                type: "post",
-                dataType: 'json',
-                data: data,
-                success: function (data) {
-                  _self.closest('div').find('button[type="submit"]').removeAttr('disabled');
-                  if (data.code == false) {
-                    _self.closest('div').find('[name="' + data.field + '"]');
-                    _self.find('.tmp-btn').after('<div class="error-msg"><p>*' + data.err + '</p></div>');
-                  } else {
-                    $('.error-msg').hide();
-                    $('.form-group').removeClass('focused');
-                    _self.find('.tmp-btn').after('<div class="success-msg"><p>' + data.success + '</p></div>');
-                    _self.closest('div').find('input,textarea').val('');
+              // $.ajax({
+              //   url: '/contact-us',
+              //   type: "post",
+              //   dataType: 'json',
+              //   data: data,
+              //   success: function (data) {
+              //     _self.closest('div').find('button[type="submit"]').removeAttr('disabled');
+              //     if (data.code == false) {
+              //       _self.closest('div').find('[name="' + data.field + '"]');
+              //       _self.find('.tmp-btn').after('<div class="error-msg"><p>*' + data.err + '</p></div>');
+              //     } else {
+              //       $('.error-msg').hide();
+              //       $('.form-group').removeClass('focused');
+              //       _self.find('.tmp-btn').after('<div class="success-msg"><p>' + data.success + '</p></div>');
+              //       _self.closest('div').find('input,textarea').val('');
+              //
+              //       setTimeout(function () {
+              //         $('.success-msg').fadeOut('slow');
+              //       }, 5000);
+              //     }
+              //   }
+              // });
+                $.ajax({
+                    url: _self.attr('action'),
+                    type: "POST",
+                    dataType: 'json',
+                    data: data,
+                    success: function (data) {
+                        _self.find('button[type="submit"]').removeAttr('disabled');
+                        console.log('data code', data.code)
 
-                    setTimeout(function () {
-                      $('.success-msg').fadeOut('slow');
-                    }, 5000);
-                  }
-                }
-              });
+                        if (data.code === false) {
+                            _self.find('.tmp-btn')
+                                .after('<div class="error-msg"><p>*' + data.err + '</p></div>');
+                        } else {
+                            $('.error-msg').hide();
+                            _self.find('input, textarea').val('');
+                            _self.find('.tmp-btn')
+                                .after('<div class="success-msg"><p>' + data.success + '</p></div>');
+                        }
+                    },
+                    error: function (xhr) {
+                        _self.find('button[type="submit"]').removeAttr('disabled');
+
+                        let message = 'Server error. Try again.';
+
+                        if (xhr.responseJSON) {
+                            if (xhr.responseJSON.err) {
+                                message = xhr.responseJSON.err;
+                            } else if (xhr.responseJSON.message) {
+                                message = xhr.responseJSON.message;
+                            }
+                        }
+
+                        _self.find('.tmp-btn').after(
+                            '<div class="error-msg"><p>' + message + '</p></div>'
+                        );
+                    }
+                });
+
             });
         },
 
@@ -804,15 +842,15 @@
               }
           }
 
-      
+
         },
 
         tmpImageRevel: function (){
             $(document).ready(function () {
                 gsap.registerPlugin(ScrollTrigger);
-        
+
                 let revealContainers = document.querySelectorAll('.tmp-reveal-one');
-        
+
                 revealContainers.forEach((container) => {
                   let image = container.querySelector('.tmp-reveal-image-one');
                   let rts = gsap.timeline({
@@ -823,7 +861,7 @@
                       end: 'top 0%',
                     }
                   });
-        
+
                   rts.set(container, {
                     autoAlpha: 1
                   });
@@ -988,7 +1026,7 @@
             $(document).ready(function () {
               $('.jarallax').jarallax();
             });
-      
+
         },
 
         searchOpton:function(){
@@ -1039,34 +1077,34 @@
                   {
                     transform: "translate(-150px, 0px)", // End position
                     scrollTrigger: {
-                      start: "top bottom", 
-                      end: "bottom top",  
-                      scrub: 2,            
+                      start: "top bottom",
+                      end: "bottom top",
+                      scrub: 2,
 
                     },
                     ease: "none", // No easing for linear scrolling effect
                   }
                 );
               }
-             
+
             });
 
-            
+
             $(document).ready(function(){
               let image_r = document.querySelectorAll('.images-r');
               if (image_r.length) {
                 gsap.to(".images-r", {
                   scrollTrigger:{
                     // trigger: ".images",
-                    start: "top bottom", 
-                    end: "bottom top", 
+                    start: "top bottom",
+                    end: "bottom top",
                     scrub: 1,
                     // markers: true
                   },
                   x: -150,
                 })
               }
-          
+
             });
             $(document).ready(function(){
               let images_2 = document.querySelectorAll('.images-r');
@@ -1074,15 +1112,15 @@
                 gsap.to(".images-2", {
                   scrollTrigger:{
                     // trigger: ".images",
-                    start: "top bottom", 
-                    end: "bottom top", 
+                    start: "top bottom",
+                    end: "bottom top",
                     scrub: 1,
                     // markers: true
                   },
                   y: -290,
                 })
               }
-            
+
             });
         },
 
@@ -1110,9 +1148,9 @@
               });
             });
           }
-      
+
         },
-        
+
         odoMeter: function () {
           $(document).ready(function () {
             function isInViewport(element) {
@@ -1263,7 +1301,7 @@
               ).removeClass("open");
           });
         },
-        
+
         onepageMultipage: function (params) {
             document.querySelectorAll('.tab_wrapper').forEach(tabWrapper => {
             const tabButtons = tabWrapper.querySelectorAll('.tabs-nav .nav-links');
