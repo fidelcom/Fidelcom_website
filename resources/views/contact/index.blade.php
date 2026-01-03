@@ -12,7 +12,7 @@
                                 <div class="pres-line-separator-wrapper text-center mb--10">
                                     <div class="line-separator line-left"></div>
                                     <span class="subtitle">
-                                        <span class="number"><a href="index.html">01</a></span>
+                                        <span class="number"><a href="/">01</a></span>
                                     <span class="subtitle-text">Contact With Us</span>
                                     </span>
                                     <div class="line-separator line-right"></div>
@@ -31,8 +31,8 @@
                                                 <i class="feather-headphones"></i>
                                             </div>
                                             <div class="inner">
-                                                <h4 class="title">Call us todays</h4>
-                                                <p><a href="#">+444 555 666 777</a></p>
+                                                <h4 class="title">Call us today</h4>
+                                                <p><a href="#">{{ $contact->phone }}</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -43,7 +43,7 @@
                                             </div>
                                             <div class="inner">
                                                 <h4 class="title">Send an Email</h4>
-                                                <p><a href="mailto:admin@gmail.com">admin@gmail.com</a></p>
+                                                <p><a href="mailto:{{ $contact->email }}">{{ $contact->email }}</a></p>
                                             </div>
                                         </div>
                                     </div>
@@ -54,7 +54,7 @@
                                             </div>
                                             <div class="inner">
                                                 <h4 class="title">Visit our HQ</h4>
-                                                <p>Dhaka, Bangladesh</p>
+                                                <p>{{ $contact->address }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -74,21 +74,22 @@
 
                         <div class="col-lg-5">
                             <div class="aapoiment-left-area-thumbnail">
-                                <img src="assets/images/appoinment/01.webp" alt="appoinment">
+                                <img src="{{ asset('assets/images/appoinment/01.webp') }}" alt="appoinment">
                             </div>
                         </div>
                         <div class="col-lg-7">
-                            <form class="contact-form-1 appoinment-form-wrapper tmponhover tmp-dynamic-form" id="contact-form" method="POST" action="https://html.inversweb.com/corpox/mail.php">
+                            <form class="contact-form-1 appoinment-form-wrapper tmponhover tmp-dynamic-form" id="contact-form" method="POST" action="{{ route('contact.us.store') }}">
+                                @csrf
                                 <div class="form-group-wrapper">
                                     <div class="form-group tmponhover">
-                                        <input type="text" name="contact-name" id="contact-name" placeholder="Your Name" required>
+                                        <input type="text" name="name" id="contact-name" placeholder="Your Name" required>
                                     </div>
                                     <div class="form-group tmponhover">
-                                        <input type="tel" name="contact-phone" id="contact-phone" placeholder="Phone Number">
+                                        <input type="tel" name="phone" id="contact-phone" placeholder="Phone Number">
                                     </div>
                                 </div>
                                 <div class="form-group tmponhover">
-                                    <input type="email" id="contact-email" name="contact-email" placeholder="Your Email" required>
+                                    <input type="email" id="contact-email" name="email" placeholder="Your Email" required>
                                 </div>
 
                                 <div class="form-group tmponhover">
@@ -96,7 +97,7 @@
                                 </div>
 
                                 <div class="form-group tmponhover">
-                                    <textarea name="contact-message" id="contact-message" placeholder="Your Message"></textarea>
+                                    <textarea name="message" id="contact-message" placeholder="Your Message"></textarea>
                                 </div>
 
                                 <div class="form-group tmponhover">

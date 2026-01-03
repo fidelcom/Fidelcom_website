@@ -14,7 +14,8 @@ class CommentController extends Controller
     {
         $request->validate([
             'post_id' => 'required',
-            'name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
             'email' => 'required',
             'message' => 'required',
         ]);
@@ -28,11 +29,12 @@ class CommentController extends Controller
         }
         Comment::create([
             'post_id' => $request->post_id,
-            'name' => $request->name,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'phone' => $request->phone,
             'message' => $request->message,
-            'image' => $filename
+//            'image' => $filename
         ]);
 
         return redirect()->back()->with([

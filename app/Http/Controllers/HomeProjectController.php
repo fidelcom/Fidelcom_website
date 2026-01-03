@@ -11,8 +11,9 @@ class HomeProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::latest()->get();
-        return view('landing.projects.index', compact('projects'));
+        $projectCategories = ProjectCategory::with('project')->get();
+        $projects = Project::all();
+        return view('projects.index', compact('projectCategories', 'projects'));
     }
 
     public function show($id)
@@ -20,13 +21,14 @@ class HomeProjectController extends Controller
         $project = Project::findOrFail($id);
         $latest = Project::where('id', '!=', $id)->latest()->get();
         $contact = Contact::first();
-        return view('landing.projects.show', compact('project', 'latest', 'contact'));
+        return view('projects.show', compact('project', 'latest', 'contact'));
     }
 
     public function edit($id)
     {
+        $projectCategories = ProjectCategory::with('project')->get();
         $projects = Project::where('project_category_id', $id)->latest()->get();
         $cat = ProjectCategory::findOrFail($id);
-        return view('landing.projects.category_project', compact('projects', 'cat'));
+        return view('projects.category_project', compact('projects', 'cat', 'projectCategories'));
     }
 }

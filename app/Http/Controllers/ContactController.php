@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use App\Models\GetInTouch;
 use Illuminate\Http\Request;
 
@@ -9,7 +10,8 @@ class ContactController extends Controller
 {
     public function index()
     {
-        return view('contact.index');
+        $contact = Contact::first();
+        return view('contact.index', compact('contact'));
     }
 
     public function store(Request $request)

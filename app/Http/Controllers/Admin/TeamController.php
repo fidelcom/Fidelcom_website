@@ -45,7 +45,7 @@ class TeamController extends Controller
         $img = $request->file('image');
         $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
         $manager = new ImageManager(new Driver());
-        $manager->read($img)->resize(280, 410)->toPng()->save('upload/team/'.$img_name);
+        $manager->read($img)->scale(800, 1090)->toPng()->save('upload/team/'.$img_name);
         $filename = 'upload/team/'.$img_name;
 
         Team::create([
@@ -100,7 +100,7 @@ class TeamController extends Controller
             $img = $request->file('image');
             $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
             $manager = new ImageManager(new Driver());
-            $manager->read($img)->resize(280, 410)->toPng()->save('upload/team/'.$img_name);
+            $manager->read($img)->scale(800, 1090)->toPng()->save('upload/team/'.$img_name);
             $filename = 'upload/team/'.$img_name;
             if ($data->image && file_exists($data->image)) {
                 unlink(public_path($data->image));

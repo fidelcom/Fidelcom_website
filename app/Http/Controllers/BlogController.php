@@ -15,7 +15,7 @@ class BlogController extends Controller
         $categories = BlogCategory::orderBy('name', 'ASC')->get();
         $latest = Post::latest()->limit(4)->get();
         $contact = Contact::first();
-        return view('landing.blog.index', compact('posts', 'categories', 'latest', 'contact'));
+        return view('blog.index', compact('posts', 'categories', 'latest', 'contact'));
     }
 
     public function show($id)
@@ -24,7 +24,7 @@ class BlogController extends Controller
         $categories = BlogCategory::orderBy('name', 'ASC')->get();
         $latest = Post::latest()->limit(4)->get();
         $contact = Contact::first();
-        return view('landing.blog.show', compact('post', 'categories', 'latest', 'contact'));
+        return view('blog.show', compact('post', 'categories', 'latest', 'contact'));
     }
 
     public function category($id)
@@ -34,6 +34,6 @@ class BlogController extends Controller
         $ct = BlogCategory::findOrFail($id);
         $latest = Post::latest()->limit(4)->get();
         $contact = Contact::first();
-        return view('landing.blog.category_post', compact('posts', 'categories', 'ct', 'latest', 'contact'));
+        return view('blog.category_post', compact('posts', 'categories', 'ct', 'latest', 'contact'));
     }
 }

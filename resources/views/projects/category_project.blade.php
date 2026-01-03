@@ -50,7 +50,7 @@
                                             </h5>
                                             <div class="tmp-badge-group">
                                                 <a href="{{ route('all-projects.show', $project->id) }}" class="tmp-badge-2">{{ $project->project_category->name }}</a>
-{{--                                                <a href="#" class="tmp-badge-2">App</a>--}}
+                                                {{--                                                <a href="#" class="tmp-badge-2">App</a>--}}
                                             </div>
                                         </div>
                                     </div>
@@ -64,19 +64,19 @@
                 </div>
             </div>
             <!-- Start Load More Button  -->
-{{--            <div class="row row--15">--}}
-{{--                <div class="col-lg-12">--}}
-{{--                    <div class="tmp-load-more d-flex justify-content-center mt--60">--}}
-{{--                        <a class="tmp-btn btn-large hover-icon-reverse" href="#">--}}
-{{--                                <span class="icon-reverse-wrapper">--}}
-{{--                                    <span class="btn-text">Load More</span>--}}
-{{--                                <span class="btn-icon"><i class="feather-loader"></i></span>--}}
-{{--                                <span class="btn-icon"><i class="feather-loader"></i></span>--}}
-{{--                                </span>--}}
-{{--                        </a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+            {{--            <div class="row row--15">--}}
+            {{--                <div class="col-lg-12">--}}
+            {{--                    <div class="tmp-load-more d-flex justify-content-center mt--60">--}}
+            {{--                        <a class="tmp-btn btn-large hover-icon-reverse" href="#">--}}
+            {{--                                <span class="icon-reverse-wrapper">--}}
+            {{--                                    <span class="btn-text">Load More</span>--}}
+            {{--                                <span class="btn-icon"><i class="feather-loader"></i></span>--}}
+            {{--                                <span class="btn-icon"><i class="feather-loader"></i></span>--}}
+            {{--                                </span>--}}
+            {{--                        </a>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
+            {{--            </div>--}}
             <!-- End Load More Button  -->
         </div>
     </div>

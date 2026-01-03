@@ -21,23 +21,10 @@
                             </li>
                             <li class="has-droupdown has-menu-child-item"><a href="{{ route('all-projects.index') }}">Project</a>
                                 <ul class="submenu">
-                                    <li><a href="portfolio.html">Portfolio Default</a></li>
-                                    <li><a href="portfolio-three-column.html">Portfolio Three Column</a></li>
-                                    <li><a href="portfolio-full-width.html">Portfolio Full Width</a></li>
-                                    <li><a href="portfolio-grid-layout.html">Portfolio Grid Layout</a></li>
-                                    <li><a href="portfolio-box-layout.html">Portfolio Box Layout</a></li>
-                                    <li><a href="portfolio-card-hover.html">Portfolio Card Hover</a></li>
-                                    <li><a href="portfolio-bottom-content.html">Portfolio Bottom Content</a></li>
-                                    <li class="has-third-lev">
-                                        <a href="#">Portfolio Details</a>
-                                        <ul class="submenu">
-                                            <li><a href="portfolio-details.html">Portfolio Details</a></li>
-                                            <li><a href="portfolio-details-two.html">Portfolio Details Two</a></li>
-                                            <li><a href="portfolio-details-three.html">Portfolio Details Video</a></li>
-                                            <li><a href="portfolio-details-five.html">Portfolio Details Video 2</a></li>
-                                            <li><a href="portfolio-details-four.html">Portfolio Details Slider</a></li>
-                                        </ul>
-                                    </li>
+                                    @php($categories = \App\Models\ProjectCategory::all())
+                                    @foreach($categories as $cat)
+                                        <li><a href="{{ route('all-projects.edit', $cat->id) }}">{{ $cat->name }}</a></li>
+                                    @endforeach
 
                                 </ul>
                             </li>
@@ -114,23 +101,9 @@
             </li>
             <li class="has-droupdown has-menu-child-item"><a href="{{ route('all-projects.index') }}">Project</a>
                 <ul class="submenu">
-                    <li><a href="portfolio.html">Portfolio Default</a></li>
-                    <li><a href="portfolio-three-column.html">Portfolio Three Column</a></li>
-                    <li><a href="portfolio-full-width.html">Portfolio Full Width</a></li>
-                    <li><a href="portfolio-grid-layout.html">Portfolio Grid Layout</a></li>
-                    <li><a href="portfolio-box-layout.html">Portfolio Box Layout</a></li>
-                    <li><a href="portfolio-card-hover.html">Portfolio Card Hover</a></li>
-                    <li><a href="portfolio-bottom-content.html">Portfolio Bottom Content</a></li>
-                    <li class="has-third-lev">
-                        <a href="#">Portfolio Details</a>
-                        <ul class="submenu">
-                            <li><a href="portfolio-details.html">Portfolio Details</a></li>
-                            <li><a href="portfolio-details-two.html">Portfolio Details Two</a></li>
-                            <li><a href="portfolio-details-three.html">Portfolio Details Video</a></li>
-                            <li><a href="portfolio-details-five.html">Portfolio Details Video 2</a></li>
-                            <li><a href="portfolio-details-four.html">Portfolio Details Slider</a></li>
-                        </ul>
-                    </li>
+                    @foreach($categories as $cat)
+                        <li><a href="{{ route('all-projects.edit', $cat->id) }}">{{ $cat->name }}</a></li>
+                    @endforeach
 
                 </ul>
             </li>
