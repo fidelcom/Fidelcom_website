@@ -39,7 +39,8 @@ Route::get('/', [LandingController::class, 'index'])->name('home');
 Route::get('/about', [AboutController::class, 'index'])->name('about.home');
 Route::get('/contact-us', [ContactController::class, 'index'])->name('contact.home');
 Route::resource('/all-services', HomeServicesController::class);
-Route::resource('/portfolio', PortfolioController::class);
+Route::resource('/portfolio', HomeProjectController::class);
+//Route::resource('/portfolio', PortfolioController::class);
 
 
 
