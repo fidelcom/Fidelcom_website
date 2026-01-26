@@ -180,9 +180,7 @@
                                 <div class="line-separator line-right"></div>
                             </div>
                             <h2 class="title w-700 tmp-title-split">Our Latest Services</h2>
-                            <p class="description b1 tmp-title-split-p">There are many variations of passages of Lorem Ipsum
-                                available,
-                                <br>but the majority have suffered alteration.
+                            <p class="description b1 tmp-title-split-p">IT Solutions, Software Development & Digital Services in Nigeria and Beyond
                             </p>
                         </div>
                     </div>
@@ -544,7 +542,7 @@
                                                 <p class="disc">
                                                     {!! $us->desc !!}
                                                 </p>
-                                                <a class="tmp-btn hover-icon-reverse" href="service-details.html">
+                                                <a class="tmp-btn hover-icon-reverse" href="#">
                                             <span class="icon-reverse-wrapper">
                                             <span class="btn-text">See Details</span>
                                             <span class="btn-icon"><i class="feather-arrow-right"></i></span>
@@ -554,7 +552,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-6 order-1 order-lg-2 order-md-1 order-sm-1">
-                                            <a href="service-details.html" class="thumbnail-service-list invers-anime">
+                                            <a href="#" class="thumbnail-service-list invers-anime">
                                                 <img src="{{ asset('assets/images/services/list/02.webp') }}" alt="Business consulting">
                                             </a>
                                         </div>
@@ -648,7 +646,7 @@
                                         <div class="call-to-btn d-flex justify-content-center">
                                             <a class="tmp-btn btn-extra-large hover-icon-reverse" target="_blank" href="https://themeforest.net/item/corpox-business-consulting-bootstrap-5-html-template/59767866">
                                                 <span class="icon-reverse-wrapper">
-                                            <span class="btn-text">Purchase Corpox</span>
+                                            <span class="btn-text">Contact Fidelcom</span>
                                                 <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                                 <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                                 </span>

@@ -19,6 +19,7 @@
                                     <div class="line-separator line-right"></div>
                                 </div>
                                 <h2 class="title w-700 tmp-title-split">Our Latest Service</h2>
+                                <p>Fidelcom System Limited provides professional IT services in Nigeria and delivers world-class digital solutions to clients globally. Our services are designed to help businesses build strong digital presence, improve operations, and scale using modern technology.</p>
                             </div>
                         </div>
                     </div>

@@ -32,7 +32,7 @@ class LandingController extends Controller
         $brands = Partner::all();
         $whyUs = WhyUs::first();
         $whyChooseUs = WhyUs::all();
-        $faqs = Faq::all();
+        $faqs = Faq::limit(5)->get();
         return view('index', compact('about', 'posts', 'projectCategories', 'projects', 'sliders', 'testimonials', 'services', 'contact', 'successes', 'brands', 'whyUs', 'whyChooseUs', 'faqs'));
     }
 }
