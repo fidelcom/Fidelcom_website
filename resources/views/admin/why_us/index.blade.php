@@ -18,6 +18,7 @@
                                 <th>Title</th>
                                 <th>Subtitle</th>
                                 <th>Description</th>
+                                <th>Image</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -30,6 +31,9 @@
                                     <td>{{ $item->title }}</td>
                                     <td>{{ $item->subtitle }}</td>
                                     <td>{!! str()->limit($item->desc, 50) !!}</td>
+                                    <td>
+                                        <img src="{{ asset($item->image) }}" height="50" alt="">
+                                    </td>
                                     <td>
                                         <form method="POST" action="{{ route('why-us.destroy', $item->id) }}">
                                             @method('DELETE') @csrf

@@ -92,11 +92,11 @@
                     <div class="col-lg-7 pr--40 pr_sm--0">
                         <div class="about-2-thumbnail-left-wrapper">
                             <div class="single-thumbnail invers-anime">
-                                <img loading="lazy" src="{{ asset('assets/images/about/01.webp') }}" alt="about">
+                                <img loading="lazy" src="{{ asset($about->image) }}" alt="about">
 
                             </div>
                             <div class="single-thumbnail invers-anime mt--80">
-                                <img loading="lazy" src="{{ asset('assets/images/about/02.webp') }}" alt="about">
+                                <img loading="lazy" src="{{ asset($about->image) }}" alt="about">
 {{--                                <div class="video-icon">--}}
 {{--                                    <a class="tmp-btn rounded-player popup-video" href="{{ asset('assets/images/video/01.mp4') }}">--}}
 {{--                                        <span><i class="feather-play"></i></span>--}}
@@ -473,22 +473,21 @@
                             <div class="tmp-section-title-border text-start">
                                 <div class="pres-line-separator-wrapper text-start mb--10">
                                     <span class="subtitle">
-                                        <span class="subtitle-text">My Business Services</span>
+                                        <span class="subtitle-text">Why Choose Fidelcom System Limited</span>
                                     </span>
                                     <div class="line-separator line-right"></div>
                                 </div>
-                                <h2 class="title w-700 tmp-title-split">Innovative Service For Your <br>
-                                Business Solution</h2>
+                                <h2 class="title w-700 tmp-title-split">Your Trusted IT & Digital Solutions Partner in Nigeria and Beyond</h2>
                             </div>
-                            <div class="tmp-load-more d-flex justify-content-center">
-                                <a class="tmp-btn btn-large hover-icon-reverse" href="#">
-                                    <span class="icon-reverse-wrapper">
-                                        <span class="btn-text">View More Service</span>
-                                    <span class="btn-icon"><i class="feather-loader"></i></span>
-                                    <span class="btn-icon"><i class="feather-loader"></i></span>
-                                    </span>
-                                </a>
-                            </div>
+{{--                            <div class="tmp-load-more d-flex justify-content-center">--}}
+{{--                                <a class="tmp-btn btn-large hover-icon-reverse" href="#">--}}
+{{--                                    <span class="icon-reverse-wrapper">--}}
+{{--                                        <span class="btn-text">View More Service</span>--}}
+{{--                                    <span class="btn-icon"><i class="feather-loader"></i></span>--}}
+{{--                                    <span class="btn-icon"><i class="feather-loader"></i></span>--}}
+{{--                                    </span>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
                         </div>
 
 
@@ -501,8 +500,8 @@
                                 <div class="single-service-list-area" data-sal="slide-up" data-sal-duration="700" data-sal-delay="100">
                                 <div class="row g-5 align-items-center">
                                     <div class="col-lg-6">
-                                        <a href="service-details.html" class="thumbnail-service-list invers-anime">
-                                            <img src="{{ asset('assets/images/services/list/01.webp') }}" alt="Business consulting">
+                                        <a href="#" class="thumbnail-service-list invers-anime">
+                                            <img src="{{ asset($us->image) }}" alt="Business consulting">
                                         </a>
                                     </div>
                                     <div class="col-lg-6">
@@ -516,7 +515,7 @@
                                             <p class="disc">
                                                 {!! $us->desc !!}
                                             </p>
-                                            <a class="tmp-btn hover-icon-reverse" href="service-details.html">
+                                            <a class="tmp-btn hover-icon-reverse" href="~">
                                             <span class="icon-reverse-wrapper">
                                             <span class="btn-text">See Details</span>
                                             <span class="btn-icon"><i class="feather-arrow-right"></i></span>
@@ -553,7 +552,7 @@
                                         </div>
                                         <div class="col-lg-6 order-1 order-lg-2 order-md-1 order-sm-1">
                                             <a href="#" class="thumbnail-service-list invers-anime">
-                                                <img src="{{ asset('assets/images/services/list/02.webp') }}" alt="Business consulting">
+                                                <img src="{{ asset($us->image) }}" alt="Business consulting">
                                             </a>
                                         </div>
 
@@ -641,10 +640,10 @@
                             <div class="col-lg-12">
                                 <div class="inner">
                                     <div class="content text-center">
-                                        <h2 class="title tmp-title-split">Ready to start creating <br> a standard website?</h2>
-                                        <h6 class="subtitle tmp-title-split">Finest choice for your home &amp; office</h6>
+                                        <h2 class="title tmp-title-split">Ready to start creating <br> the perfect website and mobile app?</h2>
+                                        <h6 class="subtitle tmp-title-split">A Mobile App, Web Design & IT Consulting That Delivers More</h6>
                                         <div class="call-to-btn d-flex justify-content-center">
-                                            <a class="tmp-btn btn-extra-large hover-icon-reverse" target="_blank" href="https://themeforest.net/item/corpox-business-consulting-bootstrap-5-html-template/59767866">
+                                            <a class="tmp-btn btn-extra-large hover-icon-reverse" href="{{ route('contact.us') }}">
                                                 <span class="icon-reverse-wrapper">
                                             <span class="btn-text">Contact Fidelcom</span>
                                                 <span class="btn-icon"><i class="feather-arrow-right"></i></span>
@@ -659,10 +658,10 @@
                                             <a href="#" class="avatar" data-tooltip="Mark" tabindex="0"><img src="assets/images/testimonial/tooltip-02.png" alt="education"></a>
                                             <a href="#" class="avatar" data-tooltip="Jordan" tabindex="0"><img src="assets/images/testimonial/tooltip-03.png" alt="education"></a>
                                             <div class="more-author-text">
-                                                <h5 class="total-join-students">Join Over 3000+ Students</h5>
-                                                <p class="subtitle">
-                                                    <a class="btn-read-more" target="_blank" href="https://themeforest.net/item/corpox-business-consulting-bootstrap-5-html-template/59767866"><span>Purchase Corpox</span></a>
-                                                </p>
+                                                <h5 class="total-join-students">Join Over 200+ Clients</h5>
+{{--                                                <p class="subtitle">--}}
+{{--                                                    <a class="btn-read-more" target="_blank" href="https://themeforest.net/item/corpox-business-consulting-bootstrap-5-html-template/59767866"><span>Purchase Corpox</span></a>--}}
+{{--                                                </p>--}}
                                             </div>
                                         </div>
                                     </div>

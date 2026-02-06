@@ -39,10 +39,17 @@ class WhyUsController extends Controller
             'desc' => 'required',
         ]);
 
+        $img = $request->file('image');
+        $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+        $manager = new ImageManager(new Driver());
+        $manager->read($img)->scale(846, 420)->toPng()->save('upload/why/'.$img_name);
+        $filename = 'upload/why/'.$img_name;
+
         WhyUs::create([
             'title' => $request->title,
             'subtitle' => $request->subtitle,
             'desc' => $request->desc,
+            'image' => $filename,
         ]);
 
         return redirect()->route('why-us.index')->with([
@@ -79,6 +86,21 @@ class WhyUsController extends Controller
             'subtitle' => 'required',
             'desc' => 'required',
         ]);
+
+        if ($request->hasFile('image'))
+        {
+            $img = $request->file('image');
+            $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+            $manager = new ImageManager(new Driver());
+            $manager->read($img)->scale(846, 420)->toPng()->save('upload/why/'.$img_name);
+            $filename = 'upload/why/'.$img_name;
+            if ($data->image && file_exists($data->image)) {
+                unlink(public_path($data->image));
+            }
+            $data->update([
+                'image' => $filename
+            ]);
+        }
 
         $data->update([
             'title' => $request->title,

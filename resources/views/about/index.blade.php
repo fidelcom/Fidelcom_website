@@ -27,14 +27,14 @@
                     <div class="video-btn">
                         <div class="video-popup icon-center">
                             <div class="overlay-content">
-                                <div class="thumbnail"><img class="radius-small" src="assets/images/about/14.webp"
+                                <div class="thumbnail"><img class="radius-small" src="{{ asset($about->image) }}"
                                                             alt="Corporate Image"></div>
-                                <div class="video-icon">
-                                    <a class="tmp-btn rounded-player popup-video"
-                                       href="https://www.youtube.com/watch?v=4jnzf1yj48M">
-                                        <span><i class="feather-play"></i></span>
-                                    </a>
-                                </div>
+{{--                                <div class="video-icon">--}}
+{{--                                    <a class="tmp-btn rounded-player popup-video"--}}
+{{--                                       href="https://www.youtube.com/watch?v=4jnzf1yj48M">--}}
+{{--                                        <span><i class="feather-play"></i></span>--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                         <div class="video-lightbox-wrapper"></div>
@@ -52,17 +52,17 @@
                 <div class="col-lg-5">
                     <div class="thumbnail-about-8">
                         <div class="large-image  invers-anime">
-                            <img src="assets/images/about/about-10.jpg" alt="" loading="lazy">
+                            <img src="{{ asset($about->image) }}" alt="" loading="lazy">
                         </div>
-                        <div class="small-iamge-area images-left-right-float">
-                            <img src="assets/images/about/about-12.png" alt="" loading="lazy">
-                            <div class="video-icon">
-                                <a class="tmp-btn rounded-player popup-video"
-                                   href="https://www.youtube.com/watch?v=4jnzf1yj48M">
-                                    <span><i class="feather-play"></i></span>
-                                </a>
-                            </div>
-                        </div>
+{{--                        <div class="small-iamge-area images-left-right-float">--}}
+{{--                            <img src="assets/images/about/about-12.png" alt="" loading="lazy">--}}
+{{--                            <div class="video-icon">--}}
+{{--                                <a class="tmp-btn rounded-player popup-video"--}}
+{{--                                   href="https://www.youtube.com/watch?v=4jnzf1yj48M">--}}
+{{--                                    <span><i class="feather-play"></i></span>--}}
+{{--                                </a>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                 </div>
                 <div class="col-lg-7 pl--60 pl_md--10 pl_sm--10 mt_md--30 mt_sm--30">
@@ -176,7 +176,7 @@
                         <div class="pres-line-separator-wrapper text-center mb--10">
                             <div class="line-separator line-left"></div>
                             <span class="subtitle">
-                                    <span class="number">+2000</span>
+                                    <span class="number">+200</span>
                                 <span class="subtitle-text">Awesome Clients</span>
                                 </span>
                             <div class="line-separator line-right"></div>
@@ -290,12 +290,12 @@
                             <div class="overlay-content">
                                 <div class="thumbnail"><img class="radius-small" src="assets/images/about/about-3.jpg"
                                                             alt="Corporate Image"></div>
-                                <div class="video-icon">
-                                    <a class="tmp-btn rounded-player popup-video"
-                                       href="https://www.youtube.com/watch?v=4jnzf1yj48M">
-                                        <span><i class="feather-play"></i></span>
-                                    </a>
-                                </div>
+{{--                                <div class="video-icon">--}}
+{{--                                    <a class="tmp-btn rounded-player popup-video"--}}
+{{--                                       href="https://www.youtube.com/watch?v=4jnzf1yj48M">--}}
+{{--                                        <span><i class="feather-play"></i></span>--}}
+{{--                                    </a>--}}
+{{--                                </div>--}}
                             </div>
                         </div>
                         <div class="video-lightbox-wrapper"></div>

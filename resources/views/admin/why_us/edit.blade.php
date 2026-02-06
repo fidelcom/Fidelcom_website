@@ -64,6 +64,21 @@
                             </div>
                             <!-- end row -->
                             <div class="row mb-3">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Photo</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="file" name="image" id="example-text-input">
+                                </div>
+                            </div>
+                            <!-- end row -->
+
+                            <div class="row mb-3">
+                                <label for="example-text-input" class="col-sm-2 col-form-label"></label>
+                                <div class="col-sm-10">
+                                    <img src="{{ asset($data->image) }}" height="100" alt="">
+                                </div>
+                            </div>
+                            <!-- end row -->
+                            <div class="row mb-3">
                                 <label for="example-text-input" class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-10">
                                     <input class="btn btn-primary" type="submit" value="Update Why Choose Us">
