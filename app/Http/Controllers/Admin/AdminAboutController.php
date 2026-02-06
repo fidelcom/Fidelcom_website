@@ -156,12 +156,14 @@ class AdminAboutController extends Controller
             if ($data->image && file_exists(public_path($data->image))) {
                 unlink(public_path($data->image));
             }
-
-            $updateData['image'] = 'upload/about/'.$img_name;
+            $data->update([
+                'image' => 'upload/about/'.$img_name,
+            ]);
+//            $updateData['image'] = 'upload/about/'.$img_name;
         }
 
         // update everything once
-        $data->update($updateData);
+//        $data->update($updateData);
 
         return redirect()->route('about.index')->with([
             'message' => 'About updated successfully!',
