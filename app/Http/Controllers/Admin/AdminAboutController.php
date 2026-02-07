@@ -163,7 +163,7 @@ class AdminAboutController extends Controller
         }
 
         // update everything once
-//        $data->update($updateData);
+        $data->update($updateData);
 
         return redirect()->route('about.index')->with([
             'message' => 'About updated successfully!',
