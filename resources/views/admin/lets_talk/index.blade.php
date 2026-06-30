@@ -35,7 +35,7 @@
                                     <td>{!! $item->service !!}</td>
                                     <td>{!! $item->status == 0 ? 'Unread' : 'Read' !!}</td>
                                     <td>
-                                        <form method="POST" action="{{ route('contact.destroy', $item->id) }}">
+                                        <form method="POST" action="{{ route('lets.talk.destroy', $item->id) }}">
                                             @method('DELETE') @csrf
                                             <a href="{{ route('lets.talk.edit', $item->id) }}" class="btn btn-primary">{{ $item->status == 0 ? 'Mark as Read' : 'Mark as Unread' }}</a>
                                             <button type="submit" class="btn btn-danger">Delete</button>

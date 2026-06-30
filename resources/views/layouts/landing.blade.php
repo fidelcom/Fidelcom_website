@@ -1,24 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
-
-
-<!-- Mirrored from html.inversweb.com/corpox/02-index-business-consulting-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 06 Nov 2025 07:07:35 GMT -->
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-style-mode" content="1">
-    <meta name="description" content="Transform your business with expert consulting. Our team delivers strategic insights, innovative solutions, and professional guidance to help you achieve lasting success.">
+    <meta name="description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
 
-    <title>{{ env('app_name') }}</title>
+    <!-- Canonical -->
+    <link rel="canonical" href="@yield('canonical_url', url()->current())">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:title" content="@yield('page_title', config('app.name'))">
+    <meta property="og:description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
+    <meta property="og:url" content="@yield('canonical_url', url()->current())">
+    <meta property="og:image" content="@yield('og_image', asset('assets/images/logo/Fidelcom1.png'))">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+
+    <!-- Robots -->
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+
+    <!-- Open Graph locale -->
+    <meta property="og:locale" content="en_NG">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@@fidelcom_systems">
+    <meta name="twitter:title" content="@yield('page_title', config('app.name'))">
+    <meta name="twitter:description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('assets/images/logo/Fidelcom1.png'))">
+
+    <!-- JSON-LD Organization -->
+    @yield('schema_markup')
+
+    <title>@yield('page_title', config('app.name'))</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/Fidelcom1.png') }}">
     <!-- CSS ============================================ -->
 
-    <!-- google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
-    <!-- google fonts end-->
+    <!-- google fonts (non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"></noscript>
+    <!-- google fonts end -->
 
     <link href="{{ asset('assets/css/vendor/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/plugins/animation.css') }}" rel="stylesheet">
@@ -32,32 +59,26 @@
 </head>
 
 <body>
-    <main class="page-wrapper">
+    @php
+        $contact    = \App\Models\Contact::first();
+        $projects   = \App\Models\Project::select('id', 'image')->latest()->limit(6)->get();
+        $categories = \App\Models\ProjectCategory::orderBy('name')->get();
+    @endphp
+    <div class="page-wrapper">
         <!-- Start Header Top Area  -->
 
         @include('body.header')
 
-        @yield('main')
-
-
+        <main id="main-content">
+            @yield('main')
+        </main>
 
         <!-- Start Footer Area  -->
         @include('body.footer')
         <!-- End Footer Area  -->
-    </main>
+    </div>
 
     <!-- All Scripts  -->
-
-    <!-- pre loader start -->
-
-    <!-- <div id="inverweb-load">
-    <span class="loader"></span>
-</div> -->
-
-    <!-- pre loader end -->
-
-
-
 
 
     <div id="anywhere-home" class="">
@@ -67,127 +88,24 @@
     <div class="tmp-search-input-area">
         <div class="container">
             <div class="search-input-inner">
-                <form action="#" class="input-div tmponhover">
-                    <input id="searchInput1" class="search-input" type="text" placeholder="🔎 Search products, topics, or #tags" required>
-                    <button>
-                        <!-- <img src="assets/images/icons/search.svg" alt=""> -->
+                <form action="{{ route('blog') }}" method="GET" class="input-div tmponhover">
+                    <input id="searchInput1" class="search-input" type="text" name="q" placeholder="🔎 Search posts, topics, or tags..." autocomplete="off">
+                    <button type="submit">
                         <i class="feather-search"></i>
                     </button>
                 </form>
                 <div class="popular-keyword">
                     <h4 class="title">Popular Tag :</h4>
                     <div class="tag-wrapper">
-                        <a class="tmp-btn btn-border btn-small radius-round" href="#">Service</a>
-                        <a class="tmp-btn btn-border btn-small radius-round" href="#">Business</a>
-                        <a class="tmp-btn btn-border btn-small radius-round" href="#">Consultancy</a>
+                        <a class="tmp-btn btn-border btn-small radius-round" href="{{ route('blog') }}?q=Service">Service</a>
+                        <a class="tmp-btn btn-border btn-small radius-round" href="{{ route('blog') }}?q=Business">Business</a>
+                        <a class="tmp-btn btn-border btn-small radius-round" href="{{ route('blog') }}?q=Consultancy">Consultancy</a>
                     </div>
-                </div>
-                <div class="row g-5 service-wrapper mt--10 mt_md--10 mt_sm--0">
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 270px; --y: 7px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-01.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">Awarded Design</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 12px; --y: 31px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-02.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">Design &amp;
-                                            Creative</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 15px; --y: 99px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-03.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">App Development</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 15px; --y: 99px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-04.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">UI/UX Design</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
         </div>
         <div id="close" class="search-close-icon tmponhover">
-            <img src="assets/images/icons/close.png" alt="">
+            <img src="{{ asset('assets/images/icons/close.png') }}" alt="">
         </div>
         <div class="bg-text">consultancy</div>
     </div>
@@ -214,10 +132,6 @@
                 <img class="logo-dark" src="{{ asset('assets/images/logo/Fidelcom1.png') }}" alt="Corporate Logo">
             </a>
         </div>
-        @php
-            $contact = \App\Models\Contact::first();
-            $projects = \App\Models\Project::all();
-        @endphp
         <div class="side-info">
             <div class="contact-list">
                 <h4>Office Address</h4>
@@ -309,6 +223,8 @@
 
     <!-- Main JS -->
     <script src="{{ asset('assets/js/main.js') }}" defer></script>
+
+    @yield('page_scripts')
 
 </body>
 

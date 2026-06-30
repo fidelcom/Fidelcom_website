@@ -34,22 +34,28 @@ class TestimonialController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
-            'desc' => 'required',
+            'name'  => 'required|string|max:255',
+            'desc'  => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
-        $img = $request->file('image');
-        $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
-        $manager = new ImageManager(new Driver());
-        $manager->read($img)->resize(600, 600)->toPng()->save('upload/testimonial/'.$img_name);
-        $filename = 'upload/testimonial/'.$img_name;
+
+        $filename = null;
+        if ($request->hasFile('image')) {
+            $img = $request->file('image');
+            $img_name = hexdec(uniqid()).'.webp';
+            $manager = new ImageManager(new Driver());
+            $manager->read($img)->resize(600, 600)->toWebp()->save('upload/testimonial/'.$img_name);
+            $filename = 'upload/testimonial/'.$img_name;
+        }
 
         Testimonial::create([
-            'name' => $request->name,
-            'desc' => $request->desc,
-            'rating' => 5,
+            'name'     => $request->name,
+            'subtitle' => $request->subtitle,
+            'desc'     => $request->desc,
+            'rating'   => 5,
             'location' => $request->location,
             'approved' => 1,
-            'image' => $filename,
+            'image'    => $filename,
         ]);
 
         return redirect()->route('testimonial.index')->with([
@@ -93,41 +99,29 @@ class TestimonialController extends Controller
             'name' => 'required',
             'desc' => 'required',
         ]);
-        if ($request->hasFile('image'))
-        {
-            $img = $request->file('image');
-            $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
-            $manager = new ImageManager(new Driver());
-            $manager->read($img)->resize(600, 600)->toPng()->save('upload/testimonial/'.$img_name);
-            $filename = 'upload/testimonial/'.$img_name;
-
-            if ($data->image)
-            {
-                unlink($data->image);
-            }
-
-            $data->update([
-                'name' => $request->name,
-                'desc' => $request->desc,
-                'rating' => 5,
-                'location' => $request->location,
-                'approved' => 1,
-                'image' => $filename,
-            ]);
-
-            return redirect()->route('testimonial.index')->with([
-                'message' => 'Testimonial updated successfully!',
-                'alert-type' => 'success'
-            ]);
-        }
-
-        $data->update([
-            'name' => $request->name,
-            'desc' => $request->desc,
-            'rating' => 5,
+        $fields = [
+            'name'     => $request->name,
+            'subtitle' => $request->subtitle,
+            'desc'     => $request->desc,
+            'rating'   => 5,
             'location' => $request->location,
             'approved' => 1,
-        ]);
+        ];
+
+        if ($request->hasFile('image')) {
+            $img = $request->file('image');
+            $img_name = hexdec(uniqid()).'.webp';
+            $manager = new ImageManager(new Driver());
+            $manager->read($img)->resize(600, 600)->toWebp()->save('upload/testimonial/'.$img_name);
+
+            if ($data->image && file_exists(public_path($data->image))) {
+                unlink(public_path($data->image));
+            }
+
+            $fields['image'] = 'upload/testimonial/'.$img_name;
+        }
+
+        $data->update($fields);
 
         return redirect()->route('testimonial.index')->with([
             'message' => 'Testimonial updated successfully!',
@@ -141,9 +135,8 @@ class TestimonialController extends Controller
     public function destroy(string $id)
     {
         $data = Testimonial::findOrFail($id);
-        if ($data->image)
-        {
-            unlink($data->image);
+        if ($data->image && file_exists(public_path($data->image))) {
+            unlink(public_path($data->image));
         }
         $data->delete();
         return redirect()->route('testimonial.index')->with([

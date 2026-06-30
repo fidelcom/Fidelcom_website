@@ -12,6 +12,11 @@ class Project extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function project_category() : BelongsTo
     {
         return $this->belongsTo(ProjectCategory::class);

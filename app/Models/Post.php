@@ -12,6 +12,11 @@ class Post extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function blog_category() : BelongsTo
     {
         return $this->belongsTo(BlogCategory::class);

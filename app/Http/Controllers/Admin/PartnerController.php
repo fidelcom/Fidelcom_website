@@ -35,7 +35,7 @@ class PartnerController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'image' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp,svg|max:5120',
         ]);
         $img = $request->file('image');
         $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();

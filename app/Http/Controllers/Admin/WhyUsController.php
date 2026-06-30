@@ -37,6 +37,7 @@ class WhyUsController extends Controller
             'title' => 'required',
             'subtitle' => 'required',
             'desc' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
 
         $img = $request->file('image');

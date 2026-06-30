@@ -49,6 +49,14 @@
                             <!-- end row -->
 
                             <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Subtitle / Role</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" name="subtitle" value="{{ $data->subtitle }}" placeholder="e.g. CEO, Acme Corp">
+                                </div>
+                            </div>
+                            <!-- end row -->
+
+                            <div class="row mb-3">
                                 <label for="example-text-input" class="col-sm-2 col-form-label">Location (Country or State)</label>
                                 <div class="col-sm-10">
                                     <input class="form-control" type="text" name="location" value="{{ $data->location }}" placeholder="Location Eg: Lagos" id="example-text-input">

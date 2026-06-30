@@ -36,10 +36,10 @@ class TeamController extends Controller
         $request->validate([
             'name' => 'required',
             'position' => 'required',
-            'instagram' => 'required',
-            'linkedin' => 'required',
-            'twitter' => 'required',
-            'image' => 'required',
+            'instagram' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
 
         $img = $request->file('image');
@@ -89,10 +89,10 @@ class TeamController extends Controller
         $request->validate([
             'name' => 'required',
             'position' => 'required',
-            'instagram' => 'required',
-            'linkedin' => 'required',
-            'twitter' => 'required',
-            'image' => 'required',
+            'instagram' => 'nullable|url',
+            'linkedin' => 'nullable|url',
+            'twitter' => 'nullable|url',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
 
         if ($request->hasFile('image'))
@@ -130,7 +130,7 @@ class TeamController extends Controller
     public function destroy(string $id)
     {
         $data = Team::findOrFail($id);
-        if ($data->image && file_exists($data->image)) {
+        if ($data->image && file_exists(public_path($data->image))) {
             unlink(public_path($data->image));
         }
         $data->delete();

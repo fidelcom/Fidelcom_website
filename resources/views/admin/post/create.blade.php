@@ -88,6 +88,21 @@
                             <!-- end row -->
 
                             <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Meta Title <small class="text-muted">(max 100 chars)</small></label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" name="meta_title" maxlength="100" placeholder="SEO page title (defaults to post title if blank)">
+                                </div>
+                            </div>
+                            <!-- end row -->
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">Meta Description <small class="text-muted">(max 300 chars)</small></label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="meta_description" maxlength="300" rows="3" placeholder="SEO description shown in search results"></textarea>
+                                </div>
+                            </div>
+                            <!-- end row -->
+
+                            <div class="row mb-3">
                                 <label for="example-text-input" class="col-sm-2 col-form-label"></label>
                                 <div class="col-sm-10">
                                     <input class="btn btn-primary" type="submit" value="Add Post">

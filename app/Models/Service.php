@@ -11,6 +11,11 @@ class Service extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     public function multiImage() : HasMany
     {
         return $this->hasMany(ServiceMultiImage::class);
