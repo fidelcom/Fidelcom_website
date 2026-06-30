@@ -21,7 +21,6 @@
                             </li>
                             <li class="has-droupdown has-menu-child-item"><a href="{{ route('all-projects.index') }}">Project</a>
                                 <ul class="submenu">
-                                    @php($categories = \App\Models\ProjectCategory::all())
                                     @foreach($categories as $cat)
                                         <li><a href="{{ route('all-projects.edit', $cat->id) }}">{{ $cat->name }}</a></li>
                                     @endforeach

@@ -21,10 +21,10 @@
                         <h4 class="title">Company</h4>
                         <div class="inner">
                             <ul class="footer-link link-hover">
-                                <li><a href="pricing.html">Pricing</a></li>
-                                <li><a href="tab.html">Tab Styles</a></li>
-                                <li><a href="service.html">Service</a></li>
-                                <li><a href="social-share.html">Social</a></li>
+                                <li><a href="{{ route('about.home') }}">About Us</a></li>
+                                <li><a href="{{ route('all-services.index') }}">Services</a></li>
+                                <li><a href="{{ route('all-projects.index') }}">Portfolio</a></li>
+                                <li><a href="{{ route('contact.us') }}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -34,23 +34,19 @@
                         <h4 class="title">Resources</h4>
                         <div class="inner">
                             <ul class="footer-link link-hover">
-                                <li><a href="#">Team</a></li>
-                                <li><a href="#">Testimonial</a></li>
-                                <li><a href="{{ route('all-services.index') }}">Service</a></li>
-                                <li><a href="#">Timeline</a></li>
+                                <li><a href="{{ route('our.team') }}">Our Team</a></li>
+                                <li><a href="{{ route('blog') }}">Blog</a></li>
+                                <li><a href="{{ route('all-services.index') }}">Services</a></li>
+                                <li><a href="{{ route('home.faq') }}">FAQs</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                @php
-                    $contact = \App\Models\Contact::first();
-//                    $projects = \App\Models\Project::all();
-                @endphp
                 <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                     <div class="tmp-footer-widget">
                         <h4 class="title">Stay With Us.</h4>
                         <div class="inner">
-                            <h6 class="subtitle">1200+ trusted clients are subscribe Us around the world</h6>
+                            <h6 class="subtitle">Trusted by businesses across Nigeria and beyond.</h6>
                             <ul class="social-icon social-default justify-content-start">
                                 <li><a href="{{ $contact->facebook }}">
                                         <i class="feather-facebook"></i>
@@ -103,9 +99,7 @@
                 </div>
                 <div class="col-lg-6 col-md-4 col-sm-12 col-12">
                     <div class="copyright-right text-center text-lg-end">
-                        <p class="copyright-text">All Right Reserved © {{ env('app_name') }}
-                            <span id="year"></span>
-                        </p>
+                        <p class="copyright-text">All Rights Reserved &copy; {{ config('app.name') }} {{ date('Y') }}</p>
                     </div>
                 </div>
             </div>

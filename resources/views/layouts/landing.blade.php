@@ -31,11 +31,12 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
     <!-- CSS ============================================ -->
 
-    <!-- google fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com/">
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet">
-    <!-- google fonts end-->
+    <!-- google fonts (non-render-blocking) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"></noscript>
+    <!-- google fonts end -->
 
     <link href="{{ asset('assets/css/vendor/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('assets/css/plugins/animation.css') }}" rel="stylesheet">
@@ -99,108 +100,6 @@
                         <a class="tmp-btn btn-border btn-small radius-round" href="#">Consultancy</a>
                     </div>
                 </div>
-                <div class="row g-5 service-wrapper mt--10 mt_md--10 mt_sm--0">
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 270px; --y: 7px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-01.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">Awarded Design</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 12px; --y: 31px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-02.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">Design &amp;
-                                            Creative</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 15px; --y: 99px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-03.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">App Development</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12 sal-animate">
-                        <div class="card-box card-style-1 text-left tmponhover" style="--x: 15px; --y: 99px;">
-                            <div class="inner">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="assets/images/services/serviice-04.jpg" alt="card Images">
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h4 class="title mb--20"><a href="#">UI/UX Design</a>
-                                    </h4>
-                                    <div class="discover-btn">
-                                        <a class="tmp-btn mt--0 round btn-small btn-border hover-icon-reverse" href="#">
-                                            <span class="icon-reverse-wrapper">
-                    <span class="btn-text">See More</span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            <span class="btn-icon"><i class="feather-arrow-right"></i></span>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
             </div>
         </div>
         <div id="close" class="search-close-icon tmponhover">
@@ -232,8 +131,9 @@
             </a>
         </div>
         @php
-            $contact = \App\Models\Contact::first();
-            $projects = \App\Models\Project::all();
+            $contact      = \App\Models\Contact::first();
+            $projects     = \App\Models\Project::select('id', 'image')->latest()->limit(6)->get();
+            $categories   = \App\Models\ProjectCategory::orderBy('name')->get();
         @endphp
         <div class="side-info">
             <div class="contact-list">
