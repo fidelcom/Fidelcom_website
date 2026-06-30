@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,6 +16,12 @@
     <meta property="og:url" content="@yield('canonical_url', url()->current())">
     <meta property="og:image" content="@yield('og_image', asset('assets/images/logo/Fidelcom1.png'))">
     <meta property="og:site_name" content="{{ config('app.name') }}">
+
+    <!-- Robots -->
+    <meta name="robots" content="@yield('meta_robots', 'index, follow')">
+
+    <!-- Open Graph locale -->
+    <meta property="og:locale" content="en_NG">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -50,6 +56,11 @@
 </head>
 
 <body>
+    @php
+        $contact    = \App\Models\Contact::first();
+        $projects   = \App\Models\Project::select('id', 'image')->latest()->limit(6)->get();
+        $categories = \App\Models\ProjectCategory::orderBy('name')->get();
+    @endphp
     <main class="page-wrapper">
         <!-- Start Header Top Area  -->
 
@@ -65,17 +76,6 @@
     </main>
 
     <!-- All Scripts  -->
-
-    <!-- pre loader start -->
-
-    <!-- <div id="inverweb-load">
-    <span class="loader"></span>
-</div> -->
-
-    <!-- pre loader end -->
-
-
-
 
 
     <div id="anywhere-home" class="">
@@ -103,7 +103,7 @@
             </div>
         </div>
         <div id="close" class="search-close-icon tmponhover">
-            <img src="assets/images/icons/close.png" alt="">
+            <img src="{{ asset('assets/images/icons/close.png') }}" alt="">
         </div>
         <div class="bg-text">consultancy</div>
     </div>
@@ -130,11 +130,6 @@
                 <img class="logo-dark" src="{{ asset('assets/images/logo/Fidelcom1.png') }}" alt="Corporate Logo">
             </a>
         </div>
-        @php
-            $contact      = \App\Models\Contact::first();
-            $projects     = \App\Models\Project::select('id', 'image')->latest()->limit(6)->get();
-            $categories   = \App\Models\ProjectCategory::orderBy('name')->get();
-        @endphp
         <div class="side-info">
             <div class="contact-list">
                 <h4>Office Address</h4>
