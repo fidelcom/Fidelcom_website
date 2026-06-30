@@ -7,18 +7,27 @@ const navGroups = [
   {
     label: 'Content',
     items: [
-      { href: '/dashboard', label: 'Overview', icon: 'i-heroicons-home' },
-      { href: '/dashboard/posts', label: 'Blog Posts', icon: 'i-heroicons-document-text' },
-      { href: '/dashboard/projects', label: 'Projects', icon: 'i-heroicons-squares-2x2' },
-      { href: '/dashboard/services', label: 'Services', icon: 'i-heroicons-cog-6-tooth' },
-      { href: '/dashboard/pages', label: 'Pages', icon: 'i-heroicons-document' },
+      { href: '/dashboard',           label: 'Overview',      icon: 'i-heroicons-home' },
+      { href: '/dashboard/posts',     label: 'Blog Posts',    icon: 'i-heroicons-document-text' },
+      { href: '/dashboard/projects',  label: 'Projects',      icon: 'i-heroicons-squares-2x2' },
+      { href: '/dashboard/services',  label: 'Services',      icon: 'i-heroicons-cog-6-tooth' },
+      { href: '/dashboard/pages',     label: 'Pages',         icon: 'i-heroicons-document' },
+      { href: '/dashboard/sliders',   label: 'Sliders',       icon: 'i-heroicons-squares-plus' },
     ],
   },
   {
     label: 'People',
     items: [
-      { href: '/dashboard/team', label: 'Team', icon: 'i-heroicons-users' },
+      { href: '/dashboard/team',         label: 'Team',         icon: 'i-heroicons-users' },
       { href: '/dashboard/testimonials', label: 'Testimonials', icon: 'i-heroicons-star' },
+    ],
+  },
+  {
+    label: 'Assets',
+    items: [
+      { href: '/dashboard/gallery',  label: 'Gallery',  icon: 'i-heroicons-photo' },
+      { href: '/dashboard/partners', label: 'Partners', icon: 'i-heroicons-building-office' },
+      { href: '/dashboard/faqs',     label: 'FAQs',     icon: 'i-heroicons-question-mark-circle' },
     ],
   },
   {
@@ -30,8 +39,9 @@ const navGroups = [
   {
     label: 'Site',
     items: [
-      { href: '/dashboard/media', label: 'Media Library', icon: 'i-heroicons-photo' },
-      { href: '/dashboard/settings', label: 'Settings', icon: 'i-heroicons-adjustments-horizontal' },
+      { href: '/dashboard/menus',    label: 'Menus',         icon: 'i-heroicons-bars-3' },
+      { href: '/dashboard/media',    label: 'Media Library', icon: 'i-heroicons-folder-open' },
+      { href: '/dashboard/settings', label: 'Settings',      icon: 'i-heroicons-adjustments-horizontal' },
     ],
   },
 ]
