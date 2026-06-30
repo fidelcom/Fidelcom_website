@@ -1,24 +1,49 @@
+# ── Global ───────────────────────────────────────────────────────────────────
 *.log
 .DS_Store
+Thumbs.db
 .env
 .env.backup
 .env.production
-.phpactor.json
-.phpunit.result.cache
+
+# ── Laravel backend (backend/) ───────────────────────────────────────────────
+/backend/.env
+/backend/.env.backup
+/backend/.env.production
+/backend/.phpactor.json
+/backend/.phpunit.result.cache
+/backend/.phpunit.cache
+/backend/auth.json
+/backend/Homestead.json
+/backend/Homestead.yaml
+/backend/node_modules
+/backend/vendor
+/backend/public/build
+/backend/public/hot
+/backend/public/storage
+/backend/storage/*.key
+/backend/storage/pail
+
+# ── Nuxt admin (frontend-admin/) ─────────────────────────────────────────────
+/frontend-admin/.nuxt
+/frontend-admin/.output
+/frontend-admin/node_modules
+/frontend-admin/.env
+
+# ── Nuxt public (frontend-public/) ───────────────────────────────────────────
+/frontend-public/.nuxt
+/frontend-public/.output
+/frontend-public/node_modules
+/frontend-public/.env
+
+# ── Old root-level dirs (pre-monorepo artifacts — delete manually) ───────────
+/public
+/node_modules
+/vendor
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
 /.fleet
 /.idea
 /.nova
-/.phpunit.cache
 /.vscode
 /.zed
-/auth.json
-/node_modules
-/public/build
-/public/hot
-/public/storage
-/storage/*.key
-/storage/pail
-/vendor
-Homestead.json
-Homestead.yaml
-Thumbs.db
