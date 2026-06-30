@@ -43,7 +43,6 @@ async function deleteRow(id: number) {
 }
 
 onMounted(async () => {
-  const res = await api.get<{ data: { id: number; name: string }[] }>('/api/v1/admin/posts') // will lazy-fill
   categories.value = await api.get<{ data: { id: number; name: string }[] }>('/api/v1/admin/blog-categories').then(r => r.data).catch(() => [])
   load()
 })

@@ -7,12 +7,14 @@ const navGroups = [
   {
     label: 'Content',
     items: [
-      { href: '/dashboard',           label: 'Overview',      icon: 'i-heroicons-home' },
-      { href: '/dashboard/posts',     label: 'Blog Posts',    icon: 'i-heroicons-document-text' },
-      { href: '/dashboard/projects',  label: 'Projects',      icon: 'i-heroicons-squares-2x2' },
-      { href: '/dashboard/services',  label: 'Services',      icon: 'i-heroicons-cog-6-tooth' },
-      { href: '/dashboard/pages',     label: 'Pages',         icon: 'i-heroicons-document' },
-      { href: '/dashboard/sliders',   label: 'Sliders',       icon: 'i-heroicons-squares-plus' },
+      { href: '/dashboard',                    label: 'Overview',           icon: 'i-heroicons-home' },
+      { href: '/dashboard/posts',              label: 'Blog Posts',         icon: 'i-heroicons-document-text' },
+      { href: '/dashboard/blog-categories',    label: 'Blog Categories',    icon: 'i-heroicons-tag' },
+      { href: '/dashboard/projects',           label: 'Projects',           icon: 'i-heroicons-squares-2x2' },
+      { href: '/dashboard/project-categories', label: 'Project Categories', icon: 'i-heroicons-tag' },
+      { href: '/dashboard/services',           label: 'Services',           icon: 'i-heroicons-cog-6-tooth' },
+      { href: '/dashboard/pages',              label: 'Pages',              icon: 'i-heroicons-document' },
+      { href: '/dashboard/sliders',            label: 'Sliders',            icon: 'i-heroicons-squares-plus' },
     ],
   },
   {

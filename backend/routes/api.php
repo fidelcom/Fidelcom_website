@@ -30,6 +30,8 @@ use App\Http\Controllers\Api\V1\Admin\SettingsController as AdminSettingsControl
 use App\Http\Controllers\Api\V1\Admin\SliderController as AdminSliderController;
 use App\Http\Controllers\Api\V1\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Api\V1\Admin\TestimonialController as AdminTestimonialController;
+use App\Http\Controllers\Api\V1\Admin\BlogCategoryController as AdminBlogCategoryController;
+use App\Http\Controllers\Api\V1\Admin\ProjectCategoryController as AdminProjectCategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
@@ -56,6 +58,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('menus',          [PublicMenuController::class, 'index']);
     Route::get('settings',       PublicSettingsController::class);
 
+    Route::post('inquiries',         [PublicInquiryController::class, 'contact'])
+        ->middleware('throttle:5,1');
     Route::post('inquiries/contact', [PublicInquiryController::class, 'contact'])
         ->middleware('throttle:5,1');
     Route::post('inquiries/quote',   [PublicInquiryController::class, 'quote'])
@@ -63,6 +67,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     // ── Admin (authenticated) ─────────────────────────────────────────────────
     Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+
+        // Blog categories
+        Route::apiResource('blog-categories', AdminBlogCategoryController::class);
+
+        // Project categories
+        Route::apiResource('project-categories', AdminProjectCategoryController::class);
 
         // Posts
         Route::apiResource('posts', AdminPostController::class);

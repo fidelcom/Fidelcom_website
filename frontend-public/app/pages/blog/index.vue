@@ -7,7 +7,7 @@ const search = ref('')
 const category = ref('')
 
 const { data, refresh } = await useAsyncData('blog', async () => {
-  const res = await api.get<{ data: Post[]; meta: { total: number; last_page: number; current_page: number } }>('/posts', { page: page.value, search: search.value || undefined, category: category.value || undefined })
+  const res = await api.get<{ data: Post[]; meta: { total: number; last_page: number; current_page: number } }>('/posts', { page: page.value, q: search.value || undefined, category: category.value || undefined })
   return res
 })
 

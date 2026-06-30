@@ -15,12 +15,19 @@ class InquiryController extends Controller
         $data = $request->validate([
             'name'    => ['required', 'string', 'max:255'],
             'email'   => ['required', 'email', 'max:255'],
-            'phone'   => ['required', 'string', 'max:50'],
-            'subject' => ['required', 'string', 'max:255'],
+            'phone'   => ['nullable', 'string', 'max:50'],
+            'subject' => ['nullable', 'string', 'max:255'],
             'message' => ['required', 'string', 'max:5000'],
         ]);
 
-        GetInTouch::create(array_merge($data, ['status' => false]));
+        GetInTouch::create([
+            'name'    => $data['name'],
+            'email'   => $data['email'],
+            'phone'   => $data['phone'] ?? '',
+            'subject' => $data['subject'] ?? 'General Inquiry',
+            'message' => $data['message'],
+            'status'  => false,
+        ]);
 
         return response()->json([
             'data' => ['message' => 'Your message has been sent successfully!'],
