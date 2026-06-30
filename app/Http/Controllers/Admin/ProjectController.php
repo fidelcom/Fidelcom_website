@@ -8,6 +8,7 @@ use App\Models\ProjectCategory;
 use App\Models\ProjectMultiImage;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -44,30 +45,39 @@ class ProjectController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
         $img = $request->file('image');
-        $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+        $img_name = hexdec(uniqid()).'.webp';
         $manager = new ImageManager(new Driver());
-        $manager->read($img)->resize(533, 299)->toPng()->save('upload/project/'.$img_name);
+        $manager->read($img)->resize(533, 299)->toWebp()->save('upload/project/'.$img_name);
         $filename = 'upload/project/'.$img_name;
+
+        $slug = Str::slug($request->title);
+        $originalSlug = $slug;
+        $i = 1;
+        while (Project::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $i++;
+        }
 
         $project = Project::create([
             'project_category_id' => $request->project_category_id,
             'title' => $request->title,
+            'slug' => $slug,
             'short_desc' => $request->short_desc,
             'long_desc' => $request->long_desc,
             'client' => $request->client,
             'year' => $request->year,
             'location' => $request->location,
             'image' => $filename,
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description,
         ]);
 
         if ($request->hasFile('multiImage'))
         {
             foreach ($request->file('multiImage') as $img)
             {
-//                $image = $request->file('image');
-                $image_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+                $image_name = hexdec(uniqid()).'.webp';
                 $manager = new ImageManager(new Driver());
-                $manager->read($img)->resize(533, 299)->toPng()->save('upload/project/'.$image_name);
+                $manager->read($img)->resize(533, 299)->toWebp()->save('upload/project/'.$image_name);
                 $filename = 'upload/project/'.$image_name;
 
                 ProjectMultiImage::create([
@@ -116,9 +126,9 @@ class ProjectController extends Controller
         if ($request->hasFile('image'))
         {
             $img = $request->file('image');
-            $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+            $img_name = hexdec(uniqid()).'.webp';
             $manager = new ImageManager(new Driver());
-            $manager->read($img)->resize(533, 299)->toPng()->save('upload/project/'.$img_name);
+            $manager->read($img)->resize(533, 299)->toWebp()->save('upload/project/'.$img_name);
             $filename = 'upload/project/'.$img_name;
             if ($data->image && file_exists($data->image)) {
                 unlink(public_path($data->image));
@@ -137,6 +147,8 @@ class ProjectController extends Controller
             'client' => $request->client,
             'year' => $request->year,
             'location' => $request->location,
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description,
         ]);
 
 

@@ -141,12 +141,12 @@
                             </div>
                             <div class="content">
                                 <h4 class="title w-600">
-                                    <a href="{{ route('all-services.show', $service->id) }}">{{ $service->title }}</a>
+                                    <a href="{{ route('all-services.show', $service) }}">{{ $service->title }}</a>
                                 </h4>
                                 <p class="description mb--0">{{ $service->short_desc }}</p>
                                 <div class="discover-btn mt--20">
                                     <a class="tmp-btn round btn-small btn-border hover-icon-reverse"
-                                       href="{{ route('all-services.show', $service->id) }}">
+                                       href="{{ route('all-services.show', $service) }}">
                                         <span class="icon-reverse-wrapper">
                         <span class="btn-text">Discover services</span>
                                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>

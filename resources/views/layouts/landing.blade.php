@@ -6,6 +6,26 @@
     <meta name="theme-style-mode" content="1">
     <meta name="description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
 
+    <!-- Canonical -->
+    <link rel="canonical" href="@yield('canonical_url', url()->current())">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:title" content="@yield('page_title', config('app.name'))">
+    <meta property="og:description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
+    <meta property="og:url" content="@yield('canonical_url', url()->current())">
+    <meta property="og:image" content="@yield('og_image', asset('assets/images/logo/Fidelcom1.png'))">
+    <meta property="og:site_name" content="{{ config('app.name') }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('page_title', config('app.name'))">
+    <meta name="twitter:description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
+    <meta name="twitter:image" content="@yield('og_image', asset('assets/images/logo/Fidelcom1.png'))">
+
+    <!-- JSON-LD Organization -->
+    @yield('schema_markup')
+
     <title>@yield('page_title', config('app.name'))</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
@@ -306,6 +326,8 @@
 
     <!-- Main JS -->
     <script src="{{ asset('assets/js/main.js') }}" defer></script>
+
+    @yield('page_scripts')
 
 </body>
 

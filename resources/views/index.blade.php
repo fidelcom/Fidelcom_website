@@ -1,5 +1,28 @@
 @extends('layouts.landing')
 
+@section('schema_markup')
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "Organization",
+    "name": "{{ config('app.name') }}",
+    "url": "{{ url('/') }}",
+    "logo": "{{ asset('assets/images/logo/Fidelcom1.png') }}",
+    "contactPoint": {
+        "@@type": "ContactPoint",
+        "telephone": "{{ optional($contact)->phone }}",
+        "contactType": "customer service"
+    },
+    "sameAs": [
+        "{{ optional($contact)->facebook }}",
+        "{{ optional($contact)->linkedin }}",
+        "{{ optional($contact)->twitter }}",
+        "{{ optional($contact)->instagram }}"
+    ]
+}
+</script>
+@endsection
+
 @section('main')
 
 
@@ -207,11 +230,11 @@
                                 </div>
                                 <div class="content">
                                     <h4 class="title w-600">
-                                        <a href="{{ route('all-services.show', $service->id) }}">{{ $service->title }}</a>
+                                        <a href="{{ route('all-services.show', $service) }}">{{ $service->title }}</a>
                                     </h4>
                                     <p class="description mb--0">{{ $service->short_desc }}</p>
                                     <div class="discover-btn mt--20">
-                                        <a class="tmp-btn round btn-small btn-border hover-icon-reverse" href="{{ route('all-services.show', $service->id) }}">
+                                        <a class="tmp-btn round btn-small btn-border hover-icon-reverse" href="{{ route('all-services.show', $service) }}">
                                         <span class="icon-reverse-wrapper">
                         <span class="btn-text">Discover services</span>
                                         <span class="btn-icon"><i class="feather-arrow-right"></i></span>
@@ -443,11 +466,11 @@
                     @foreach($projects->take(4) as $project)
                         <div class="col-lg-6 col-md-6 col-sm-12 tmp-jump__item">
                             <div class="single-project-style-three invers-anime">
-                                <a href="{{ route('portfolio.show', $project->id) }}" class="thumbnail">
+                                <a href="{{ route('portfolio.show', $project) }}" class="thumbnail">
                                     <img loading="lazy" src="{{ asset($project->image) }}" alt="project">
                                 </a>
                                 <div class="inner-content tmponhover">
-                                    <a href="{{ route('portfolio.show', $project->id) }}">
+                                    <a href="{{ route('portfolio.show', $project) }}">
                                         <h4 class="title">{{ $project->title }}</h4>
                                     </a>
                                     <span>{{ $project->project_category->name }}</span>
@@ -1090,7 +1113,7 @@
                                 <div class="tmp-card box-card-style-default tmponhover">
                                     <div class="inner">
                                         <div class="thumbnail invers-anime">
-                                            <a class="image" href="{{ route('blog.show', $post->id) }}">
+                                            <a class="image" href="{{ route('blog.show', $post) }}">
                                                 <img loading="lazy" class="w-100" src="{{ asset($post->image) }}" alt="Blog Image">
                                             </a>
 
@@ -1100,7 +1123,7 @@
                                             <ul class="inversweb-meta-list">
                                                 <li>
                                                     <span><i class="feather-user"></i></span>
-                                                    <a href="{{ route('blog.show', $post->id) }}">{{ $post->author }}</a>
+                                                    <a href="{{ route('blog.show', $post) }}">{{ $post->author }}</a>
                                                 </li>
                                                 <li class="separator">-</li>
                                                 <li>{{ $post->created_at->format('d M Y') }}</li>
@@ -1110,10 +1133,10 @@
                                                     <span>{{ $post->comment->count() }}</span>
                                                 </li>
                                             </ul>
-                                            <h4 class="title"><a href="{{ route('blog.show', $post->id) }}">{{ $post->title }}</a></h4>
+                                            <h4 class="title"><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h4>
                                             <p class="descriptiion">{!! Str::limit($post->short_desc, 70) !!}</p>
                                             <div class="read-more-btn">
-                                                <a class="tmp-btn btn-border" href="{{ route('blog.show', $post->id) }}"><span>Read More</span></a>
+                                                <a class="tmp-btn btn-border" href="{{ route('blog.show', $post) }}"><span>Read More</span></a>
                                             </div>
                                         </div>
                                     </div>
@@ -1128,7 +1151,7 @@
                                             <ul class="inversweb-meta-list">
                                                 <li>
                                                     <span><i class="feather-user"></i></span>
-                                                    <a href="{{ route('blog.show', $post->id) }}">{{ $post->author }}</a>
+                                                    <a href="{{ route('blog.show', $post) }}">{{ $post->author }}</a>
                                                 </li>
                                                 <li class="separator">-</li>
                                                 <li>{{ $post->created_at->format('d M Y') }}</li>
@@ -1138,14 +1161,14 @@
                                                     <span>{{ $post->comment->count() }}</span>
                                                 </li>
                                             </ul>
-                                            <h4 class="title"><a href="{{ route('blog.show', $post->id) }}">{{ $post->title }}</a></h4>
+                                            <h4 class="title"><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h4>
                                             <p class="descriptiion">{!! Str::limit($post->short_desc, 70) !!}</p>
                                             <div class="read-more-btn">
-                                                <a class="tmp-btn btn-border" href="{{ route('blog.show', $post->id) }}"><span>Read More</span></a>
+                                                <a class="tmp-btn btn-border" href="{{ route('blog.show', $post) }}"><span>Read More</span></a>
                                             </div>
                                         </div>
                                         <div class="thumbnail invers-anime">
-                                            <a class="image" href="{{ route('blog.show', $post->id) }}"><img loading="lazy" class="w-100" src="{{ asset($post->image) }}" alt="Blog Image"></a>
+                                            <a class="image" href="{{ route('blog.show', $post) }}"><img loading="lazy" class="w-100" src="{{ asset($post->image) }}" alt="Blog Image"></a>
                                             <span class="tag-news">{{ $post->blog_category->name }}</span>
                                         </div>
                                     </div>

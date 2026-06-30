@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Models\ProjectCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -45,18 +46,28 @@ class PostController extends Controller
             'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
         $img = $request->file('image');
-        $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+        $img_name = hexdec(uniqid()).'.webp';
         $manager = new ImageManager(new Driver());
-        $manager->read($img)->resize(1920, 1280)->toPng()->save('upload/post/'.$img_name);
+        $manager->read($img)->resize(1920, 1280)->toWebp()->save('upload/post/'.$img_name);
         $filename = 'upload/post/'.$img_name;
+
+        $slug = Str::slug($request->title);
+        $originalSlug = $slug;
+        $i = 1;
+        while (Post::where('slug', $slug)->exists()) {
+            $slug = $originalSlug . '-' . $i++;
+        }
 
         Post::create([
             'blog_category_id' => $request->blog_category_id,
             'title' => $request->title,
+            'slug' => $slug,
             'short_desc' => $request->short_desc,
             'long_desc' => $request->long_desc,
             'author' => $request->author,
             'image' => $filename,
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description,
         ]);
 
         return redirect()->route('posts.index')->with([
@@ -99,9 +110,9 @@ class PostController extends Controller
         if ($request->hasFile('image'))
         {
             $img = $request->file('image');
-            $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+            $img_name = hexdec(uniqid()).'.webp';
             $manager = new ImageManager(new Driver());
-            $manager->read($img)->resize(1920, 1280)->toPng()->save('upload/post/'.$img_name);
+            $manager->read($img)->resize(1920, 1280)->toWebp()->save('upload/post/'.$img_name);
             $filename = 'upload/post/'.$img_name;
             if ($data->image && file_exists($data->image)) {
                 unlink(public_path($data->image));
@@ -118,6 +129,8 @@ class PostController extends Controller
             'short_desc' => $request->short_desc,
             'long_desc' => $request->long_desc,
             'author' => $request->author,
+            'meta_title' => $request->meta_title,
+            'meta_description' => $request->meta_description,
         ]);
 
 

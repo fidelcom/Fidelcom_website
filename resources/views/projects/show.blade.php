@@ -108,11 +108,11 @@
                     @foreach($latest as $key => $pro)
                         <div class="col-lg-6 col-md-6 col-sm-12" data-sal="slide-up" data-sal-duration="00" data-sal-delay="{{ $key > 0 ? (200 + ($key * 100)) : 200 }}">
                             <div class="single-project-area-bottom-content">
-                                <a href="{{ route('all-projects.show', $pro->id) }}" class="thumbnail invers-anime">
+                                <a href="{{ route('all-projects.show', $pro) }}" class="thumbnail invers-anime">
                                     <img src="{{ asset($pro->image) }}" alt="project">
                                 </a>
                                 <div class="inner">
-                                    <a href="{{ route('all-projects.show', $pro->id) }}">
+                                    <a href="{{ route('all-projects.show', $pro) }}">
                                         <h4 class="title">{{ $pro->title }}</h4>
                                     </a>
                                     <p class="disc">

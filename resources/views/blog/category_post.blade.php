@@ -38,15 +38,15 @@
                                     <div class="tmp-card box-card-style-default card-list-view tmponhover">
                                         <div class="inner">
                                             <div class="thumbnail">
-                                                <a class="image" href="{{ route('blog.show', $post->id) }}">
+                                                <a class="image" href="{{ route('blog.show', $post) }}">
                                                     <img src="{{ asset($post->image) }}" alt="Blog Image">
                                                 </a>
                                             </div>
                                             <div class="content">
-                                                <h4 class="title"><a href="{{ route('blog.show', $post->id) }}">{{ $post->title }}</a></h4>
+                                                <h4 class="title"><a href="{{ route('blog.show', $post) }}">{{ $post->title }}</a></h4>
                                                 <p class="descriptiion">{{ Str::limit($post->short_desc, 50) }}</p>
                                                 <div class="read-more-btn">
-                                                    <a class="btn-read-more" href="{{ route('blog.show', $post->id) }}"><span>Read More</span></a>
+                                                    <a class="btn-read-more" href="{{ route('blog.show', $post) }}"><span>Read More</span></a>
                                                 </div>
                                             </div>
                                         </div>

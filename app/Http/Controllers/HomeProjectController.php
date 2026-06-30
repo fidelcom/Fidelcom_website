@@ -16,10 +16,10 @@ class HomeProjectController extends Controller
         return view('projects.index', compact('projectCategories', 'projects'));
     }
 
-    public function show($id)
+    public function show(string $slug)
     {
-        $project = Project::findOrFail($id);
-        $latest = Project::where('id', '!=', $id)->latest()->get();
+        $project = Project::where('slug', $slug)->firstOrFail();
+        $latest = Project::where('id', '!=', $project->id)->latest()->get();
         $contact = Contact::first();
         return view('projects.show', compact('project', 'latest', 'contact'));
     }

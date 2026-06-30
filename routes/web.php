@@ -35,6 +35,14 @@ use App\Http\Controllers\AboutController;
 
 Route::get('/', [LandingController::class, 'index'])->name('home');
 
+Route::get('/sitemap.xml', function () {
+    $path = public_path('sitemap.xml');
+    if (!file_exists($path)) {
+        abort(404);
+    }
+    return response()->file($path, ['Content-Type' => 'application/xml']);
+})->name('sitemap');
+
 Route::get('/about', [AboutController::class, 'index'])->name('about.home');
 Route::resource('/all-services', HomeServicesController::class);
 Route::resource('/portfolio', HomeProjectController::class);
@@ -42,7 +50,7 @@ Route::resource('/portfolio', HomeProjectController::class);
 // User route
 Route::get('/our-teams', [LandingController::class, 'team'])->name('our.team');
 Route::get('/blog', [BlogController::class, 'index'])->name('blog');
-Route::get('/blog/show/{id}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/{post:slug}', [BlogController::class, 'show'])->name('blog.show');
 Route::get('/blog/categories/{id}', [BlogController::class, 'category'])->name('blog.categories');
 Route::post('/comment', [CommentController::class, 'store'])->middleware('throttle:3,1')->name('comment.store');
 Route::resource('/all-projects', HomeProjectController::class)->only(['index', 'show', 'edit']);

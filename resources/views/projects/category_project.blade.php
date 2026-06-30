@@ -38,18 +38,18 @@
                                     <div class="inner">
                                         <div class="thumbnail">
                                             <figure class="card-image">
-                                                <a href="{{ route('all-projects.show', $project->id) }}">
+                                                <a href="{{ route('all-projects.show', $project) }}">
                                                     <img src="{{ asset($project->image) }}" alt="Portfolio-01">
                                                 </a>
                                             </figure>
-                                            <a class="tmp-overlay" href="{{ route('all-projects.show', $project->id) }}"></a>
+                                            <a class="tmp-overlay" href="{{ route('all-projects.show', $project) }}"></a>
                                         </div>
                                         <div class="content">
                                             <h5 class="title mb--20">
-                                                <a href="{{ route('all-projects.show', $project->id) }}">{{ $project->title }}</a>
+                                                <a href="{{ route('all-projects.show', $project) }}">{{ $project->title }}</a>
                                             </h5>
                                             <div class="tmp-badge-group">
-                                                <a href="{{ route('all-projects.show', $project->id) }}" class="tmp-badge-2">{{ $project->project_category->name }}</a>
+                                                <a href="{{ route('all-projects.show', $project) }}" class="tmp-badge-2">{{ $project->project_category->name }}</a>
                                                 {{--                                                <a href="#" class="tmp-badge-2">App</a>--}}
                                             </div>
                                         </div>

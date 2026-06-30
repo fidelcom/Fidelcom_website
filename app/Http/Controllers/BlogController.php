@@ -11,18 +11,18 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $posts = Post::latest()->paginate(4);
+        $posts = Post::with('blog_category')->latest()->paginate(4);
         $categories = BlogCategory::orderBy('name', 'ASC')->get();
-        $latest = Post::latest()->limit(4)->get();
+        $latest = Post::with('blog_category')->latest()->limit(4)->get();
         $contact = Contact::first();
         return view('blog.index', compact('posts', 'categories', 'latest', 'contact'));
     }
 
-    public function show($id)
+    public function show(Post $post)
     {
-        $post = Post::findOrFail($id);
+        $post->load(['blog_category', 'comment']);
         $categories = BlogCategory::orderBy('name', 'ASC')->get();
-        $latest = Post::latest()->limit(4)->get();
+        $latest = Post::with('blog_category')->latest()->limit(4)->get();
         $contact = Contact::first();
         return view('blog.show', compact('post', 'categories', 'latest', 'contact'));
     }

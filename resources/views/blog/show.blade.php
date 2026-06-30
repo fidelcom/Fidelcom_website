@@ -1,5 +1,37 @@
 @extends('layouts.landing')
 
+@section('page_title', ($post->meta_title ?: $post->title) . ' | ' . config('app.name'))
+@section('meta_description', $post->meta_description ?: Str::limit(strip_tags($post->short_desc), 160))
+@section('og_type', 'article')
+@section('og_image', asset($post->image))
+@section('canonical_url', route('blog.show', $post))
+
+@section('schema_markup')
+<script type="application/ld+json">
+{
+    "@@context": "https://schema.org",
+    "@@type": "Article",
+    "headline": "{{ $post->title }}",
+    "image": "{{ asset($post->image) }}",
+    "author": {
+        "@@type": "Person",
+        "name": "{{ $post->author }}"
+    },
+    "datePublished": "{{ $post->created_at->toIso8601String() }}",
+    "dateModified": "{{ $post->updated_at->toIso8601String() }}",
+    "publisher": {
+        "@@type": "Organization",
+        "name": "{{ config('app.name') }}",
+        "logo": {
+            "@@type": "ImageObject",
+            "url": "{{ asset('assets/images/logo/Fidelcom1.png') }}"
+        }
+    },
+    "description": "{{ Str::limit(strip_tags($post->short_desc), 160) }}"
+}
+</script>
+@endsection
+
 @section('main')
     <!-- Start Advance Pricing Area  -->
     <div class="tmp-blog-details-area">
@@ -175,25 +207,26 @@
             </div>
 
             <div class="row g-5 mt--5">
-                @foreach($latest as $blog) @endforeach
+                @foreach($latest as $blog)
                 <div class="col-lg-6">
                     <div class="tmp-card box-card-style-default card-list-view tmponhover">
                         <div class="inner">
                             <div class="thumbnail invers-anime">
-                                <a class="image" href="{{ route('blog.show', $blog->id) }}">
-                                    <img src="{{ asset($post->image) }}" alt="Blog Image">
+                                <a class="image" href="{{ route('blog.show', $blog) }}">
+                                    <img src="{{ asset($blog->image) }}" alt="Blog Image">
                                 </a>
                             </div>
                             <div class="content">
-                                <h4 class="title"><a href="{{ route('blog.show', $blog->id) }}">{{ $blog->title }}</a></h4>
+                                <h4 class="title"><a href="{{ route('blog.show', $blog) }}">{{ $blog->title }}</a></h4>
                                 <p class="descriptiion">{{ Str::limit($blog->short_desc, 50) }}</p>
                                 <div class="read-more-btn">
-                                    <a class="btn-read-more" href="{{ route('blog.show', $blog->id) }}"><span>Read More</span></a>
+                                    <a class="btn-read-more" href="{{ route('blog.show', $blog) }}"><span>Read More</span></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                @endforeach
 
             </div>
 

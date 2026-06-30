@@ -15,11 +15,10 @@ class HomeServicesController extends Controller
         return view('services.index', compact('services', 'contact'));
     }
 
-    public function show($id)
+    public function show(Service $allService)
     {
-        $service = Service::findOrFail($id);
-        $services = Service::where('id', '!=', $id)->limit(4)->get();
+        $services = Service::where('id', '!=', $allService->id)->limit(4)->get();
         $contact = Contact::first();
-        return view('services.show', compact('service', 'services', 'contact'));
+        return view('services.show', ['service' => $allService, 'services' => $services, 'contact' => $contact]);
     }
 }
