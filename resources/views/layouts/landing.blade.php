@@ -25,6 +25,7 @@
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@@fidelcom_systems">
     <meta name="twitter:title" content="@yield('page_title', config('app.name'))">
     <meta name="twitter:description" content="@yield('meta_description', 'Fidelcom Systems Limited — IT solutions, software development, and digital consulting services in Nigeria and beyond.')">
     <meta name="twitter:image" content="@yield('og_image', asset('assets/images/logo/Fidelcom1.png'))">
@@ -35,6 +36,8 @@
     <title>@yield('page_title', config('app.name'))</title>
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('assets/images/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ asset('assets/images/favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/Fidelcom1.png') }}">
     <!-- CSS ============================================ -->
 
     <!-- google fonts (non-render-blocking) -->
@@ -61,19 +64,19 @@
         $projects   = \App\Models\Project::select('id', 'image')->latest()->limit(6)->get();
         $categories = \App\Models\ProjectCategory::orderBy('name')->get();
     @endphp
-    <main class="page-wrapper">
+    <div class="page-wrapper">
         <!-- Start Header Top Area  -->
 
         @include('body.header')
 
-        @yield('main')
-
-
+        <main id="main-content">
+            @yield('main')
+        </main>
 
         <!-- Start Footer Area  -->
         @include('body.footer')
         <!-- End Footer Area  -->
-    </main>
+    </div>
 
     <!-- All Scripts  -->
 
@@ -85,19 +88,18 @@
     <div class="tmp-search-input-area">
         <div class="container">
             <div class="search-input-inner">
-                <form action="#" class="input-div tmponhover">
-                    <input id="searchInput1" class="search-input" type="text" placeholder="🔎 Search products, topics, or #tags" required>
-                    <button>
-                        <!-- <img src="assets/images/icons/search.svg" alt=""> -->
+                <form action="{{ route('blog') }}" method="GET" class="input-div tmponhover">
+                    <input id="searchInput1" class="search-input" type="text" name="q" placeholder="🔎 Search posts, topics, or tags..." autocomplete="off">
+                    <button type="submit">
                         <i class="feather-search"></i>
                     </button>
                 </form>
                 <div class="popular-keyword">
                     <h4 class="title">Popular Tag :</h4>
                     <div class="tag-wrapper">
-                        <a class="tmp-btn btn-border btn-small radius-round" href="#">Service</a>
-                        <a class="tmp-btn btn-border btn-small radius-round" href="#">Business</a>
-                        <a class="tmp-btn btn-border btn-small radius-round" href="#">Consultancy</a>
+                        <a class="tmp-btn btn-border btn-small radius-round" href="{{ route('blog') }}?q=Service">Service</a>
+                        <a class="tmp-btn btn-border btn-small radius-round" href="{{ route('blog') }}?q=Business">Business</a>
+                        <a class="tmp-btn btn-border btn-small radius-round" href="{{ route('blog') }}?q=Consultancy">Consultancy</a>
                     </div>
                 </div>
             </div>

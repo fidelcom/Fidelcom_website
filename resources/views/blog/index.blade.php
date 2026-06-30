@@ -32,8 +32,17 @@
             <div class="container">
                 <div class="row mt_dec--30">
                     <div class="col-lg-12">
+                        @if($search)
+                            <div class="col-12 mb-3">
+                                <p class="text-muted">
+                                    {{ $posts->total() }} result{{ $posts->total() !== 1 ? 's' : '' }} for
+                                    <strong>{{ $search }}</strong>
+                                    &mdash; <a href="{{ route('blog') }}">Clear search</a>
+                                </p>
+                            </div>
+                        @endif
                         <div class="row row--15 g-5">
-                            @foreach($posts as $post)
+                            @forelse($posts as $post)
                                 <div class="col-lg-6">
                                     <div class="tmp-card box-card-style-default card-list-view tmponhover">
                                         <div class="inner">
@@ -52,7 +61,14 @@
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="col-12 text-center py-5">
+                                    <p class="text-muted">No posts found{{ $search ? ' for "' . e($search) . '"' : '' }}.</p>
+                                    @if($search)
+                                        <a href="{{ route('blog') }}" class="tmp-btn btn-small round mt--10">View All Posts</a>
+                                    @endif
+                                </div>
+                            @endforelse
 
                         </div>
                     </div>
