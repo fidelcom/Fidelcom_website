@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LetsTalkFormRequest;
 use App\Models\LetsTalk;
 use Illuminate\Http\Request;
 
@@ -26,25 +27,20 @@ class LetsTalkController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(LetsTalkFormRequest $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'service' => 'required',
-        ]);
-
         LetsTalk::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'service' => $request->service
+            'name'    => $request->name,
+            'email'   => $request->email,
+            'phone'   => $request->phone,
+            'service' => $request->service,
+            'status'  => 0,
         ]);
 
-        return response()->json(
-            'Contact details sent successfully!',
-        );
+        return response()->json([
+            'code'    => true,
+            'success' => 'Your message has been sent successfully!',
+        ]);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactFormRequest;
 use App\Models\Contact;
 use App\Models\GetInTouch;
 use Illuminate\Http\Request;
@@ -14,41 +15,21 @@ class ContactController extends Controller
         return view('contact.index', compact('contact'));
     }
 
-    public function store(Request $request)
+    public function store(ContactFormRequest $request)
     {
-        try {
-            $validated = $request->validate([
-                'name'    => 'required|string|max:255',
-                'phone'   => 'required|string|max:20',
-                'email'   => 'required|email',
-                'subject' => 'required|string|max:255',
-                'message' => 'required|string',
-            ]);
+        GetInTouch::create([
+            'name'    => $request->name,
+            'email'   => $request->email,
+            'phone'   => $request->phone,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'status'  => 0,
+        ]);
 
-            GetInTouch::create([
-                'name'    => $validated['name'],
-                'email'   => $validated['email'],
-                'phone'   => $validated['phone'],
-                'subject' => $validated['subject'],
-                'message' => $validated['message'],
-                'status'  => 0,
-            ]);
-
-            return response()->json([
-                'code'    => true,
-                'success' => 'Your message has been sent successfully!',
-            ]);
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
-
-            $errors = $e->validator->errors();
-
-            return response()->json([
-                'code'  => false,
-                'field' => $errors->keys()[0],
-                'err'   => $errors->first(),
-            ], 422);
-        }
+        return response()->json([
+            'code'    => true,
+            'success' => 'Your message has been sent successfully!',
+        ]);
     }
 
     public function show()

@@ -3,63 +3,52 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\GetInTouch;
+use App\Models\LetsTalk;
+use App\Models\Post;
+use App\Models\Project;
+use App\Models\Service;
+use App\Models\Team;
+use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        return view('admin.index');
-    }
+        $stats = [
+            'posts'           => Post::count(),
+            'projects'        => Project::count(),
+            'services'        => Service::count(),
+            'team'            => Team::count(),
+            'testimonials'    => Testimonial::count(),
+            'new_inquiries'   => GetInTouch::where('status', 0)->count() + LetsTalk::where('status', 0)->count(),
+        ];
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        // Last 5 inquiries from both sources combined
+        $contactRecent = GetInTouch::latest()->limit(5)->get()->map(fn ($i) => [
+            'source'     => 'Contact Us',
+            'name'       => $i->name,
+            'email'      => $i->email,
+            'subject'    => $i->subject,
+            'status'     => $i->status,
+            'created_at' => $i->created_at,
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $letsTalkRecent = LetsTalk::latest()->limit(5)->get()->map(fn ($i) => [
+            'source'     => "Let's Talk",
+            'name'       => $i->name,
+            'email'      => $i->email,
+            'subject'    => $i->service,
+            'status'     => $i->status,
+            'created_at' => $i->created_at,
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        $recentInquiries = $contactRecent->concat($letsTalkRecent)
+            ->sortByDesc('created_at')
+            ->take(8)
+            ->values();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return view('admin.index', compact('stats', 'recentInquiries'));
     }
 }

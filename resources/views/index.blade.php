@@ -839,7 +839,9 @@
                                             </p>
                                             <div class="client-info">
                                                 <h4 class="title">{{ $testimonial->name }}</h4>
-                                                <h6 class="subtitle">App Developer</h6>
+                                                @if($testimonial->subtitle)
+                                                    <h6 class="subtitle">{{ $testimonial->subtitle }}</h6>
+                                                @endif
                                             </div>
                                         </div>
                                     </div>

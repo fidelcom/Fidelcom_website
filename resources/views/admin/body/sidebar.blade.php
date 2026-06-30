@@ -37,6 +37,13 @@
                 </li>
 
                 <li>
+                    <a href="{{ route('admin.inquiries.index') }}" class=" waves-effect">
+                        <i class="ri-inbox-line"></i>
+                        <span>All Inquiries</span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="javascript: void(0);" class="has-arrow waves-effect">
                         <i class="ri-mail-send-line"></i>
                         <span>Slider Banner</span>

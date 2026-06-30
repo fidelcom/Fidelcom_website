@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\ServicesController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\SuccessController;
 use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\AdminInquiriesController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\WhyUsController;
 use App\Http\Controllers\BlogController;
@@ -98,6 +99,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('/admin')->group(function () {
     Route::get('/lets-talk', [LetsTalkController::class, 'show'])->name('lets.talk.show');
     Route::get('/lets-talk/{id}', [LetsTalkController::class, 'edit'])->name('lets.talk.edit');
     Route::delete('/lets-talk/{id}', [LetsTalkController::class, 'destroy'])->name('lets.talk.destroy');
+    Route::get('/inquiries', [AdminInquiriesController::class, 'index'])->name('admin.inquiries.index');
+    Route::get('/inquiries/export', [AdminInquiriesController::class, 'export'])->name('admin.inquiries.export');
     Route::resource('/gallery', GalleryController::class);
     Route::resource('/process', ProcessController::class);
 });
