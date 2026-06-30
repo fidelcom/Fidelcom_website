@@ -37,6 +37,7 @@ class GalleryController extends Controller
         $request->validate([
             'name' => 'required',
             'image' => 'required',
+            'image.*' => 'image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
 
         foreach ($request->file('image') as $img)
@@ -93,9 +94,8 @@ class GalleryController extends Controller
             $manager = new ImageManager(new Driver());
             $manager->read($img)->resize(1920, 1280)->toPng()->save('upload/gallery/'.$img_name);
             $filename = 'upload/gallery/'.$img_name;
-            if ($data->image)
-            {
-                unlink($data->image);
+            if ($data->image && file_exists(public_path($data->image))) {
+                unlink(public_path($data->image));
             }
             $data->update([
                 'image' => $filename
@@ -118,9 +118,8 @@ class GalleryController extends Controller
     public function destroy(string $id)
     {
         $data = Gallery::findOrFail($id);
-        if ($data->image)
-        {
-            unlink($data->image);
+        if ($data->image && file_exists(public_path($data->image))) {
+            unlink(public_path($data->image));
         }
         $data->delete();
         return redirect()->route('gallery.index')->with([

@@ -41,7 +41,7 @@ class ProjectController extends Controller
             'title' => 'required',
             'short_desc' => 'required',
             'long_desc' => 'required',
-            'image' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
         $img = $request->file('image');
         $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();

@@ -40,7 +40,7 @@
                             </h1>
                             <p class="description b1 tmp-title-split-p">{!! $sliders->first()->description !!}</p>
                             <div class="button-group">
-                                <a class="tmp-btn round hover-icon-reverse" href="#">
+                                <a class="tmp-btn round hover-icon-reverse" href="{{ route('contact.us') }}#contactus">
                                     <span class="icon-reverse-wrapper">
                                         <span class="btn-text">Request Quote</span>
                                     <span class="btn-icon"><i class="feather-arrow-right"></i></span>
@@ -194,15 +194,16 @@
                         "assets/images/services/icon-01.png",
                         "assets/images/services/icon-02.png",
                         "assets/images/services/icons/06.png",
-                        "assets/images/services/icons/05.png"
-                        ];
+                        "assets/images/services/icons/05.png",
+                    ];
+                    $defaultIcon = "assets/images/services/icons/01.png";
                 @endphp
                 <div class="row g-5 service-wrapper mt--10">
                     @foreach($services as $key => $service)
                         <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6 col-12" data-sal="slide-up" data-sal-duration="700" {{ ($key+1) % 4 == 0 ? '': 'data-sal-delay="100"' }}>
                             <div class="service service__style--1 bg-color-card radius text-start tmp-border-none tmponhover">
                                 <div class="icon">
-                                    <img src="{{ asset($icons[$key]) }}" alt="">
+                                    <img src="{{ asset($icons[$key] ?? $defaultIcon) }}" alt="{{ $service->title }} icon">
                                 </div>
                                 <div class="content">
                                     <h4 class="title w-600">
@@ -434,10 +435,7 @@
                                 <div class="line-separator line-right"></div>
                             </div>
                             <h2 class="title w-700 tmp-title-split">Specialist Portfolio Cases</h2>
-                            <p class="description b1 tmp-title-split-p">There are many variations of passages of Lorem Ipsum
-                                available,
-                                <br>but the majority have suffered alteration.
-                            </p>
+                            <p class="description b1 tmp-title-split-p">Browse a selection of our completed projects delivered across Nigeria and beyond.</p>
                         </div>
                     </div>
                 </div>
@@ -515,9 +513,9 @@
                                             <p class="disc">
                                                 {!! $us->desc !!}
                                             </p>
-                                            <a class="tmp-btn hover-icon-reverse" href="~">
+                                            <a class="tmp-btn hover-icon-reverse" href="{{ route('contact.us') }}">
                                             <span class="icon-reverse-wrapper">
-                                            <span class="btn-text">See Details</span>
+                                            <span class="btn-text">Get in Touch</span>
                                             <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                             <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                             </span>
@@ -541,9 +539,9 @@
                                                 <p class="disc">
                                                     {!! $us->desc !!}
                                                 </p>
-                                                <a class="tmp-btn hover-icon-reverse" href="#">
+                                                <a class="tmp-btn hover-icon-reverse" href="{{ route('contact.us') }}">
                                             <span class="icon-reverse-wrapper">
-                                            <span class="btn-text">See Details</span>
+                                            <span class="btn-text">Get in Touch</span>
                                             <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                             <span class="btn-icon"><i class="feather-arrow-right"></i></span>
                                             </span>
@@ -712,21 +710,17 @@
                             <img class="w-100 radius" loading="lazy" src="{{ asset('assets/images/about/about-4.png') }}" alt="About Images">
                         </div>
                     </div>
-                    @php
-                        $headings = ["headingOne", "headingTwo","headingThree","headingFour","headingFive",];
-                        $collapses = ["collapseOne", "collapseTwo", "collapseThree", "collapseFour", "collapseFive"];
-                    @endphp
                     <div class="col-lg-6">
                         <div class="tmp-accordion-style accordion" data-sal="slide-up" data-sal-duration="800">
-                            <div class="accordion" id="accordionExamplea">
-                                @foreach($faqs as $key=>$faq)
+                            <div class="accordion" id="accordionFaq">
+                                @foreach($faqs as $faq)
                                     <div class="accordion-item card tmponhover">
-                                        <h2 class="accordion-header card-header" id="{{ $headings[$key] }}">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ $collapses[$key] }}" {{ $key == 0 ? 'aria-expanded="true"' : 'aria-expanded="false"' }}  aria-controls="{{ $collapses[$key] }}">
+                                        <h2 class="accordion-header card-header" id="faq-heading-{{ $loop->index }}">
+                                            <button class="accordion-button {{ $loop->first ? '' : 'collapsed' }}" type="button" data-bs-toggle="collapse" data-bs-target="#faq-collapse-{{ $loop->index }}" aria-expanded="{{ $loop->first ? 'true' : 'false' }}" aria-controls="faq-collapse-{{ $loop->index }}">
                                                 {{ $faq->question }}
                                             </button>
                                         </h2>
-                                        <div id="{{ $collapses[$key] }}" class="accordion-collapse collapse {{ $key == 0 ? 'show' : '' }}" aria-labelledby="{{ $headings[$key] }}" data-bs-parent="#accordionExamplea">
+                                        <div id="faq-collapse-{{ $loop->index }}" class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}" aria-labelledby="faq-heading-{{ $loop->index }}" data-bs-parent="#accordionFaq">
                                             <div class="accordion-body card-body">
                                                 {!! $faq->answer !!}
                                             </div>
@@ -802,10 +796,7 @@
                                 <div class="line-separator line-right"></div>
                             </div>
                             <h2 class="title w-700 tmp-title-split">Our Client Feedback</h2>
-                            <p class="description b1 tmp-title-split-p">There are many variations of passages of Lorem Ipsum
-                                available,
-                                <br>but the majority have suffered alteration.
-                            </p>
+                            <p class="description b1 tmp-title-split-p">Hear what our clients say about working with Fidelcom Systems.</p>
                         </div>
                     </div>
                 </div>
@@ -1083,15 +1074,12 @@
                                 <div class="line-separator line-left"></div>
                                 <span class="subtitle">
                                     <span class="number">03</span>
-                                <span class="subtitle-text">Latests News</span>
+                                <span class="subtitle-text">Latest News</span>
                                 </span>
                                 <div class="line-separator line-right"></div>
                             </div>
-                            <h2 class="title w-700 tmp-title-split">Our Latests News</h2>
-                            <p class="description b1 tmp-title-split-p">There are many variations of passages of Lorem Ipsum
-                                available,
-                                <br>but the majority have suffered alteration.
-                            </p>
+                            <h2 class="title w-700 tmp-title-split">Our Latest News</h2>
+                            <p class="description b1 tmp-title-split-p">Stay updated with insights, industry news, and expertise from the Fidelcom team.</p>
                         </div>
                     </div>
                 </div>

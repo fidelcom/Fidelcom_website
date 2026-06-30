@@ -36,7 +36,7 @@ class ProcessController extends Controller
         $request->validate([
             'title' => 'required',
             'desc' => 'required',
-            'image' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
         $img = $request->file('image');
         $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
@@ -91,9 +91,8 @@ class ProcessController extends Controller
             $manager->read($img)->resize(1920, 700)->toPng()->save('upload/process/'.$img_name);
             $filename = 'upload/process/'.$img_name;
 
-            if ($data->image)
-            {
-                unlink($data->image);
+            if ($data->image && file_exists(public_path($data->image))) {
+                unlink(public_path($data->image));
             }
 
             $data->update([
@@ -125,9 +124,8 @@ class ProcessController extends Controller
     public function destroy(string $id)
     {
         $data = Process::findOrFail($id);
-        if ($data->image)
-        {
-            unlink($data->image);
+        if ($data->image && file_exists(public_path($data->image))) {
+            unlink(public_path($data->image));
         }
         $data->delete();
         return redirect()->route('process.index')->with([

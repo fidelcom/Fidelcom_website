@@ -36,6 +36,7 @@ class TestimonialController extends Controller
         $request->validate([
             'name' => 'required',
             'desc' => 'required',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
         $img = $request->file('image');
         $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
@@ -101,9 +102,8 @@ class TestimonialController extends Controller
             $manager->read($img)->resize(600, 600)->toPng()->save('upload/testimonial/'.$img_name);
             $filename = 'upload/testimonial/'.$img_name;
 
-            if ($data->image)
-            {
-                unlink($data->image);
+            if ($data->image && file_exists(public_path($data->image))) {
+                unlink(public_path($data->image));
             }
 
             $data->update([
@@ -141,9 +141,8 @@ class TestimonialController extends Controller
     public function destroy(string $id)
     {
         $data = Testimonial::findOrFail($id);
-        if ($data->image)
-        {
-            unlink($data->image);
+        if ($data->image && file_exists(public_path($data->image))) {
+            unlink(public_path($data->image));
         }
         $data->delete();
         return redirect()->route('testimonial.index')->with([

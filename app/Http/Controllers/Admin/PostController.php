@@ -42,7 +42,7 @@ class PostController extends Controller
             'author' => 'required',
             'short_desc' => 'required',
             'long_desc' => 'required',
-            'image' => 'required',
+            'image' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
         ]);
         $img = $request->file('image');
         $img_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
@@ -133,9 +133,8 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         $data = Post::findOrFail($id);
-        if ($data->image)
-        {
-            unlink($data->image);
+        if ($data->image && file_exists(public_path($data->image))) {
+            unlink(public_path($data->image));
         }
         $data->delete();
         return redirect()->route('posts.index')->with([
