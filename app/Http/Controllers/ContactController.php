@@ -5,24 +5,36 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ContactFormRequest;
 use App\Models\Contact;
 use App\Models\GetInTouch;
+use App\Models\Service;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
     public function index()
     {
-        $contact = Contact::first();
-        return view('contact.index', compact('contact'));
+        $contact  = Contact::first();
+        $services = Service::select('id', 'title')->orderBy('title')->get();
+        return view('contact.index', compact('contact', 'services'));
     }
 
     public function store(ContactFormRequest $request)
     {
+        $message = $request->message;
+
+        if ($request->filled('company')) {
+            $message = "Company: {$request->company}\n\n" . $message;
+        }
+
+        if ($request->filled('budget')) {
+            $message .= "\n\nBudget: {$request->budget}";
+        }
+
         GetInTouch::create([
             'name'    => $request->name,
             'email'   => $request->email,
             'phone'   => $request->phone,
             'subject' => $request->subject,
-            'message' => $request->message,
+            'message' => $message,
             'status'  => 0,
         ]);
 
