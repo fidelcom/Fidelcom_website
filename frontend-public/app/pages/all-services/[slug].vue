@@ -12,6 +12,8 @@ if (error.value) throw createError({ statusCode: 404, message: 'Service not foun
 
 const ogImageUrl = computed(() => service.value?.image ? assetUrl(service.value.image) : undefined)
 
+const { href: canonicalUrl, origin } = useRequestURL()
+
 useSeoMeta({
   title: service.value?.meta_title ?? `${service.value?.title} | Fidelcom Systems`,
   description: service.value?.meta_description ?? service.value?.excerpt ?? '',
@@ -19,6 +21,27 @@ useSeoMeta({
   ogDescription: service.value?.meta_description ?? service.value?.excerpt,
   ogType: 'website',
   ogImage: ogImageUrl.value,
+  twitterCard: 'summary_large_image',
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: computed(() => service.value ? [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      name: service.value!.title,
+      description: service.value!.meta_description ?? service.value!.excerpt ?? '',
+      provider: {
+        '@type': 'Organization',
+        name: 'Fidelcom Systems',
+        url: origin,
+      },
+      url: canonicalUrl,
+      areaServed: { '@type': 'Country', name: 'Nigeria' },
+    }),
+  }] : []),
 })
 
 // Quote form

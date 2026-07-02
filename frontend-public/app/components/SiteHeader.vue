@@ -45,11 +45,12 @@ const scrolled = computed(() => scrollY.value > 40)
       </NuxtLink>
 
       <!-- ③ Desktop nav — centered, flex-1 -->
-      <nav class="hidden md:flex items-center justify-center flex-1 gap-1">
+      <nav class="hidden md:flex items-center justify-center flex-1 gap-1" aria-label="Main navigation">
         <NuxtLink
           v-for="item in menuData?.items"
           :key="item.id"
           :to="item.url"
+          :aria-current="(item.url === '/' ? route.path === '/' : route.path.startsWith(item.url)) ? 'page' : undefined"
           class="px-[14px] py-2 text-[13px] text-white/40 hover:text-white transition-colors duration-150 tracking-[0.01em] font-normal"
           active-class="!text-white"
         >{{ item.label }}</NuxtLink>
@@ -88,6 +89,7 @@ const scrolled = computed(() => scrollY.value > 40)
             v-for="item in menuData?.items"
             :key="item.id"
             :to="item.url"
+            :aria-current="(item.url === '/' ? route.path === '/' : route.path.startsWith(item.url)) ? 'page' : undefined"
             class="flex items-center py-4 text-[13px] text-white/50 hover:text-white border-b border-white/[0.05] last:border-0 transition-colors tracking-wide font-normal"
           >{{ item.label }}</NuxtLink>
           <NuxtLink

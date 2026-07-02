@@ -3,7 +3,9 @@ interface Project { id: number; title: string; slug: string; excerpt: string; im
 
 const api = useApi()
 const { assetUrl } = useAssetUrl()
-const page = ref(1)
+const route = useRoute()
+const router = useRouter()
+const page = ref(Number(route.query.page) || 1)
 const category = ref('')
 
 const { data, refresh } = await useAsyncData('portfolio', async () => {
@@ -14,8 +16,29 @@ const { data, refresh } = await useAsyncData('portfolio', async () => {
 })
 
 watch([page, category], () => refresh())
+watch(page, (p) => {
+  router.replace({ query: p > 1 ? { page: String(p) } : {} })
+}, { immediate: false })
 
-useSeoMeta({ title: 'Portfolio | Fidelcom Systems', description: 'Our portfolio of software development, web, and digital consulting projects in Nigeria.' })
+const { origin: portfolioOrigin } = useRequestURL()
+
+useSeoMeta({
+  title: 'Portfolio | Fidelcom Systems',
+  description: 'Our portfolio of software development, web, and digital consulting projects in Nigeria.',
+  ogTitle: 'Portfolio | Fidelcom Systems',
+  ogDescription: 'Our portfolio of software development, web, and digital consulting projects in Nigeria.',
+  ogImage: `${portfolioOrigin}/images/og-default.jpg`,
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+})
+
+useHead(computed(() => ({
+  link: [
+    { rel: 'canonical', href: `${portfolioOrigin}/portfolio${page.value > 1 ? `?page=${page.value}` : ''}` },
+    ...(page.value > 1 ? [{ rel: 'prev', href: page.value === 2 ? `${portfolioOrigin}/portfolio` : `${portfolioOrigin}/portfolio?page=${page.value - 1}` }] : []),
+    ...((data.value?.meta.last_page ?? 1) > page.value ? [{ rel: 'next', href: `${portfolioOrigin}/portfolio?page=${page.value + 1}` }] : []),
+  ],
+})))
 </script>
 
 <template>

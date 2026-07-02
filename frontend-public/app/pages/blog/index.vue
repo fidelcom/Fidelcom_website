@@ -3,7 +3,9 @@ interface Post { id: number; title: string; slug: string; excerpt: string; image
 
 const api = useApi()
 const { assetUrl } = useAssetUrl()
-const page = ref(1)
+const route = useRoute()
+const router = useRouter()
+const page = ref(Number(route.query.page) || 1)
 const search = ref('')
 const category = ref('')
 
@@ -17,12 +19,33 @@ const { data, refresh } = await useAsyncData('blog', async () => {
 })
 
 watch([page, search, category], () => refresh())
+watch(page, (p) => {
+  router.replace({ query: p > 1 ? { page: String(p) } : {} })
+}, { immediate: false })
 
 function formatDate(d: string) {
   return new Date(d).toLocaleDateString('en-NG', { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
-useSeoMeta({ title: 'Blog | Fidelcom Systems', description: 'Latest insights, news, and tutorials from the Fidelcom team.' })
+const { origin: blogOrigin } = useRequestURL()
+
+useSeoMeta({
+  title: 'Blog | Fidelcom Systems',
+  description: 'Latest insights, news, and tutorials from the Fidelcom team.',
+  ogTitle: 'Blog | Fidelcom Systems',
+  ogDescription: 'Latest insights, news, and tutorials from the Fidelcom team.',
+  ogImage: `${blogOrigin}/images/og-default.jpg`,
+  ogType: 'website',
+  twitterCard: 'summary_large_image',
+})
+
+useHead(computed(() => ({
+  link: [
+    { rel: 'canonical', href: `${blogOrigin}/blog${page.value > 1 ? `?page=${page.value}` : ''}` },
+    ...(page.value > 1 ? [{ rel: 'prev', href: page.value === 2 ? `${blogOrigin}/blog` : `${blogOrigin}/blog?page=${page.value - 1}` }] : []),
+    ...((data.value?.meta.last_page ?? 1) > page.value ? [{ rel: 'next', href: `${blogOrigin}/blog?page=${page.value + 1}` }] : []),
+  ],
+})))
 </script>
 
 <template>

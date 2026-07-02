@@ -9,7 +9,30 @@ const { data: faqs } = await useAsyncData('all-faqs', async () => {
 const open = ref<number | null>(null)
 function toggle(id: number) { open.value = open.value === id ? null : id }
 
-useSeoMeta({ title: 'FAQs | Fidelcom Systems', description: 'Frequently asked questions about Fidelcom Systems — our services, process, pricing, and more.' })
+const { href: canonicalUrl } = useRequestURL()
+
+useSeoMeta({
+  title: 'FAQs | Fidelcom Systems',
+  description: 'Frequently asked questions about Fidelcom Systems — our services, process, pricing, and more.',
+  ogTitle: 'FAQs | Fidelcom Systems',
+  ogDescription: 'Frequently asked questions about Fidelcom Systems — our services, process, pricing, and more.',
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: computed(() => faqs.value?.length ? [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqs.value!.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+      })),
+    }),
+  }] : []),
+})
 </script>
 
 <template>

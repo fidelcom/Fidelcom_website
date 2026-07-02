@@ -9,9 +9,43 @@ const { data: page } = await useAsyncData('contact', async () => {
 
 const { data: settings } = useNuxtData<{ phone: string; email: string; address: string }>('settings')
 
+const { href: canonicalUrl, origin } = useRequestURL()
+
 useSeoMeta({
   title: page.value?.meta_title ?? 'Contact Us | Fidelcom Systems',
   description: page.value?.meta_description ?? 'Get in touch with Fidelcom Systems Limited for IT solutions, consulting, and project inquiries.',
+  ogTitle: page.value?.meta_title ?? 'Contact Us | Fidelcom Systems',
+  ogDescription: page.value?.meta_description ?? 'Get in touch with Fidelcom Systems Limited for IT solutions, consulting, and project inquiries.',
+})
+
+useHead({
+  link: [{ rel: 'canonical', href: canonicalUrl }],
+  script: computed(() => [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'Fidelcom Systems',
+      url: origin,
+      ...(settings.value?.phone ? {
+        contactPoint: {
+          '@type': 'ContactPoint',
+          telephone: settings.value.phone,
+          contactType: 'customer service',
+          areaServed: 'NG',
+          availableLanguage: 'English',
+        },
+      } : {}),
+      ...(settings.value?.address ? {
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Lagos',
+          addressCountry: 'NG',
+          streetAddress: settings.value.address,
+        },
+      } : {}),
+    }),
+  }]),
 })
 </script>
 
