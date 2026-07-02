@@ -1,6 +1,30 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
 
+const api = useApi()
+
+interface Stats {
+  total_posts: number
+  draft_posts: number
+  total_projects: number
+  draft_projects: number
+  total_pages: number
+  pending_inquiries: number
+}
+
+const stats = ref<Stats | null>(null)
+
+onMounted(async () => {
+  stats.value = await api.get<{ data: Stats }>('/admin/dashboard/stats').then(r => r.data).catch(() => null)
+})
+
+const statCards = computed(() => stats.value ? [
+  { label: 'Total Posts',        value: stats.value.total_posts,       sub: `${stats.value.draft_posts} draft`,       icon: 'i-heroicons-document-text',  href: '/dashboard/posts',    accent: false },
+  { label: 'Total Projects',     value: stats.value.total_projects,    sub: `${stats.value.draft_projects} draft`,    icon: 'i-heroicons-squares-2x2',    href: '/dashboard/projects', accent: false },
+  { label: 'Pages',              value: stats.value.total_pages,        sub: 'published pages',                       icon: 'i-heroicons-document',       href: '/dashboard/pages',    accent: false },
+  { label: 'Pending Inquiries',  value: stats.value.pending_inquiries,  sub: 'awaiting review',                       icon: 'i-heroicons-inbox',          href: '/dashboard/inquiries', accent: stats.value.pending_inquiries > 0 },
+] : [])
+
 const sections = [
   { group: 'Content', items: [
     { href: '/dashboard/posts',        label: 'Blog Posts',    icon: 'i-heroicons-document-text', desc: 'Articles & insights' },
@@ -34,6 +58,39 @@ const sections = [
       <p class="text-body text-sm mt-1">Manage your site content from one place.</p>
     </div>
 
+    <!-- Stats cards -->
+    <div v-if="stats" class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
+      <NuxtLink
+        v-for="card in statCards"
+        :key="card.label"
+        :to="card.href"
+        :class="[
+          'group flex flex-col gap-1.5 rounded-xl px-5 py-4 border transition-all duration-150',
+          card.accent
+            ? 'bg-amber-500/10 border-amber-500/30 hover:border-amber-500/60'
+            : 'bg-surface border-border hover:border-primary/30 hover:bg-surface-alt',
+        ]"
+      >
+        <div class="flex items-center justify-between">
+          <Icon
+            :name="card.icon"
+            :class="['w-4 h-4', card.accent ? 'text-amber-400' : 'text-primary']"
+          />
+          <Icon name="i-heroicons-arrow-up-right" class="w-3.5 h-3.5 text-body/30 group-hover:text-body/60 transition-colors" />
+        </div>
+        <p
+          :class="['text-3xl font-black tabular-nums leading-none mt-1', card.accent ? 'text-amber-400' : 'text-heading']"
+          style="font-family: var(--font-display);"
+        >{{ card.value }}</p>
+        <p class="text-heading text-sm font-medium">{{ card.label }}</p>
+        <p class="text-body text-xs">{{ card.sub }}</p>
+      </NuxtLink>
+    </div>
+    <div v-else class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
+      <div v-for="i in 4" :key="i" class="h-[108px] rounded-xl bg-surface border border-border animate-pulse" />
+    </div>
+
+    <!-- Navigation sections -->
     <div class="space-y-8">
       <div v-for="section in sections" :key="section.group">
         <p class="text-[11px] font-semibold text-body/40 uppercase tracking-[0.12em] mb-3">{{ section.group }}</p>

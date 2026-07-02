@@ -55,14 +55,19 @@ class ProjectController extends Controller
             'image'               => ['required', 'image', 'max:10240'],
             'meta_title'          => ['nullable', 'string', 'max:100'],
             'meta_description'    => ['nullable', 'string', 'max:300'],
+            'status'              => ['nullable', 'in:draft,published'],
+            'published_at'        => ['nullable', 'date'],
         ]);
 
-        $media = $this->images->store($request->file('image'), 'project', 1920, 1280);
+        $media  = $this->images->store($request->file('image'), 'project', 1920, 1280);
+        $status = $data['status'] ?? 'published';
 
         $project = Project::create([
             ...$data,
-            'image' => $media->url,
-            'slug'  => $this->slugs->generate(Project::class, $data['title']),
+            'image'        => $media->url,
+            'slug'         => $this->slugs->generate(Project::class, $data['title']),
+            'status'       => $status,
+            'published_at' => $data['published_at'] ?? ($status === 'published' ? now() : null),
         ]);
 
         return response()->json(['data' => new ProjectResource($project)], 201);
@@ -81,12 +86,18 @@ class ProjectController extends Controller
             'image'               => ['nullable', 'image', 'max:10240'],
             'meta_title'          => ['nullable', 'string', 'max:100'],
             'meta_description'    => ['nullable', 'string', 'max:300'],
+            'status'              => ['sometimes', 'in:draft,published'],
+            'published_at'        => ['nullable', 'date'],
         ]);
+
+        if (isset($data['status']) && $data['status'] === 'published' && !$project->published_at && !isset($data['published_at'])) {
+            $data['published_at'] = now();
+        }
 
         if ($request->hasFile('image')) {
             $this->images->deletePath($project->image);
-            $media          = $this->images->store($request->file('image'), 'project', 1920, 1280);
-            $data['image']  = $media->url;
+            $media         = $this->images->store($request->file('image'), 'project', 1920, 1280);
+            $data['image'] = $media->url;
         }
 
         if (isset($data['title'])) {

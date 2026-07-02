@@ -33,6 +33,7 @@ use App\Http\Controllers\Api\V1\Admin\SliderController as AdminSliderController;
 use App\Http\Controllers\Api\V1\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Api\V1\Admin\TestimonialController as AdminTestimonialController;
 use App\Http\Controllers\Api\V1\Admin\BlogCategoryController as AdminBlogCategoryController;
+use App\Http\Controllers\Api\V1\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Api\V1\Admin\ProjectCategoryController as AdminProjectCategoryController;
 use Illuminate\Support\Facades\Route;
 
@@ -73,6 +74,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     // ── Admin (authenticated + admin role required) ───────────────────────────
     Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
+
+        // Dashboard stats
+        Route::get('dashboard/stats', [AdminDashboardController::class, 'stats']);
 
         // Blog categories
         Route::apiResource('blog-categories', AdminBlogCategoryController::class);
