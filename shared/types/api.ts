@@ -79,6 +79,8 @@ export interface Post {
   short_desc: string
   long_desc: string
   image: string
+  status: 'draft' | 'published'
+  published_at: string | null
   meta_title: string | null
   meta_description: string | null
   blog_category: BlogCategory | null
@@ -104,6 +106,8 @@ export interface Project {
   year: string | null
   location: string | null
   image: string
+  status: 'draft' | 'published'
+  published_at: string | null
   meta_title: string | null
   meta_description: string | null
   project_category: ProjectCategory | null
@@ -258,12 +262,13 @@ export interface Inquiry {
   source: 'contact' | 'quote'
   name: string
   email: string
-  phone: string
+  phone: string | null
   subject: string | null
   service: string | null
-  message: string
-  status: boolean
+  message: string | null
+  status: 'new' | 'in_progress' | 'resolved'
   created_at: string
+  updated_at: string
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────────

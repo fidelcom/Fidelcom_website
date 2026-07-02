@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Public;
 
 use App\Http\Controllers\Controller;
-use App\Models\GetInTouch;
-use App\Models\LetsTalk;
+use App\Models\Inquiry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -20,13 +19,14 @@ class InquiryController extends Controller
             'message' => ['required', 'string', 'max:5000'],
         ]);
 
-        GetInTouch::create([
+        Inquiry::create([
+            'source'  => 'contact',
             'name'    => $data['name'],
             'email'   => $data['email'],
-            'phone'   => $data['phone'] ?? '',
+            'phone'   => $data['phone'] ?? null,
             'subject' => $data['subject'] ?? 'General Inquiry',
             'message' => $data['message'],
-            'status'  => false,
+            'status'  => 'new',
         ]);
 
         return response()->json([
@@ -56,17 +56,18 @@ class InquiryController extends Controller
             $message .= "\n\nBudget: {$data['budget']}";
         }
 
-        GetInTouch::create([
+        Inquiry::create([
+            'source'  => 'quote',
             'name'    => $data['name'],
             'email'   => $data['email'],
             'phone'   => $data['phone'],
-            'subject' => "Quote Request – {$data['service']}",
+            'service' => $data['service'],
             'message' => $message,
-            'status'  => false,
+            'status'  => 'new',
         ]);
 
         return response()->json([
-            'data' => ['message' => 'Your quote request has been received. We\'ll respond within 24 hours.'],
+            'data' => ['message' => "Your quote request has been received. We'll respond within 24 hours."],
         ], 201);
     }
 }

@@ -131,10 +131,10 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::delete('media/{medium}', [MediaController::class, 'destroy']);
 
         // Inquiries
-        Route::get('inquiries',               [AdminInquiryController::class, 'index']);
-        Route::get('inquiries/export',        [AdminInquiryController::class, 'export']);
-        Route::patch('inquiries/{id}/status', [AdminInquiryController::class, 'updateStatus']);
-        Route::delete('inquiries/{id}',       [AdminInquiryController::class, 'destroy']);
+        Route::get('inquiries',                        [AdminInquiryController::class, 'index']);
+        Route::get('inquiries/export',                 [AdminInquiryController::class, 'export']);
+        Route::patch('inquiries/{inquiry}/status',     [AdminInquiryController::class, 'updateStatus']);
+        Route::delete('inquiries/{inquiry}',           [AdminInquiryController::class, 'destroy']);
 
         // Settings
         Route::get('settings',   [AdminSettingsController::class, 'index']);

@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\GetInTouch;
-use App\Models\LetsTalk;
+use App\Models\Inquiry;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Project;
@@ -21,8 +20,7 @@ class DashboardController extends Controller
                 'total_projects'    => Project::count(),
                 'draft_projects'    => Project::where('status', 'draft')->count(),
                 'total_pages'       => Page::count(),
-                'pending_inquiries' => GetInTouch::where('status', false)->count()
-                                     + LetsTalk::where('status', false)->count(),
+                'pending_inquiries' => Inquiry::where('status', 'new')->count(),
             ],
         ]);
     }
