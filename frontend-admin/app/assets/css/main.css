@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #5237f9;
+  --color-primary-alt: #6a4fff;
+  --color-secondary: #5b60e8;
+  --color-accent: #f604b9;
+  --color-accent-yellow: #e3f800;
+
+  /* Coherent blue-black depth ramp */
+  --color-bg: #07080f;
+  --color-bg-alt: #0b0d18;
+  --color-bg-darker: #050609;
+  --color-surface: #0e1020;
+  --color-surface-alt: #141728;
+
+  --color-heading: #e4e6f5;
+  --color-body: #6e7898;
+  --color-border: #1d2040;
+
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Sora', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--color-bg);
+  color: var(--color-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+}
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2
+         bg-primary text-white text-sm font-semibold px-4 py-2 rounded-lg
+         hover:bg-primary-alt transition-all duration-150
+         disabled:opacity-40 disabled:cursor-not-allowed
+         focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary;
+}
+
+.btn-ghost {
+  @apply inline-flex items-center justify-center gap-1.5
+         text-body text-sm px-3 py-1.5 rounded-lg
+         hover:text-heading hover:bg-surface-alt transition-colors duration-150;
+}
+
+.btn-danger {
+  @apply inline-flex items-center justify-center gap-1.5
+         text-red-400 text-sm px-3 py-1.5 rounded-lg
+         hover:text-red-300 hover:bg-red-500/8 transition-colors duration-150;
+}
+
+/* ── Form controls ───────────────────────────────────────── */
+.input {
+  @apply w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm
+         text-heading placeholder:text-body/40
+         focus:outline-none focus:border-primary/60 focus:bg-bg
+         transition-colors duration-150;
+}
+
+.label {
+  @apply block text-[11px] font-semibold text-body/70 uppercase tracking-[0.08em] mb-1.5;
+}
