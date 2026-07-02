@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Service extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+        'title', 'slug', 'short_desc', 'long_desc', 'image',
+        'meta_title', 'meta_description', 'status',
+    ];
 
     public function getRouteKeyName(): string
     {

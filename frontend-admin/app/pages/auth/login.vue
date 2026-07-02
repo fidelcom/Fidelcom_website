@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { useAuthStore } from '../../stores/auth'
 import { isApiError } from '../../composables/useApi'
 
 definePageMeta({ layout: 'auth' })
 
-const auth = useAuthStore()
+const auth = reactive(useAuth())
 const form = reactive({ email: '', password: '' })
 const error = ref<string | null>(null)
 const pending = ref(false)

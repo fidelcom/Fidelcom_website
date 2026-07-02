@@ -1,17 +1,18 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
 const api = useApi()
-const items = ref<{ id: number; name: string }[]>([])
+const toast = useToast()
+const items = ref<{ id: number; name: string; slug: string }[]>([])
 const loading = ref(true)
 const showModal = ref(false)
 const saving = ref(false)
-const editing = ref<{ id: number; name: string } | null>(null)
+const editing = ref<{ id: number; name: string; slug: string } | null>(null)
 const name = ref('')
 const error = ref<string | null>(null)
 
 async function load() {
   loading.value = true
-  items.value = await api.get<{ data: { id: number; name: string }[] }>('/api/v1/admin/blog-categories').then(r => r.data).finally(() => loading.value = false)
+  items.value = await api.get<{ data: { id: number; name: string; slug: string }[] }>('/admin/blog-categories').then(r => r.data).finally(() => loading.value = false)
 }
 
 function openCreate() { editing.value = null; name.value = ''; error.value = null; showModal.value = true }
@@ -22,19 +23,24 @@ async function save() {
   saving.value = true; error.value = null
   try {
     if (editing.value) {
-      await api.patch(`/api/v1/admin/blog-categories/${editing.value.id}`, { name: name.value })
+      await api.patch(`/admin/blog-categories/${editing.value.slug}`, { name: name.value })
+      toast.success('Category updated')
     } else {
-      await api.post('/api/v1/admin/blog-categories', { name: name.value })
+      await api.post('/admin/blog-categories', { name: name.value })
+      toast.success('Category created')
     }
     showModal.value = false; load()
-  } catch { error.value = 'Name may already exist.' }
+  } catch { error.value = 'Name may already exist.'; toast.error('Name may already exist.') }
   finally { saving.value = false }
 }
 
-async function remove(id: number) {
+async function remove(item: typeof items.value[0]) {
   if (!confirm('Delete this category? Posts in it must be reassigned first.')) return
-  await api.delete(`/api/v1/admin/blog-categories/${id}`).catch(() => alert('Cannot delete — category has posts.'))
-  load()
+  try {
+    await api.delete(`/admin/blog-categories/${item.slug}`)
+    toast.success('Category deleted')
+    load()
+  } catch { toast.error('Cannot delete — category has posts.') }
 }
 
 onMounted(() => load())
@@ -51,11 +57,11 @@ onMounted(() => load())
     <div v-else-if="!items.length" class="text-body text-center py-20">No categories yet.</div>
 
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      <div v-for="item in items" :key="item.id" class="bg-surface rounded-xl p-4 flex items-center justify-between border border-border">
+      <div v-for="item in items" :key="item.slug" class="bg-surface rounded-xl p-4 flex items-center justify-between border border-border">
         <span class="text-heading font-medium">{{ item.name }}</span>
         <div class="flex gap-2">
           <button class="btn-ghost text-xs" @click="openEdit(item)">Edit</button>
-          <button class="btn-ghost text-xs text-red-400" @click="remove(item.id)">Delete</button>
+          <button class="btn-ghost text-xs text-red-400" @click="remove(item)">Delete</button>
         </div>
       </div>
     </div>

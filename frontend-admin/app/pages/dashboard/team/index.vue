@@ -1,6 +1,8 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
-const { items, loading, saving, error, load, create, update, remove } = useCrud<{ id: number; name: string; position: string; image: string }>('/api/v1/admin/team')
+const { items, loading, saving, error, load, create, update, remove } = useCrud<{ id: number; name: string; position: string; image: string }>('/admin/team', 'Team member')
+const { resizeImage } = useImageResize()
+const { assetUrl } = useAssetUrl()
 const showModal = ref(false)
 const editing = ref<null | any>(null)
 const form = reactive({ name: '', position: '', facebook: '', twitter: '', linkedin: '', instagram: '' })
@@ -12,7 +14,7 @@ function openEdit(row: any) { editing.value = row; Object.assign(form, row); ima
 async function save() {
   const fd = new FormData()
   Object.entries(form).forEach(([k, v]) => fd.append(k, String(v ?? '')))
-  if (imageFile.value) fd.append('image', imageFile.value)
+  if (imageFile.value) fd.append('image', await resizeImage(imageFile.value, 800, 800))
   const r = editing.value ? await update(editing.value.id, fd) : await create(fd)
   if (r) { showModal.value = false; load() }
 }
@@ -28,7 +30,7 @@ onMounted(() => load())
     <AppTable :cols="[{ key: 'name', label: 'Name' }, { key: 'position', label: 'Position' }]" :rows="items" :loading="loading">
       <template #name="{ row }">
         <div class="flex items-center gap-3">
-          <img v-if="(row as any).image" :src="(row as any).image" class="w-8 h-8 rounded-full object-cover" />
+          <img v-if="(row as any).image" :src="assetUrl((row as any).image)" class="w-8 h-8 rounded-full object-cover" />
           <span>{{ (row as any).name }}</span>
         </div>
       </template>

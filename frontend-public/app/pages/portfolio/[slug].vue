@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const route = useRoute()
 const api = useApi()
+const { assetUrl } = useAssetUrl()
 
 const { data: project, error } = await useAsyncData(`project-${route.params.slug}`, async () => {
   const res = await api.get<{ data: { id: number; title: string; slug: string; body: string; excerpt: string; image: string | null; multi_image: string[] | null; category: string | null; client: string | null; year: number | null; url: string | null; meta_title: string | null; meta_description: string | null } }>(`/projects/${route.params.slug}`)
@@ -9,10 +10,29 @@ const { data: project, error } = await useAsyncData(`project-${route.params.slug
 
 if (error.value) throw createError({ statusCode: 404, message: 'Project not found' })
 
+const ogImageUrl = computed(() => project.value?.image ? assetUrl(project.value.image) : undefined)
+
 useSeoMeta({
   title: project.value?.meta_title ?? project.value?.title ?? 'Project',
   description: project.value?.meta_description ?? project.value?.excerpt ?? '',
-  ogImage: project.value?.image ?? undefined,
+  ogTitle: project.value?.meta_title ?? project.value?.title,
+  ogDescription: project.value?.meta_description ?? project.value?.excerpt,
+  ogType: 'website',
+  ogImage: ogImageUrl.value,
+})
+
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'CreativeWork',
+      name: project.value?.title,
+      description: project.value?.excerpt,
+      image: ogImageUrl.value,
+      creator: { '@type': 'Organization', name: 'Fidelcom Systems Limited' },
+    }),
+  }],
 })
 
 const activeImage = ref(0)
@@ -26,11 +46,9 @@ const images = computed(() => {
 
 <template>
   <div>
+    <Breadcrumbs :crumbs="[{ label: 'Portfolio', to: '/portfolio' }, { label: project?.title ?? 'Project' }]" />
     <div class="py-16">
       <div class="container mx-auto px-4 max-w-5xl">
-        <NuxtLink to="/portfolio" class="text-primary text-sm hover:underline mb-8 inline-flex items-center gap-1">
-          <Icon name="i-heroicons-arrow-left" class="w-4 h-4" /> Portfolio
-        </NuxtLink>
 
         <div v-if="project" class="grid md:grid-cols-3 gap-10">
           <div class="md:col-span-2">
@@ -39,10 +57,10 @@ const images = computed(() => {
 
             <!-- Image gallery -->
             <div v-if="images.length" class="mb-8">
-              <img :src="images[activeImage]" :alt="project.title" class="w-full rounded-2xl object-cover max-h-96 mb-2" />
+              <img :src="assetUrl(images[activeImage])" :alt="project.title" class="w-full rounded-2xl object-cover max-h-96 mb-2" />
               <div v-if="images.length > 1" class="flex gap-2 overflow-x-auto pb-2">
                 <button v-for="(img, i) in images" :key="i" :class="['flex-shrink-0 rounded-lg overflow-hidden border-2 transition-colors', i === activeImage ? 'border-primary' : 'border-border']" @click="activeImage = i">
-                  <img :src="img" :alt="`${project.title} ${i + 1}`" class="w-16 h-12 object-cover" />
+                  <img :src="assetUrl(img)" :alt="`${project.title} ${i + 1}`" class="w-16 h-12 object-cover" />
                 </button>
               </div>
             </div>

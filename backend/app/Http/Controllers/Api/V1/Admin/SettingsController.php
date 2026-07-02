@@ -22,29 +22,24 @@ class SettingsController extends Controller
 
     public function update(Request $request): JsonResponse
     {
-        $data = $request->validate([
-            'contact'              => ['nullable', 'array'],
-            'contact.phone'        => ['nullable', 'string', 'max:50'],
-            'contact.email'        => ['nullable', 'email', 'max:255'],
-            'contact.address'      => ['nullable', 'string', 'max:500'],
-            'contact.facebook'     => ['nullable', 'url', 'max:255'],
-            'contact.twitter'      => ['nullable', 'url', 'max:255'],
-            'contact.instagram'    => ['nullable', 'url', 'max:255'],
-            'contact.linkedin'     => ['nullable', 'url', 'max:255'],
-            'contact.youtube'      => ['nullable', 'url', 'max:255'],
-            'seo'                  => ['nullable', 'array'],
-            'seo.default_title'    => ['nullable', 'string', 'max:100'],
-            'seo.default_desc'     => ['nullable', 'string', 'max:300'],
-            'general'              => ['nullable', 'array'],
-            'general.site_name'    => ['nullable', 'string', 'max:100'],
-        ]);
+        $allowedGroups = ['general', 'seo', 'contact'];
 
-        foreach ($data as $group => $settings) {
-            if (! is_array($settings)) {
-                continue;
-            }
-            foreach ($settings as $key => $value) {
-                Setting::set($key, $value, $group);
+        // Only accept known groups; each value in a group must be a scalar string
+        $rules = ['*' => ['nullable', 'array']];
+        foreach ($allowedGroups as $group) {
+            $rules["{$group}.*"] = ['nullable', 'string', 'max:1000'];
+        }
+
+        $data = $request->validate($rules);
+
+        foreach ($allowedGroups as $group) {
+            if (isset($data[$group]) && is_array($data[$group])) {
+                foreach ($data[$group] as $key => $value) {
+                    // Restrict keys to alphanumeric + underscore to prevent injection
+                    if (preg_match('/^[a-z0-9_]+$/i', $key)) {
+                        Setting::set($key, (string) $value, $group);
+                    }
+                }
             }
         }
 

@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Team extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = ['name', 'position', 'image', 'instagram', 'linkedin', 'twitter', 'facebook'];
 }

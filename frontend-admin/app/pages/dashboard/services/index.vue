@@ -1,18 +1,19 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
-const { items, loading, saving, error, meta, page, search, load, create, update, remove } = useCrud<{ id: number; title: string; slug: string }>('/api/v1/admin/services')
+const { items, loading, saving, error, meta, page, search, load, create, update, remove } = useCrud<{ id: number; title: string; slug: string }>('/admin/services', 'Service')
 const showModal = ref(false)
 const editing = ref<null | any>(null)
 const form = reactive({ title: '', short_desc: '', long_desc: '', meta_title: '', meta_description: '' })
 const imageFile = ref<File | null>(null)
+const { resizeImage } = useImageResize()
 
 function openCreate() { editing.value = null; Object.assign(form, { title: '', short_desc: '', long_desc: '', meta_title: '', meta_description: '' }); imageFile.value = null; showModal.value = true }
 function openEdit(row: any) { editing.value = row; Object.assign(form, row); imageFile.value = null; showModal.value = true }
 async function save() {
   const fd = new FormData()
   Object.entries(form).forEach(([k, v]) => fd.append(k, String(v ?? '')))
-  if (imageFile.value) fd.append('image', imageFile.value)
-  const r = editing.value ? await update(editing.value.id, fd) : await create(fd)
+  if (imageFile.value) fd.append('image', await resizeImage(imageFile.value, 1920, 1080))
+  const r = editing.value ? await update(editing.value.slug, fd) : await create(fd)
   if (r) { showModal.value = false; load() }
 }
 onMounted(() => load())
@@ -28,7 +29,7 @@ onMounted(() => load())
     <AppTable :cols="[{ key: 'title', label: 'Title' }, { key: 'slug', label: 'Slug' }]" :rows="items" :loading="loading">
       <template #actions="{ row }">
         <button class="btn-ghost text-xs mr-2" @click="openEdit(row)">Edit</button>
-        <button class="btn-danger text-xs" @click="confirm('Delete?') && remove((row as any).id)">Delete</button>
+        <button class="btn-danger text-xs" @click="confirm('Delete?') && remove((row as any).slug)">Delete</button>
       </template>
     </AppTable>
     <AppPagination :page="meta.current_page" :last-page="meta.last_page" :total="meta.total" @update:page="p => { page = p }" />

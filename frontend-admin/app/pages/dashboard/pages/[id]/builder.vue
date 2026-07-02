@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 import { VueDraggable } from 'vue-draggable-plus'
 definePageMeta({ layout: 'dashboard' })
 
@@ -37,7 +37,7 @@ const BLOCK_TYPES = [
 async function load() {
   loading.value = true
   try {
-    const res = await api.get<{ data: any }>(`/api/v1/admin/pages/${pageId}`)
+    const res = await api.get<{ data: any }>(`/admin/pages/${pageId}`)
     page.value = res.data
     blocks.value = (res.data.blocks ?? []).sort((a: any, b: any) => a.position - b.position)
   } finally { loading.value = false }
@@ -63,7 +63,7 @@ async function addBlock(type: string) {
   }
 
   saving.value = true
-  const res = await api.post<{ data: any }>(`/api/v1/admin/pages/${pageId}/blocks`, {
+  const res = await api.post<{ data: any }>(`/admin/pages/${pageId}/blocks`, {
     block_type: type,
     position: blocks.value.length,
     data: defaultData[type] ?? {},
@@ -74,7 +74,7 @@ async function addBlock(type: string) {
 
 async function onDragEnd() {
   const order = blocks.value.map((b, i) => ({ id: b.id, position: i }))
-  await api.post(`/api/v1/admin/pages/${pageId}/blocks/reorder`, { order })
+  await api.post(`/admin/pages/${pageId}/blocks/reorder`, { order })
   blocks.value.forEach((b, i) => b.position = i)
 }
 
@@ -89,7 +89,7 @@ async function saveBlock() {
   try {
     const parsed = JSON.parse(editData.value)
     saving.value = true
-    const res = await api.patch<{ data: any }>(`/api/v1/admin/blocks/${editingBlock.value.id}`, { data: parsed })
+    const res = await api.patch<{ data: any }>(`/admin/blocks/${editingBlock.value.id}`, { data: parsed })
     if (res.data) {
       const idx = blocks.value.findIndex(b => b.id === editingBlock.value!.id)
       if (idx !== -1) blocks.value[idx].data = res.data.data
@@ -101,7 +101,7 @@ async function saveBlock() {
 
 async function deleteBlock(id: number) {
   if (!confirm('Remove this block?')) return
-  await api.delete(`/api/v1/admin/blocks/${id}`)
+  await api.delete(`/admin/blocks/${id}`)
   blocks.value = blocks.value.filter(b => b.id !== id)
 }
 

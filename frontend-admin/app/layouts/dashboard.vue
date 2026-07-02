@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '../stores/auth'
-
-const auth = useAuthStore()
+const auth = reactive(useAuth())
 
 const navGroups = [
   {
@@ -51,27 +49,38 @@ const navGroups = [
 
 <template>
   <div class="flex min-h-screen bg-bg">
+
     <!-- Sidebar -->
-    <aside class="w-60 bg-surface flex-shrink-0 flex flex-col border-r border-border">
-      <div class="px-6 py-5 border-b border-border">
-        <span class="text-heading font-bold text-lg tracking-tight">Fidelcom</span>
-        <span class="text-primary text-xs font-semibold ml-1">Admin</span>
+    <aside class="w-64 bg-surface flex-shrink-0 flex flex-col border-r border-border">
+
+      <!-- Brand -->
+      <div class="h-14 px-4 flex items-center border-b border-border gap-3">
+        <div class="relative flex-shrink-0">
+          <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-lg shadow-primary/30">
+            <span class="text-white text-sm font-bold leading-none" style="font-family: var(--font-display);">F</span>
+          </div>
+        </div>
+        <div class="flex items-baseline gap-1.5 min-w-0">
+          <span class="text-heading font-bold text-sm tracking-tight truncate" style="font-family: var(--font-display);">Fidelcom</span>
+          <span class="text-primary text-[9px] font-bold uppercase tracking-[0.15em] flex-shrink-0">Admin</span>
+        </div>
       </div>
 
-      <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-6">
-        <div v-for="group in navGroups" :key="group.label">
-          <p class="text-xs font-semibold text-body uppercase tracking-widest px-3 mb-2">
+      <!-- Nav -->
+      <nav class="flex-1 overflow-y-auto py-3 px-2">
+        <div v-for="(group, gi) in navGroups" :key="group.label" :class="gi > 0 ? 'mt-4' : ''">
+          <p class="text-[10px] font-semibold text-body/40 uppercase tracking-[0.14em] px-2.5 mb-1">
             {{ group.label }}
           </p>
-          <ul class="space-y-0.5">
+          <ul>
             <li v-for="item in group.items" :key="item.href">
               <NuxtLink
                 :to="item.href"
-                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-body hover:text-heading hover:bg-surface-alt transition-colors"
-                active-class="text-heading bg-primary/10 font-medium"
-                exact-active-class="text-primary"
+                class="nav-item"
+                active-class="nav-active"
+                exact-active-class="nav-exact"
               >
-                <Icon :name="item.icon" class="w-4 h-4 flex-shrink-0" />
+                <Icon :name="item.icon" class="w-[15px] h-[15px] flex-shrink-0 opacity-70 group-[.nav-active]:opacity-100" />
                 {{ item.label }}
               </NuxtLink>
             </li>
@@ -79,21 +88,22 @@ const navGroups = [
         </div>
       </nav>
 
-      <div class="px-3 py-4 border-t border-border">
-        <div class="flex items-center gap-3 px-3 py-2">
-          <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary text-sm font-bold flex-shrink-0">
+      <!-- User footer -->
+      <div class="border-t border-border p-2">
+        <div class="flex items-center gap-2.5 px-2 py-2 rounded-lg">
+          <div class="w-7 h-7 rounded-full bg-primary/15 ring-1 ring-primary/25 flex items-center justify-center text-primary text-[11px] font-bold flex-shrink-0">
             {{ auth.user?.name?.charAt(0) ?? '?' }}
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-heading text-sm font-medium truncate">{{ auth.user?.name }}</p>
-            <p class="text-body text-xs truncate">{{ auth.user?.email }}</p>
+            <p class="text-heading text-xs font-medium truncate leading-none mb-0.5">{{ auth.user?.name }}</p>
+            <p class="text-body text-[10px] truncate leading-none opacity-60">{{ auth.user?.email }}</p>
           </div>
         </div>
         <button
-          class="mt-2 w-full text-left px-3 py-2 rounded-lg text-sm text-body hover:text-heading hover:bg-surface-alt transition-colors flex items-center gap-3"
+          class="mt-1 w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-body/60 hover:text-red-400 hover:bg-red-500/6 transition-colors flex items-center gap-2"
           @click="auth.logout"
         >
-          <Icon name="i-heroicons-arrow-right-on-rectangle" class="w-4 h-4" />
+          <Icon name="i-heroicons-arrow-right-on-rectangle" class="w-3.5 h-3.5" />
           Sign out
         </button>
       </div>
@@ -106,4 +116,23 @@ const navGroups = [
       </main>
     </div>
   </div>
+
+  <AppToast />
 </template>
+
+<style scoped>
+@reference "../assets/css/main.css";
+
+.nav-item {
+  @apply flex items-center gap-2.5 px-2.5 py-[7px] rounded-md text-[13px] text-body
+         hover:text-heading hover:bg-surface-alt transition-all duration-100 w-full mb-0.5;
+}
+
+.nav-active {
+  @apply text-heading bg-surface-alt;
+}
+
+.nav-exact {
+  @apply text-primary;
+}
+</style>

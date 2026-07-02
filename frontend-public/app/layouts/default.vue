@@ -7,10 +7,11 @@ const { data: settings } = await useAsyncData('settings', () =>
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen bg-bg">
+  <div class="flex flex-col min-h-screen bg-black">
     <SiteHeader :settings="settings" />
 
-    <main id="main-content" class="flex-1">
+    <!-- pt-[72px] clears the fixed header; Hero uses -mt-[72px] to extend behind it -->
+    <main id="main-content" class="flex-1 pt-[72px]">
       <slot />
     </main>
 

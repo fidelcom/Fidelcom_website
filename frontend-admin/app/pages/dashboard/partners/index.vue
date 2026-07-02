@@ -1,6 +1,8 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
-const { items, loading, saving, error, load, create, update, remove } = useCrud<{ id: number; name: string; image: string; url: string }>('/api/v1/admin/partners')
+const { items, loading, saving, error, load, create, update, remove } = useCrud<{ id: number; name: string; image: string; url: string }>('/admin/partners', 'Partner')
+const { resizeImage } = useImageResize()
+const { assetUrl } = useAssetUrl()
 const showModal = ref(false)
 const editing = ref<null | any>(null)
 const form = reactive({ name: '', url: '' })
@@ -11,7 +13,7 @@ function openEdit(row: any) { editing.value = row; Object.assign(form, row); ima
 async function save() {
   const fd = new FormData()
   Object.entries(form).forEach(([k, v]) => fd.append(k, String(v ?? '')))
-  if (imageFile.value) fd.append('image', imageFile.value)
+  if (imageFile.value) fd.append('image', await resizeImage(imageFile.value, 600, 300))
   const r = editing.value ? await update(editing.value.id, fd) : await create(fd)
   if (r) { showModal.value = false; load() }
 }
@@ -26,7 +28,7 @@ onMounted(() => load())
     </div>
     <div class="grid grid-cols-3 md:grid-cols-5 gap-4 mb-6">
       <div v-for="p in items" :key="p.id" class="bg-surface rounded-xl p-4 flex flex-col items-center gap-3">
-        <img :src="p.image" :alt="p.name" class="h-12 object-contain" />
+        <img :src="assetUrl(p.image)" :alt="p.name" class="h-12 object-contain" />
         <p class="text-body text-xs text-center">{{ p.name }}</p>
         <div class="flex gap-2 mt-auto">
           <button class="btn-ghost text-xs" @click="openEdit(p)">Edit</button>

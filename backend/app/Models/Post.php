@@ -10,7 +10,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = [
+        'blog_category_id', 'title', 'slug', 'author',
+        'short_desc', 'long_desc', 'image',
+        'meta_title', 'meta_description',
+        'status', 'published_at',
+    ];
+
+    protected $casts = ['published_at' => 'datetime'];
 
     public function getRouteKeyName(): string
     {

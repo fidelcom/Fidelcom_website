@@ -1,5 +1,6 @@
-export function useCrud<T extends { id: number }>(endpoint: string) {
+export function useCrud<T extends { id: number }>(endpoint: string, label = '') {
   const api = useApi()
+  const toast = useToast()
   const items = ref<T[]>([])
   const loading = ref(false)
   const saving = ref(false)
@@ -32,36 +33,46 @@ export function useCrud<T extends { id: number }>(endpoint: string) {
     error.value = null
     try {
       const res = await api.post<{ data: T }>(endpoint, body)
+      if (label) toast.success(`${label} created`)
       return res.data
     } catch (e) {
       error.value = isApiError(e) ? e.data.error.message : 'Failed to create'
+      if (label) toast.error(error.value ?? 'Failed to create')
       return null
     } finally {
       saving.value = false
     }
   }
 
-  async function update(id: number, body: FormData | Record<string, unknown>): Promise<T | null> {
+  async function update(key: string | number, body: FormData | Record<string, unknown>): Promise<T | null> {
     saving.value = true
     error.value = null
     try {
-      const res = await api.patch<{ data: T }>(`${endpoint}/${id}`, body)
+      const res = await api.patch<{ data: T }>(`${endpoint}/${key}`, body)
+      if (label) toast.success(`${label} updated`)
       return res.data
     } catch (e) {
       error.value = isApiError(e) ? e.data.error.message : 'Failed to update'
+      if (label) toast.error(error.value ?? 'Failed to update')
       return null
     } finally {
       saving.value = false
     }
   }
 
-  async function remove(id: number): Promise<boolean> {
+  async function remove(key: string | number): Promise<boolean> {
     try {
-      await api.delete(`${endpoint}/${id}`)
-      items.value = items.value.filter((i) => i.id !== id)
+      await api.delete(`${endpoint}/${key}`)
+      if (typeof key === 'number') {
+        items.value = items.value.filter((i) => i.id !== key)
+      } else {
+        items.value = items.value.filter((i) => (i as any).slug !== key)
+      }
+      if (label) toast.success(`${label} deleted`)
       return true
     } catch (e) {
       error.value = 'Failed to delete'
+      if (label) toast.error('Failed to delete')
       return false
     }
   }

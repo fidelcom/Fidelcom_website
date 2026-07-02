@@ -9,5 +9,5 @@ class Process extends Model
 {
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['title', 'desc', 'image'];
 }

@@ -1,4 +1,3 @@
-import { defineStore } from 'pinia'
 import type { User } from '../../../shared/types/api'
 
 interface LoginPayload {
@@ -6,10 +5,9 @@ interface LoginPayload {
   password: string
 }
 
-export const useAuthStore = defineStore('auth', () => {
-  const user = ref<User | null>(null)
+export function useAuth() {
+  const user = useState<User | null>('auth:user', () => null)
   const isAuthenticated = computed(() => user.value !== null)
-
   const { get, post } = useApi()
 
   async function fetchUser() {
@@ -22,6 +20,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(payload: LoginPayload) {
+    const config = useRuntimeConfig()
+    const appBase = (config.public.apiBase as string).replace(/\/api\/v1\/?$/, '')
+    await $fetch('/sanctum/csrf-cookie', { baseURL: appBase, credentials: 'include' })
     await post('/auth/login', payload)
     await fetchUser()
   }
@@ -33,4 +34,4 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return { user, isAuthenticated, fetchUser, login, logout }
-})
+}

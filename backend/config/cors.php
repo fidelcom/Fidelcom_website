@@ -5,7 +5,7 @@ return [
     'allowed_methods'          => ['*'],
     'allowed_origins'          => [
         env('FRONTEND_ADMIN_URL', 'http://localhost:3001'),
-        env('FRONTEND_PUBLIC_URL', 'http://localhost:3000'),
+        env('FRONTEND_PUBLIC_URL', 'http://localhost:3002'),
     ],
     'allowed_origins_patterns' => [],
     'allowed_headers'          => ['*'],

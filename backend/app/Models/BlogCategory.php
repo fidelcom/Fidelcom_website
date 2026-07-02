@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class BlogCategory extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = ['name', 'slug'];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function post() : HasMany
     {

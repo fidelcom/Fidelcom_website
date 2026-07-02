@@ -19,7 +19,9 @@ class ImageService
     public function store(UploadedFile $file, string $directory, int $width = 1920, int $height = 1080, ?string $altText = null): Media
     {
         $filename  = uniqid() . '.webp';
-        $directory = ltrim($directory, '/');
+        $directory = preg_replace('/\.\.+/', '', ltrim($directory, '/'));
+        $directory = preg_replace('/[^a-zA-Z0-9_\-\/]/', '', $directory);
+        $directory = trim($directory, '/');
         $path      = "upload/{$directory}/{$filename}";
         $fullPath  = public_path($path);
 

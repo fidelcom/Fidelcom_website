@@ -1,5 +1,11 @@
 import type { ApiError } from '../../../shared/types/api'
 
+function getXsrfToken(): string {
+  if (import.meta.server) return ''
+  const match = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]*)/)
+  return match?.[1] ? decodeURIComponent(match[1]) : ''
+}
+
 export function useApi() {
   const config = useRuntimeConfig()
   const baseURL = config.public.apiBase as string
@@ -8,11 +14,13 @@ export function useApi() {
     path: string,
     options: Parameters<typeof $fetch>[1] = {}
   ): Promise<T> {
+    const xsrf = getXsrfToken()
     return $fetch<T>(path, {
       baseURL,
       credentials: 'include',
       headers: {
         Accept: 'application/json',
+        ...(xsrf ? { 'X-XSRF-TOKEN': xsrf } : {}),
         ...(options.headers ?? {}),
       },
       ...options,

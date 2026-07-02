@@ -2,30 +2,44 @@
 
 @theme {
   --color-primary: #5237f9;
-  --color-primary-alt: #8680ff;
-  --color-secondary: #6369ff;
-  --color-accent: #f604b9;
-  --color-accent-yellow: #e3f800;
+  --color-primary-alt: #6a4fff;
+  --color-primary-dark: #3d28d4;
 
-  --color-surface: #1b1b1c;
-  --color-surface-alt: #232324;
-  --color-bg: #121326;
-  --color-bg-alt: #171930;
-  --color-bg-darker: #16172e;
+  /* True black depth ramp — EPAM-inspired */
+  --color-bg: #0a0a0a;
+  --color-bg-alt: #111111;
+  --color-surface: #161616;
+  --color-surface-alt: #1e1e1e;
+  --color-surface-hover: #242424;
 
+  /* Light surfaces for alternating sections */
+  --color-light: #f5f5f5;
+  --color-light-alt: #ffffff;
+
+  /* Dark-section text */
   --color-heading: #ffffff;
-  --color-body: #a1a9ac;
-  --color-border: #21262d4f;
+  --color-body: #888888;
+
+  /* Light-section text */
+  --color-heading-invert: #111111;
+  --color-body-invert: #666666;
+
+  /* Borders */
+  --color-border: #222222;
+  --color-border-light: #e0e0e0;
 
   --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Sora', system-ui, sans-serif;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
   font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+h1, h2, h3, h4 { font-family: var(--font-display); }

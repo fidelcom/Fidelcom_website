@@ -17,13 +17,16 @@ class PostController extends Controller
 
         $posts = Post::with('blog_category')
             ->withCount('comment')
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now())
             ->when($search, fn ($q) => $q->where(function ($q) use ($search) {
                 $q->where('title', 'like', "%{$search}%")
                   ->orWhere('short_desc', 'like', "%{$search}%")
                   ->orWhere('long_desc', 'like', "%{$search}%");
             }))
             ->when($category, fn ($q) => $q->whereHas('blog_category', fn ($q) => $q->where('slug', $category)))
-            ->latest()
+            ->latest('published_at')
             ->paginate(9)
             ->withQueryString();
 
@@ -50,6 +53,9 @@ class PostController extends Controller
     {
         $post = Post::with(['blog_category', 'comment'])
             ->where('slug', $slug)
+            ->where('status', 'published')
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now())
             ->firstOrFail();
 
         return response()->json(['data' => new PostResource($post)]);

@@ -1,7 +1,5 @@
-import { useAuthStore } from '../stores/auth'
-
 export default defineNuxtRouteMiddleware(async (to) => {
-  const auth = useAuthStore()
+  const auth = reactive(useAuth())
 
   if (!auth.isAuthenticated) {
     await auth.fetchUser()

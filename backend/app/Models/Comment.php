@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Comment extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = ['post_id', 'name', 'email', 'message', 'approved'];
 
     public function post() : BelongsTo
     {

@@ -2,6 +2,7 @@
 interface Member { id: number; name: string; role: string; bio: string | null; image: string | null; twitter: string | null; linkedin: string | null; instagram: string | null; facebook: string | null }
 
 const api = useApi()
+const { assetUrl } = useAssetUrl()
 const { data: members } = await useAsyncData('all-team', async () => {
   const res = await api.get<{ data: Member[] }>('/team')
   return res.data
@@ -24,7 +25,7 @@ useSeoMeta({ title: 'Our Team | Fidelcom Systems', description: 'Meet the talent
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <div v-for="member in members" :key="member.id" class="bg-surface rounded-2xl p-6 border border-border text-center group">
             <div class="relative w-24 h-24 rounded-2xl overflow-hidden mx-auto mb-4">
-              <img v-if="member.image" :src="member.image" :alt="member.name" class="w-full h-full object-cover" />
+              <img v-if="member.image" :src="assetUrl(member.image)" :alt="member.name" class="w-full h-full object-cover" />
               <div v-else class="w-full h-full bg-primary/10 flex items-center justify-center text-primary text-3xl font-bold">
                 {{ member.name.charAt(0) }}
               </div>

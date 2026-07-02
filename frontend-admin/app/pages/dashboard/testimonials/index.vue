@@ -1,7 +1,8 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
 const api = useApi()
-const { items, loading, saving, error, load, create, update, remove } = useCrud<{ id: number; name: string; desc: string; rating: number; approved: boolean }>('/api/v1/admin/testimonials')
+const { items, loading, saving, error, load, create, update, remove } = useCrud<{ id: number; name: string; desc: string; rating: number; approved: boolean }>('/admin/testimonials', 'Testimonial')
+const { resizeImage } = useImageResize()
 const showModal = ref(false)
 const editing = ref<null | any>(null)
 const form = reactive({ name: '', subtitle: '', location: '', desc: '', rating: 5, approved: false })
@@ -13,13 +14,13 @@ function openEdit(row: any) { editing.value = row; Object.assign(form, row); ima
 async function save() {
   const fd = new FormData()
   Object.entries(form).forEach(([k, v]) => fd.append(k, String(v ?? '')))
-  if (imageFile.value) fd.append('image', imageFile.value)
+  if (imageFile.value) fd.append('image', await resizeImage(imageFile.value, 400, 400))
   const r = editing.value ? await update(editing.value.id, fd) : await create(fd)
   if (r) { showModal.value = false; load() }
 }
 
 async function approve(id: number) {
-  await api.patch(`/api/v1/admin/testimonials/${id}/approve`)
+  await api.patch(`/admin/testimonials/${id}/approve`)
   load()
 }
 

@@ -225,6 +225,7 @@ export type BlockType =
   | 'contact_form'
   | 'process_steps'
   | 'slider'
+  | 'case_study'
 
 export interface Block {
   id: number

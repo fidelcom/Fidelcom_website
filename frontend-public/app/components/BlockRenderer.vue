@@ -19,6 +19,7 @@ const blockComponents: Record<string, ReturnType<typeof resolveComponent>> = {
   contact_form: resolveComponent('BlocksContactForm'),
   process_steps: resolveComponent('BlocksProcessSteps'),
   slider: resolveComponent('BlocksSlider'),
+  case_study: resolveComponent('BlocksCaseStudy'),
 }
 </script>
 

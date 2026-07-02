@@ -5,7 +5,9 @@ use App\Http\Controllers\Api\V1\Auth\LogoutController;
 use App\Http\Controllers\Api\V1\Auth\MeController;
 use App\Http\Controllers\Api\V1\Public\FaqController as PublicFaqController;
 use App\Http\Controllers\Api\V1\Public\GalleryController as PublicGalleryController;
+use App\Http\Controllers\Api\V1\Public\BlogCategoryController as PublicBlogCategoryController;
 use App\Http\Controllers\Api\V1\Public\InquiryController as PublicInquiryController;
+use App\Http\Controllers\Api\V1\Public\ProjectCategoryController as PublicProjectCategoryController;
 use App\Http\Controllers\Api\V1\Public\MenuController as PublicMenuController;
 use App\Http\Controllers\Api\V1\Public\PageController as PublicPageController;
 use App\Http\Controllers\Api\V1\Public\PartnerController as PublicPartnerController;
@@ -37,7 +39,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->name('api.v1.')->group(function () {
 
     // ── Auth ──────────────────────────────────────────────────────────────────
-    Route::post('auth/login',  LoginController::class);
+    Route::post('auth/login',  LoginController::class)->middleware('throttle:5,1');
     Route::post('auth/logout', LogoutController::class)->middleware('auth:sanctum');
     Route::get('auth/user',    MeController::class)->middleware('auth:sanctum');
 
@@ -65,8 +67,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::post('inquiries/quote',   [PublicInquiryController::class, 'quote'])
         ->middleware('throttle:5,1');
 
-    // ── Admin (authenticated) ─────────────────────────────────────────────────
-    Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+    // ── Public categories ─────────────────────────────────────────────────────
+    Route::get('blog-categories',    [PublicBlogCategoryController::class, 'index']);
+    Route::get('project-categories', [PublicProjectCategoryController::class, 'index']);
+
+    // ── Admin (authenticated + admin role required) ───────────────────────────
+    Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
 
         // Blog categories
         Route::apiResource('blog-categories', AdminBlogCategoryController::class);

@@ -3,25 +3,26 @@ definePageMeta({ layout: 'dashboard' })
 const api = useApi()
 const { items, loading, saving, error, meta, page, search, load, create, update, remove } = useCrud<{
   id: number; title: string; slug: string; client: string; project_category?: { name: string }
-}>('/api/v1/admin/projects')
+}>('/admin/projects', 'Project')
 const showModal = ref(false)
 const editing = ref<null | any>(null)
 const categories = ref<{ id: number; name: string }[]>([])
 const form = reactive({ title: '', project_category_id: 0, short_desc: '', long_desc: '', client: '', year: '', location: '', meta_title: '', meta_description: '' })
 const imageFile = ref<File | null>(null)
+const { resizeImage } = useImageResize()
 
 function openCreate() { editing.value = null; Object.assign(form, { title: '', project_category_id: categories.value[0]?.id ?? 0, short_desc: '', long_desc: '', client: '', year: '', location: '', meta_title: '', meta_description: '' }); imageFile.value = null; showModal.value = true }
 function openEdit(row: any) { editing.value = row; Object.assign(form, { ...row, project_category_id: row.project_category?.id ?? 0 }); imageFile.value = null; showModal.value = true }
 async function save() {
   const fd = new FormData()
   Object.entries(form).forEach(([k, v]) => fd.append(k, String(v ?? '')))
-  if (imageFile.value) fd.append('image', imageFile.value)
-  const r = editing.value ? await update(editing.value.id, fd) : await create(fd)
+  if (imageFile.value) fd.append('image', await resizeImage(imageFile.value, 1920, 1280))
+  const r = editing.value ? await update(editing.value.slug, fd) : await create(fd)
   if (r) { showModal.value = false; load() }
 }
 
 onMounted(async () => {
-  categories.value = await api.get<{ data: { id: number; name: string }[] }>('/api/v1/admin/project-categories').then(r => r.data).catch(() => [])
+  categories.value = await api.get<{ data: { id: number; name: string }[] }>('/admin/project-categories').then(r => r.data).catch(() => [])
   load()
 })
 </script>
@@ -37,7 +38,7 @@ onMounted(async () => {
       <template #category="{ row }">{{ (row as any).project_category?.name ?? '—' }}</template>
       <template #actions="{ row }">
         <button class="btn-ghost text-xs mr-2" @click="openEdit(row)">Edit</button>
-        <button class="btn-danger text-xs" @click="confirm('Delete?') && remove((row as any).id)">Delete</button>
+        <button class="btn-danger text-xs" @click="confirm('Delete?') && remove((row as any).slug)">Delete</button>
       </template>
     </AppTable>
     <AppPagination :page="meta.current_page" :last-page="meta.last_page" :total="meta.total" @update:page="p => { page = p }" />

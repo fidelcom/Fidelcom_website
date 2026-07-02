@@ -6,6 +6,7 @@ const body = (props.data.body as string | undefined) ?? ''
 const align = (props.data.align as string | undefined) ?? 'left'
 const image = props.data.image as string | undefined
 const layout = (props.data.layout as string | undefined) ?? 'full'
+const { assetUrl } = useAssetUrl()
 </script>
 
 <template>
@@ -17,7 +18,7 @@ const layout = (props.data.layout as string | undefined) ?? 'full'
           <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="prose max-w-none text-body leading-relaxed [&_a]:text-primary [&_h2]:text-heading [&_h3]:text-heading" v-html="body" />
         </div>
-        <img v-if="image && layout === 'split'" :src="image" alt="" class="rounded-2xl w-full object-cover shadow-xl" />
+        <img v-if="image && layout === 'split'" :src="assetUrl(image)" alt="" class="rounded-2xl w-full object-cover shadow-xl" />
       </div>
     </div>
   </section>

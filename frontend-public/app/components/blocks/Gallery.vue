@@ -6,6 +6,7 @@ interface GalleryItem { id: number; name: string; image: string; alt_text: strin
 const heading = props.data.heading as string | undefined
 const limit = (props.data.limit as number | undefined) ?? 12
 const api = useApi()
+const { assetUrl } = useAssetUrl()
 
 const { data: items } = await useAsyncData('gallery-block', async () => {
   const res = await api.get<{ data: GalleryItem[] }>('/gallery', { limit })
@@ -26,7 +27,7 @@ const lightbox = ref<GalleryItem | null>(null)
           class="break-inside-avoid group cursor-zoom-in rounded-xl overflow-hidden border border-border"
           @click="lightbox = item"
         >
-          <img :src="item.image" :alt="item.alt_text ?? item.name" class="w-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          <img :src="assetUrl(item.image)" :alt="item.alt_text ?? item.name" class="w-full object-cover group-hover:scale-105 transition-transform duration-300" />
         </div>
       </div>
     </div>
@@ -35,7 +36,7 @@ const lightbox = ref<GalleryItem | null>(null)
     <Teleport to="body">
       <Transition name="fade">
         <div v-if="lightbox" class="fixed inset-0 z-50 bg-bg/95 flex items-center justify-center p-4" @click="lightbox = null">
-          <img :src="lightbox.image" :alt="lightbox.alt_text ?? lightbox.name" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl" @click.stop />
+          <img :src="assetUrl(lightbox.image)" :alt="lightbox.alt_text ?? lightbox.name" class="max-w-full max-h-[90vh] rounded-xl shadow-2xl" @click.stop />
           <button class="absolute top-4 right-4 w-10 h-10 rounded-full bg-surface flex items-center justify-center text-heading hover:text-primary" @click="lightbox = null">
             <Icon name="i-heroicons-x-mark" class="w-5 h-5" />
           </button>

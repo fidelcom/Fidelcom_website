@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ServiceMultiImage extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = ['service_id', 'image'];
 
     public function services() : BelongsTo
     {

@@ -13,6 +13,7 @@ class ProjectController extends Controller
     public function index(Request $request): JsonResponse
     {
         $projects = Project::with('project_category')
+            ->where('status', 'published')
             ->when($request->get('category'), fn ($q, $cat) => $q->where('project_category_id', $cat))
             ->latest()
             ->paginate(12);

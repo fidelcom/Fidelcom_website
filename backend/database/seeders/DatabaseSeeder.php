@@ -15,8 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::updateOrCreate(
+            ['email' => 'admin@fidelcom.org'],
+            ['name' => 'Admin', 'password' => bcrypt('Admin@1234'), 'role' => 'admin']
+        );
+
         $this->call([
             InitialDataSeeder::class,
+            FidelcomContentSeeder::class,
         ]);
     }
 }

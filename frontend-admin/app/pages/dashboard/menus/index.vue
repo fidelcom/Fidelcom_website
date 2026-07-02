@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
 const api = useApi()
 const menus = ref<{ id: number; name: string; location: string; items: any[] }[]>([])
@@ -9,7 +9,7 @@ const editItems = ref<{ label: string; url: string; target: string; children: { 
 
 async function load() {
   loading.value = true
-  menus.value = await api.get<{ data: any[] }>('/api/v1/admin/menus').then(r => r.data).finally(() => loading.value = false)
+  menus.value = await api.get<{ data: any[] }>('/admin/menus').then(r => r.data).finally(() => loading.value = false)
 }
 
 function selectMenu(m: typeof menus.value[0]) {
@@ -28,7 +28,7 @@ function removeChild(i: number, j: number) { editItems.value[i].children.splice(
 async function save() {
   if (!activeMenu.value) return
   saving.value = true
-  await api.patch(`/api/v1/admin/menus/${activeMenu.value.id}/items`, { items: editItems.value })
+  await api.patch(`/admin/menus/${activeMenu.value.id}/items`, { items: editItems.value })
   saving.value = false
   load()
 }
@@ -60,7 +60,7 @@ onMounted(() => load())
             <h2 class="text-heading font-semibold">{{ activeMenu.name }}</h2>
             <div class="flex gap-2">
               <button class="btn-ghost text-xs" @click="addItem">+ Add Item</button>
-              <button class="btn-primary text-xs" :disabled="saving" @click="save">{{ saving ? 'Saving…' : 'Save Menu' }}</button>
+              <button class="btn-primary text-xs" :disabled="saving" @click="save">{{ saving ? 'Savingâ€¦' : 'Save Menu' }}</button>
             </div>
           </div>
 
@@ -70,7 +70,7 @@ onMounted(() => load())
                 <input v-model="item.label" placeholder="Label" class="input flex-1" />
                 <input v-model="item.url" placeholder="URL (/about)" class="input flex-1" />
                 <select v-model="item.target" class="input w-24"><option value="_self">Same tab</option><option value="_blank">New tab</option></select>
-                <button class="btn-danger text-xs" @click="removeItem(i)">✕</button>
+                <button class="btn-danger text-xs" @click="removeItem(i)">âœ•</button>
               </div>
 
               <!-- Children -->
@@ -78,7 +78,7 @@ onMounted(() => load())
                 <div v-for="(child, j) in item.children" :key="j" class="flex gap-3 items-center">
                   <input v-model="child.label" placeholder="Label" class="input flex-1" />
                   <input v-model="child.url" placeholder="URL" class="input flex-1" />
-                  <button class="btn-danger text-xs" @click="removeChild(i, j)">✕</button>
+                  <button class="btn-danger text-xs" @click="removeChild(i, j)">âœ•</button>
                 </div>
               </div>
               <button class="text-xs text-body hover:text-primary transition-colors pl-6" @click="addChild(i)">+ Add sub-item</button>

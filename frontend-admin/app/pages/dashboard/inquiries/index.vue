@@ -1,4 +1,4 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
 const api = useApi()
 
@@ -11,7 +11,7 @@ const filter = ref<'all' | 'contact' | 'quote'>('all')
 async function load() {
   loading.value = true
   try {
-    const res = await api.get<{ data: any[]; meta: any }>('/api/v1/admin/inquiries', { page: page.value, type: filter.value === 'all' ? undefined : filter.value })
+    const res = await api.get<{ data: any[]; meta: any }>('/admin/inquiries', { page: page.value, type: filter.value === 'all' ? undefined : filter.value })
     items.value = res.data
     meta.value = res.meta
   } finally {
@@ -19,19 +19,19 @@ async function load() {
 }
 
 async function updateStatus(id: string, status: string) {
-  await api.patch(`/api/v1/admin/inquiries/${id}/status`, { status })
+  await api.patch(`/admin/inquiries/${id}/status`, { status })
   load()
 }
 
 async function deleteInquiry(id: string) {
   if (confirm('Delete this inquiry?')) {
-    await api.delete(`/api/v1/admin/inquiries/${id}`)
+    await api.delete(`/admin/inquiries/${id}`)
     load()
   }
 }
 
 async function exportCSV() {
-  const url = `${useRuntimeConfig().public.apiBase}/api/v1/admin/inquiries/export`
+  const url = `${useRuntimeConfig().public.apiBase}/admin/inquiries/export`
   window.open(url, '_blank')
 }
 
@@ -71,7 +71,7 @@ const statusColors: Record<string, string> = {
           </tr>
         </thead>
         <tbody>
-          <tr v-if="loading"><td colspan="7" class="px-4 py-8 text-center text-body">Loading…</td></tr>
+          <tr v-if="loading"><td colspan="7" class="px-4 py-8 text-center text-body">Loadingâ€¦</td></tr>
           <tr v-else-if="!items.length"><td colspan="7" class="px-4 py-8 text-center text-body">No inquiries</td></tr>
           <tr v-for="row in items" v-else :key="row.composite_id" class="border-t border-border hover:bg-surface-alt/40">
             <td class="px-4 py-3">
@@ -79,7 +79,7 @@ const statusColors: Record<string, string> = {
             </td>
             <td class="px-4 py-3 text-body">{{ row.name }}</td>
             <td class="px-4 py-3 text-body">{{ row.email }}</td>
-            <td class="px-4 py-3 text-body">{{ row.subject ?? row.service_type ?? '—' }}</td>
+            <td class="px-4 py-3 text-body">{{ row.subject ?? row.service_type ?? 'â€”' }}</td>
             <td class="px-4 py-3">
               <select
                 :value="row.status"

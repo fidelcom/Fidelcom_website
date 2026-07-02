@@ -4,13 +4,14 @@ definePageMeta({ layout: 'dashboard' })
 const api = useApi()
 const { items, loading, saving, error, meta, page, search, load, create, update, remove } = useCrud<{
   id: number; title: string; slug: string; author: string; blog_category?: { name: string }; created_at: string
-}>('/api/v1/admin/posts')
+}>('/admin/posts', 'Post')
 
 const showModal = ref(false)
-const editing = ref<null | { id: number; title: string; author: string; short_desc: string; long_desc: string; blog_category_id: number; meta_title?: string; meta_description?: string }>(null)
+const editing = ref<null | { id: number; slug: string; title: string; author: string; short_desc: string; long_desc: string; blog_category_id: number; meta_title?: string; meta_description?: string }>(null)
 const categories = ref<{ id: number; name: string }[]>([])
 const form = reactive({ title: '', author: '', blog_category_id: 0, short_desc: '', long_desc: '', meta_title: '', meta_description: '' })
 const imageFile = ref<File | null>(null)
+const { resizeImage } = useImageResize()
 
 async function openCreate() {
   Object.assign(form, { title: '', author: '', blog_category_id: categories.value[0]?.id ?? 0, short_desc: '', long_desc: '', meta_title: '', meta_description: '' })
@@ -29,21 +30,21 @@ function openEdit(row: typeof editing.value) {
 async function save() {
   const fd = new FormData()
   Object.entries(form).forEach(([k, v]) => fd.append(k, String(v ?? '')))
-  if (imageFile.value) fd.append('image', imageFile.value)
+  if (imageFile.value) fd.append('image', await resizeImage(imageFile.value, 1920, 1280))
 
   const result = editing.value
-    ? await update(editing.value.id, fd)
+    ? await update(editing.value.slug, fd)
     : await create(fd)
 
   if (result) { showModal.value = false; load() }
 }
 
-async function deleteRow(id: number) {
-  if (confirm('Delete this post?')) await remove(id)
+async function deleteRow(slug: string) {
+  if (confirm('Delete this post?')) await remove(slug)
 }
 
 onMounted(async () => {
-  categories.value = await api.get<{ data: { id: number; name: string }[] }>('/api/v1/admin/blog-categories').then(r => r.data).catch(() => [])
+  categories.value = await api.get<{ data: { id: number; name: string }[] }>('/admin/blog-categories').then(r => r.data).catch(() => [])
   load()
 })
 
@@ -81,7 +82,7 @@ const cols = [
       </template>
       <template #actions="{ row }">
         <button class="btn-ghost text-xs mr-2" @click="openEdit(row as any)">Edit</button>
-        <button class="btn-ghost text-xs text-red-400" @click="deleteRow((row as any).id)">Delete</button>
+        <button class="btn-ghost text-xs text-red-400" @click="deleteRow((row as any).slug)">Delete</button>
       </template>
     </AppTable>
 

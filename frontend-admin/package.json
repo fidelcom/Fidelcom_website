@@ -11,12 +11,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "nuxt": "^4.0.0",
-    "@pinia/nuxt": "^0.10.1",
-    "pinia": "^3.0.0",
     "@nuxt/icon": "^1.0.0",
     "@vueuse/core": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
+    "nuxt": "^4.0.0",
     "vue-draggable-plus": "^0.6.0"
   },
   "devDependencies": {

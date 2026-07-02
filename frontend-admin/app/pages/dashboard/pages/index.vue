@@ -1,8 +1,8 @@
-<script setup lang="ts">
+﻿<script setup lang="ts">
 definePageMeta({ layout: 'dashboard' })
 const { items, loading, saving, error, load, create, update, remove } = useCrud<{
   id: number; title: string; slug: string; status: string; published_at: string | null
-}>('/api/v1/admin/pages')
+}>('/admin/pages')
 const showModal = ref(false)
 const editing = ref<null | any>(null)
 const form = reactive({ title: '', slug: '', status: 'draft', meta_title: '', meta_description: '' })
@@ -43,7 +43,7 @@ onMounted(() => load())
     <AppModal v-model:show="showModal" :title="editing ? 'Edit Page' : 'New Page'">
       <form class="p-6 space-y-4" @submit.prevent="save">
         <div><label class="label">Title</label><input v-model="form.title" class="input" required /></div>
-        <div><label class="label">Slug</label><input v-model="form.slug" class="input" placeholder="home, about-us…" required /></div>
+        <div><label class="label">Slug</label><input v-model="form.slug" class="input" placeholder="home, about-usâ€¦" required /></div>
         <div>
           <label class="label">Status</label>
           <select v-model="form.status" class="input"><option value="draft">Draft</option><option value="published">Published</option></select>
@@ -53,7 +53,7 @@ onMounted(() => load())
           <div><label class="label">Meta Description</label><input v-model="form.meta_description" class="input" /></div>
         </div>
         <div v-if="error" class="text-red-400 text-sm">{{ error }}</div>
-        <div class="flex justify-end gap-3"><button type="button" class="btn-ghost" @click="showModal = false">Cancel</button><button type="submit" class="btn-primary" :disabled="saving">{{ saving ? 'Saving…' : 'Save' }}</button></div>
+        <div class="flex justify-end gap-3"><button type="button" class="btn-ghost" @click="showModal = false">Cancel</button><button type="submit" class="btn-primary" :disabled="saving">{{ saving ? 'Savingâ€¦' : 'Save' }}</button></div>
       </form>
     </AppModal>
   </div>

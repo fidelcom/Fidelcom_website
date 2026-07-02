@@ -9,7 +9,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class ProjectCategory extends Model
 {
     use HasFactory;
-    protected $guarded = [];
+    protected $fillable = ['name', 'slug'];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function project() : HasMany
     {
