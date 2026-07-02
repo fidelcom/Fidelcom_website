@@ -34,6 +34,7 @@ function next() { current.value = (current.value + 1) % count.value }
       <div v-if="!testimonials?.length" class="text-center text-body py-12">No testimonials yet.</div>
 
       <div v-else class="max-w-2xl mx-auto">
+        <div aria-live="polite" aria-atomic="true" aria-label="Client testimonials">
         <Transition name="fade" mode="out-in">
           <div :key="current" class="border border-border bg-surface p-10 md:p-12">
             <!-- Stars -->
@@ -67,21 +68,32 @@ function next() { current.value = (current.value + 1) % count.value }
             </div>
           </div>
         </Transition>
+        </div>
 
         <div class="flex items-center justify-between mt-6">
-          <button class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-white transition-all" @click="prev">
-            <Icon name="i-heroicons-chevron-left" class="w-4 h-4" />
+          <button
+            aria-label="Previous testimonial"
+            class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-white transition-all"
+            @click="prev"
+          >
+            <Icon name="i-heroicons-chevron-left" class="w-4 h-4" aria-hidden="true" />
           </button>
-          <div class="flex gap-1.5">
+          <nav aria-label="Testimonial pagination" class="flex gap-1.5">
             <button
               v-for="(_, i) in testimonials"
               :key="i"
+              :aria-label="`Go to testimonial ${i + 1}`"
+              :aria-current="i === current ? 'true' : undefined"
               :class="['h-0.5 transition-all duration-250', i === current ? 'w-8 bg-primary' : 'w-2 bg-border']"
               @click="current = i"
             />
-          </div>
-          <button class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-white transition-all" @click="next">
-            <Icon name="i-heroicons-chevron-right" class="w-4 h-4" />
+          </nav>
+          <button
+            aria-label="Next testimonial"
+            class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-white transition-all"
+            @click="next"
+          >
+            <Icon name="i-heroicons-chevron-right" class="w-4 h-4" aria-hidden="true" />
           </button>
         </div>
       </div>

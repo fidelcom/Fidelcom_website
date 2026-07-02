@@ -14,7 +14,7 @@
     "@nuxt/icon": "^1.0.0",
     "@vueuse/core": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
-    "nuxt": "^4.0.0",
+    "nuxt": "^4.5.0",
     "vue-draggable-plus": "^0.6.0"
   },
   "devDependencies": {

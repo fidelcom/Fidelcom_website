@@ -1,7 +1,10 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-useHead({ title: 'Login — Fidelcom' })
+useHead({
+  title: 'Login — Fidelcom',
+  meta: [{ name: 'robots', content: 'noindex, nofollow' }],
+})
 
 const { login, loading, error, isAuthenticated } = useAuth()
 

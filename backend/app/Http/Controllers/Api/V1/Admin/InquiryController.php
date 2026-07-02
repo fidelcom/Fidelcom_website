@@ -8,11 +8,15 @@ use App\Models\LetsTalk;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class InquiryController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
+        $perPage = min((int) $request->get('per_page', 50), 200);
+        $page    = max((int) $request->get('page', 1), 1);
+
         $contacts = GetInTouch::latest()->get()->map(fn ($m) => [
             'id'         => "contact-{$m->id}",
             'source'     => 'contact',
@@ -39,9 +43,20 @@ class InquiryController extends Controller
             'created_at' => $m->created_at?->toISOString(),
         ]);
 
-        $all = $contacts->merge($quotes)->sortByDesc('created_at')->values();
+        $all      = $contacts->merge($quotes)->sortByDesc('created_at')->values();
+        $total    = $all->count();
+        $items    = $all->forPage($page, $perPage)->values();
+        $paginator = new LengthAwarePaginator($items, $total, $perPage, $page);
 
-        return response()->json(['data' => $all]);
+        return response()->json([
+            'data' => $paginator->items(),
+            'meta' => [
+                'current_page' => $paginator->currentPage(),
+                'last_page'    => $paginator->lastPage(),
+                'per_page'     => $paginator->perPage(),
+                'total'        => $paginator->total(),
+            ],
+        ]);
     }
 
     public function updateStatus(Request $request, string $compositeId): JsonResponse

@@ -16,8 +16,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         User::updateOrCreate(
-            ['email' => 'admin@fidelcom.org'],
-            ['name' => 'Admin', 'password' => bcrypt('Admin@1234'), 'role' => 'admin']
+            ['email' => env('ADMIN_EMAIL', 'admin@fidelcom.org')],
+            ['name' => 'Admin', 'password' => bcrypt(env('ADMIN_PASSWORD', 'Change_Me_Before_Production')), 'role' => 'admin']
         );
 
         $this->call([

@@ -14,8 +14,9 @@ class ProjectController extends Controller
     {
         $projects = Project::with('project_category')
             ->where('status', 'published')
+            ->where('published_at', '<=', now())
             ->when($request->get('category'), fn ($q, $cat) => $q->where('project_category_id', $cat))
-            ->latest()
+            ->latest('published_at')
             ->paginate(12);
 
         return response()->json([

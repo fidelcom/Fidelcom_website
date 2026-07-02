@@ -33,7 +33,9 @@ interface Particle {
 }
 
 onMounted(() => {
-  if (autoplay && sliders.value?.length) {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!prefersReducedMotion && autoplay && sliders.value?.length) {
     slideTimer = setInterval(next, speed)
   }
 
@@ -45,6 +47,9 @@ onMounted(() => {
   resizeHandler = () => { c.width = c.offsetWidth; c.height = c.offsetHeight }
   resizeHandler()
   window.addEventListener('resize', resizeHandler)
+
+  // Skip particle animation when user prefers reduced motion (WCAG 2.1 SC 2.3.3)
+  if (prefersReducedMotion) return
 
   const colors = ['200,210,255', '160,140,255', '100,180,255', '255,255,255']
   const particles: Particle[] = Array.from({ length: 90 }, () => ({
@@ -93,8 +98,8 @@ onUnmounted(() => {
 <template>
   <section class="relative h-screen -mt-[72px] flex flex-col justify-end overflow-hidden bg-black">
 
-    <!-- Particle canvas -->
-    <canvas ref="canvas" class="absolute inset-0 w-full h-full pointer-events-none" />
+    <!-- Particle canvas (decorative, hidden from assistive technology) -->
+    <canvas ref="canvas" aria-hidden="true" class="absolute inset-0 w-full h-full pointer-events-none" />
 
     <!-- Background image — very subtle, mostly black -->
     <Transition name="fade" mode="out-in">

@@ -43,30 +43,30 @@ async function submit() {
         <form v-else class="space-y-5" @submit.prevent="submit">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label class="block text-sm font-medium text-heading mb-1.5">Name <span class="text-red-400">*</span></label>
-              <input v-model="form.name" type="text" required placeholder="John Doe" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
+              <label for="cf-name" class="block text-sm font-medium text-heading mb-1.5">Name <span class="text-red-400" aria-hidden="true">*</span></label>
+              <input id="cf-name" v-model="form.name" type="text" required aria-required="true" placeholder="John Doe" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-heading mb-1.5">Email <span class="text-red-400">*</span></label>
-              <input v-model="form.email" type="email" required placeholder="you@example.com" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
+              <label for="cf-email" class="block text-sm font-medium text-heading mb-1.5">Email <span class="text-red-400" aria-hidden="true">*</span></label>
+              <input id="cf-email" v-model="form.email" type="email" required aria-required="true" placeholder="you@example.com" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
             </div>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label class="block text-sm font-medium text-heading mb-1.5">Phone</label>
-              <input v-model="form.phone" type="tel" placeholder="+234 800 000 0000" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
+              <label for="cf-phone" class="block text-sm font-medium text-heading mb-1.5">Phone</label>
+              <input id="cf-phone" v-model="form.phone" type="tel" placeholder="+234 800 000 0000" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
             </div>
             <div>
-              <label class="block text-sm font-medium text-heading mb-1.5">Subject</label>
-              <input v-model="form.subject" type="text" placeholder="How can we help?" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
+              <label for="cf-subject" class="block text-sm font-medium text-heading mb-1.5">Subject</label>
+              <input id="cf-subject" v-model="form.subject" type="text" placeholder="How can we help?" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors" />
             </div>
           </div>
           <div>
-            <label class="block text-sm font-medium text-heading mb-1.5">Message <span class="text-red-400">*</span></label>
-            <textarea v-model="form.message" required rows="5" placeholder="Tell us about your project…" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors resize-none" />
+            <label for="cf-message" class="block text-sm font-medium text-heading mb-1.5">Message <span class="text-red-400" aria-hidden="true">*</span></label>
+            <textarea id="cf-message" v-model="form.message" required aria-required="true" rows="5" placeholder="Tell us about your project…" class="w-full bg-surface border border-border rounded-xl px-4 py-2.5 text-heading placeholder-body/50 focus:outline-none focus:border-primary transition-colors resize-none" />
           </div>
 
-          <p v-if="error" class="text-red-400 text-sm">{{ error }}</p>
+          <p v-if="error" role="alert" aria-live="assertive" class="text-red-400 text-sm">{{ error }}</p>
 
           <button type="submit" :disabled="loading" class="w-full bg-primary text-white py-3 rounded-xl font-semibold hover:bg-primary-alt transition-colors disabled:opacity-60">
             {{ loading ? 'Sending…' : 'Send Message' }}
