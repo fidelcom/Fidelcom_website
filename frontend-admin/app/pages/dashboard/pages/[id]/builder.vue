@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { VueDraggable } from 'vue-draggable-plus'
 definePageMeta({ layout: 'dashboard' })
 
 const route = useRoute()
@@ -44,6 +43,12 @@ async function load() {
   } finally { loading.value = false }
 }
 
+async function refreshBlocks() {
+  const res = await api.get<{ data: any }>(`/admin/pages/${pageId}`)
+  page.value = res.data
+  blocks.value = (res.data.blocks ?? []).sort((a: any, b: any) => a.position - b.position)
+}
+
 async function addBlock(type: string) {
   const defaultData: Record<string, Record<string, unknown>> = {
     hero:          { heading: 'New Heading', subheading: '', button_label: 'Learn More', button_url: '/' },
@@ -65,19 +70,27 @@ async function addBlock(type: string) {
   }
 
   saving.value = true
-  const res = await api.post<{ data: any }>(`/admin/pages/${pageId}/blocks`, {
-    block_type: type,
-    position: blocks.value.length,
-    data: defaultData[type] ?? {},
-  })
-  if (res.data) { blocks.value.push(res.data); showAddModal.value = false }
-  saving.value = false
+  try {
+    await api.post<{ data: any }>(`/admin/pages/${pageId}/blocks`, {
+      block_type: type,
+      position: blocks.value.length,
+      data: defaultData[type] ?? {},
+    })
+    showAddModal.value = false
+    await refreshBlocks()
+  } finally {
+    saving.value = false
+  }
 }
 
-async function onDragEnd() {
+async function moveBlock(index: number, dir: -1 | 1) {
+  const target = index + dir
+  if (target < 0 || target >= blocks.value.length) return
+  const arr = [...blocks.value]
+  ;[arr[index], arr[target]] = [arr[target], arr[index]]
+  blocks.value = arr.map((b, i) => ({ ...b, position: i }))
   const order = blocks.value.map((b, i) => ({ id: b.id, position: i }))
   await api.post(`/admin/pages/${pageId}/blocks/reorder`, { order })
-  blocks.value.forEach((b, i) => b.position = i)
 }
 
 function openEdit(block: typeof blocks.value[0]) {
@@ -101,8 +114,12 @@ async function saveBlock() {
 
 async function deleteBlock(id: number) {
   if (!confirm('Remove this block?')) return
-  await api.delete(`/admin/blocks/${id}`)
-  blocks.value = blocks.value.filter(b => b.id !== id)
+  try {
+    await api.delete(`/admin/blocks/${id}`)
+    await refreshBlocks()
+  } catch {
+    blocks.value = blocks.value.filter(b => b.id !== id)
+  }
 }
 
 const editingLabel = computed(() =>
@@ -133,21 +150,36 @@ onMounted(() => load())
           No blocks yet. Add your first block →
         </div>
 
-        <VueDraggable v-model="blocks" item-key="id" handle=".drag-handle" class="space-y-3" @end="onDragEnd">
-          <template #item="{ element: block }">
-            <div class="bg-surface rounded-xl p-4 flex items-center gap-4 group border border-transparent hover:border-border transition-colors">
-              <Icon name="i-heroicons-bars-2" class="drag-handle w-5 h-5 text-body cursor-grab flex-shrink-0" />
-              <div class="flex-1 min-w-0">
-                <p class="text-heading text-sm font-medium">{{ BLOCK_TYPES.find(t => t.type === block.block_type)?.label ?? block.block_type }}</p>
-                <p class="text-body text-xs truncate">{{ JSON.stringify(block.data).slice(0, 80) }}…</p>
-              </div>
-              <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button class="btn-ghost text-xs" @click="openEdit(block)">Edit</button>
-                <button class="btn-danger text-xs" @click="deleteBlock(block.id)">Remove</button>
-              </div>
+        <div class="space-y-3">
+          <div
+            v-for="(block, index) in blocks"
+            :key="block.id"
+            class="bg-surface rounded-xl p-4 flex items-center gap-4 group border border-transparent hover:border-border transition-colors"
+          >
+            <div class="flex flex-col gap-1 flex-shrink-0">
+              <button
+                class="text-body hover:text-primary disabled:opacity-30 transition-colors"
+                :disabled="index === 0"
+                @click="moveBlock(index, -1)"
+                title="Move up"
+              >▲</button>
+              <button
+                class="text-body hover:text-primary disabled:opacity-30 transition-colors"
+                :disabled="index === blocks.length - 1"
+                @click="moveBlock(index, 1)"
+                title="Move down"
+              >▼</button>
             </div>
-          </template>
-        </VueDraggable>
+            <div class="flex-1 min-w-0">
+              <p class="text-heading text-sm font-medium">{{ BLOCK_TYPES.find(t => t.type === block.block_type)?.label ?? block.block_type }}</p>
+              <p class="text-body text-xs truncate">{{ JSON.stringify(block.data).slice(0, 80) }}…</p>
+            </div>
+            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button class="btn-ghost text-xs" @click="openEdit(block)">Edit</button>
+              <button class="btn-danger text-xs" @click="deleteBlock(block.id)">Remove</button>
+            </div>
+          </div>
+        </div>
 
         <button
           class="mt-4 w-full rounded-xl border-2 border-dashed border-border text-body text-sm py-4 hover:border-primary hover:text-primary transition-colors"

@@ -16,7 +16,7 @@ class PageController extends Controller
     private const BLOCK_TYPES = [
         'hero', 'content', 'services_grid', 'projects_grid', 'stats',
         'testimonials', 'blog_posts', 'team', 'faqs', 'cta_banner',
-        'gallery', 'partners', 'contact_form', 'process_steps', 'slider',
+        'gallery', 'partners', 'contact_form', 'process_steps', 'slider', 'case_study',
     ];
 
     public function index(): JsonResponse
@@ -129,13 +129,13 @@ class PageController extends Controller
     public function reorderBlocks(Request $request, Page $page): JsonResponse
     {
         $request->validate([
-            'blocks'          => ['required', 'array'],
-            'blocks.*.id'     => ['required', 'integer'],
-            'blocks.*.position' => ['required', 'integer', 'min:0'],
+            'order'          => ['required', 'array'],
+            'order.*.id'     => ['required', 'integer'],
+            'order.*.position' => ['required', 'integer', 'min:0'],
         ]);
 
         DB::transaction(function () use ($request, $page) {
-            foreach ($request->blocks as $item) {
+            foreach ($request->order as $item) {
                 Block::where('id', $item['id'])
                     ->where('page_id', $page->id)
                     ->update(['position' => $item['position']]);

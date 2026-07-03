@@ -36,4 +36,13 @@ class Page extends Model
     {
         return 'slug';
     }
+
+    public function resolveRouteBinding($value, $field = null): ?self
+    {
+        if (is_numeric($value)) {
+            return $this->where('id', $value)->firstOrFail();
+        }
+
+        return $this->where('slug', $value)->firstOrFail();
+    }
 }

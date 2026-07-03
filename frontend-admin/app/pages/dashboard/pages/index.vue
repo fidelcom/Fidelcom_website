@@ -11,7 +11,7 @@ function openCreate() { editing.value = null; Object.assign(form, { title: '', s
 function openEdit(row: any) { editing.value = row; Object.assign(form, row); showModal.value = true }
 
 async function save() {
-  const r = editing.value ? await update(editing.value.id, form) : await create(form)
+  const r = editing.value ? await update(editing.value.slug, form) : await create(form)
   if (r) { showModal.value = false; load() }
 }
 
@@ -35,15 +35,15 @@ onMounted(() => load())
         </span>
       </template>
       <template #actions="{ row }">
-        <NuxtLink :to="`/dashboard/pages/${(row as any).id}/builder`" class="btn-ghost text-xs mr-2">Builder</NuxtLink>
+        <NuxtLink :to="`/dashboard/pages/${(row as any).slug}/builder`" class="btn-ghost text-xs mr-2">Builder</NuxtLink>
         <button class="btn-ghost text-xs mr-2" @click="openEdit(row)">Edit</button>
-        <button class="btn-danger text-xs" @click="confirm('Delete?') && remove((row as any).id)">Delete</button>
+        <button class="btn-danger text-xs" @click="confirm('Delete?') && remove((row as any).slug)">Delete</button>
       </template>
     </AppTable>
     <AppModal v-model:show="showModal" :title="editing ? 'Edit Page' : 'New Page'">
       <form class="p-6 space-y-4" @submit.prevent="save">
         <div><label class="label">Title</label><input v-model="form.title" class="input" required /></div>
-        <div><label class="label">Slug</label><input v-model="form.slug" class="input" placeholder="home, about-usâ€¦" required /></div>
+        <div><label class="label">Slug</label><input v-model="form.slug" class="input" placeholder="home, about-us..." required /></div>
         <div>
           <label class="label">Status</label>
           <select v-model="form.status" class="input"><option value="draft">Draft</option><option value="published">Published</option></select>
@@ -53,7 +53,7 @@ onMounted(() => load())
           <div><label class="label">Meta Description</label><input v-model="form.meta_description" class="input" /></div>
         </div>
         <div v-if="error" class="text-red-400 text-sm">{{ error }}</div>
-        <div class="flex justify-end gap-3"><button type="button" class="btn-ghost" @click="showModal = false">Cancel</button><button type="submit" class="btn-primary" :disabled="saving">{{ saving ? 'Savingâ€¦' : 'Save' }}</button></div>
+        <div class="flex justify-end gap-3"><button type="button" class="btn-ghost" @click="showModal = false">Cancel</button><button type="submit" class="btn-primary" :disabled="saving">{{ saving ? 'Saving...' : 'Save' }}</button></div>
       </form>
     </AppModal>
   </div>
