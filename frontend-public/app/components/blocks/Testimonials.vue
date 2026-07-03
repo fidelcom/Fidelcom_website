@@ -26,7 +26,7 @@ function next() { current.value = (current.value + 1) % count.value }
       <div class="text-center mb-16">
         <p class="text-primary text-xs font-semibold uppercase tracking-[0.16em] mb-5">Client Stories</p>
         <h2
-          class="text-white font-black leading-[0.9] tracking-[-0.04em]"
+          class="text-heading font-black leading-[0.9] tracking-[-0.04em]"
           style="font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); text-wrap: balance;"
         >{{ heading }}</h2>
       </div>
@@ -46,7 +46,7 @@ function next() { current.value = (current.value + 1) % count.value }
                 :class="['w-4 h-4', (testimonials[current].rating ?? 5) >= i ? 'text-amber-400' : 'text-border']"
               />
             </div>
-            <p class="text-white text-xl leading-relaxed mb-10 font-medium">
+            <p class="text-heading text-xl leading-relaxed mb-10 font-medium">
               "{{ testimonials[current].desc }}"
             </p>
             <div class="flex items-center gap-4 border-t border-border pt-8">
@@ -60,7 +60,7 @@ function next() { current.value = (current.value + 1) % count.value }
                 {{ testimonials[current].name.charAt(0) }}
               </div>
               <div>
-                <p class="text-white font-semibold text-sm">{{ testimonials[current].name }}</p>
+                <p class="text-heading font-semibold text-sm">{{ testimonials[current].name }}</p>
                 <p class="text-body text-xs mt-1">
                   {{ testimonials[current].subtitle }}<span v-if="testimonials[current].location">, {{ testimonials[current].location }}</span>
                 </p>
@@ -73,7 +73,7 @@ function next() { current.value = (current.value + 1) % count.value }
         <div class="flex items-center justify-between mt-6">
           <button
             aria-label="Previous testimonial"
-            class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-white transition-all"
+            class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-heading transition-all"
             @click="prev"
           >
             <Icon name="i-heroicons-chevron-left" class="w-4 h-4" aria-hidden="true" />
@@ -90,7 +90,7 @@ function next() { current.value = (current.value + 1) % count.value }
           </nav>
           <button
             aria-label="Next testimonial"
-            class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-white transition-all"
+            class="w-10 h-10 border border-border flex items-center justify-center text-body hover:border-primary/50 hover:text-heading transition-all"
             @click="next"
           >
             <Icon name="i-heroicons-chevron-right" class="w-4 h-4" aria-hidden="true" />

@@ -36,7 +36,7 @@ useSeoMeta({ title: 'Our Services | Fidelcom Systems', description: 'Full-stack 
             v-for="(service, i) in services"
             :key="service.id"
             :to="`/all-services/${service.slug}`"
-            class="group flex items-start gap-8 md:gap-14 py-8 border-t border-border last:border-b hover:bg-white/[0.02] transition-colors duration-150 -mx-6 md:-mx-12 xl:-mx-16 px-6 md:px-12 xl:px-16"
+            class="group flex items-start gap-8 md:gap-14 py-8 border-t border-border last:border-b hover:bg-surface-alt transition-colors duration-150 -mx-6 md:-mx-12 xl:-mx-16 px-6 md:px-12 xl:px-16"
           >
             <span class="text-body/20 text-sm font-mono tabular-nums w-7 flex-shrink-0 pt-1.5 group-hover:text-primary/40 transition-colors">
               {{ String(i + 1).padStart(2, '0') }}
@@ -50,7 +50,7 @@ useSeoMeta({ title: 'Our Services | Fidelcom Systems', description: 'Full-stack 
             </div>
 
             <div class="flex-1 min-w-0">
-              <h2 class="text-white text-xl md:text-2xl font-bold mb-2.5 group-hover:text-primary transition-colors duration-150">{{ service.title }}</h2>
+              <h2 class="text-heading text-xl md:text-2xl font-bold mb-2.5 group-hover:text-primary transition-colors duration-150">{{ service.title }}</h2>
               <p class="text-body text-sm leading-relaxed line-clamp-2 max-w-2xl">{{ service.excerpt }}</p>
             </div>
 

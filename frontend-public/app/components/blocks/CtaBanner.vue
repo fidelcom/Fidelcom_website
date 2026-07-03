@@ -35,7 +35,7 @@ const videoReady = ref(false)
 
     <div :class="['relative z-10 container mx-auto px-6 md:px-12 text-center max-w-3xl']">
       <h2
-        :class="['font-black leading-[0.92] tracking-[-0.03em] mb-5', bgColor === 'surface' ? 'text-white' : 'text-white']"
+        :class="['font-black leading-[0.92] tracking-[-0.03em] mb-5', bgColor === 'surface' ? 'text-heading' : 'text-white']"
         style="font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); text-wrap: balance;"
       >{{ heading }}</h2>
       <p v-if="body" :class="['text-lg mb-10 leading-relaxed max-w-xl mx-auto', bgColor === 'surface' ? 'text-body' : 'text-white/55']">{{ body }}</p>

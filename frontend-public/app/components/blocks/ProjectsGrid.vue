@@ -26,13 +26,13 @@ const { data: projects } = await useAsyncData('projects-block', async () => {
         <div>
           <p class="text-primary text-xs font-semibold uppercase tracking-[0.15em] mb-5">Selected Work</p>
           <h2
-            class="text-white font-black leading-[0.9] tracking-[-0.04em]"
+            class="text-heading font-black leading-[0.9] tracking-[-0.04em]"
             style="font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); text-wrap: balance;"
           >{{ heading }}</h2>
         </div>
         <NuxtLink
           to="/portfolio"
-          class="hidden sm:inline-flex items-center gap-2 text-sm text-body hover:text-white transition-colors flex-shrink-0 group"
+          class="hidden sm:inline-flex items-center gap-2 text-sm text-body hover:text-heading transition-colors flex-shrink-0 group"
         >
           View all work
           <Icon name="i-heroicons-arrow-right" class="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
@@ -92,7 +92,7 @@ const { data: projects } = await useAsyncData('projects-block', async () => {
       <div class="mt-10 sm:hidden">
         <NuxtLink
           to="/portfolio"
-          class="inline-flex items-center gap-2 border border-border text-body text-sm font-medium px-5 py-3 hover:border-primary/50 hover:text-white transition-all"
+          class="inline-flex items-center gap-2 border border-border text-body text-sm font-medium px-5 py-3 hover:border-primary/50 hover:text-heading transition-all"
         >
           View All Work <Icon name="i-heroicons-arrow-right" class="w-4 h-4" />
         </NuxtLink>

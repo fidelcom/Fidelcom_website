@@ -21,7 +21,7 @@ const { data: members } = await useAsyncData('team-block', async () => {
       <div class="text-center mb-16">
         <p class="text-primary text-xs font-semibold uppercase tracking-[0.16em] mb-5">The People</p>
         <h2
-          class="text-white font-black leading-[0.9] tracking-[-0.04em]"
+          class="text-heading font-black leading-[0.9] tracking-[-0.04em]"
           style="font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 5rem); text-wrap: balance;"
         >{{ heading }}</h2>
       </div>
@@ -51,7 +51,7 @@ const { data: members } = await useAsyncData('team-block', async () => {
               </a>
             </div>
           </div>
-          <p class="text-white font-semibold text-sm leading-tight">{{ member.name }}</p>
+          <p class="text-heading font-semibold text-sm leading-tight">{{ member.name }}</p>
           <p class="text-primary text-xs font-medium mt-1">{{ member.role }}</p>
         </div>
       </div>
@@ -59,7 +59,7 @@ const { data: members } = await useAsyncData('team-block', async () => {
       <div class="text-center mt-14">
         <NuxtLink
           to="/our-teams"
-          class="inline-flex items-center gap-2 border border-border text-body text-sm font-medium px-6 py-2.5 hover:border-primary/50 hover:text-white transition-all"
+          class="inline-flex items-center gap-2 border border-border text-body text-sm font-medium px-6 py-2.5 hover:border-primary/50 hover:text-heading transition-all"
         >
           Meet the Full Team <Icon name="i-heroicons-arrow-right" class="w-4 h-4" />
         </NuxtLink>

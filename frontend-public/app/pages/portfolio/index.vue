@@ -114,7 +114,7 @@ useHead(computed(() => ({
         <div v-if="(data?.meta.last_page ?? 1) > 1" class="flex items-center justify-center gap-4 mt-14">
           <button
             :disabled="page <= 1"
-            class="inline-flex items-center gap-2 px-5 py-2.5 border border-border text-body text-sm hover:border-primary/50 hover:text-white disabled:opacity-30 transition-all"
+            class="inline-flex items-center gap-2 px-5 py-2.5 border border-border text-body text-sm hover:border-primary/50 hover:text-heading disabled:opacity-30 transition-all"
             @click="page--"
           >
             <Icon name="i-heroicons-chevron-left" class="w-4 h-4" /> Previous
@@ -122,7 +122,7 @@ useHead(computed(() => ({
           <span class="text-body text-sm tabular-nums">{{ data?.meta.current_page }} / {{ data?.meta.last_page }}</span>
           <button
             :disabled="page >= (data?.meta.last_page ?? 1)"
-            class="inline-flex items-center gap-2 px-5 py-2.5 border border-border text-body text-sm hover:border-primary/50 hover:text-white disabled:opacity-30 transition-all"
+            class="inline-flex items-center gap-2 px-5 py-2.5 border border-border text-body text-sm hover:border-primary/50 hover:text-heading disabled:opacity-30 transition-all"
             @click="page++"
           >
             Next <Icon name="i-heroicons-chevron-right" class="w-4 h-4" />

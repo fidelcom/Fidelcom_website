@@ -20,7 +20,7 @@ const steps: Step[] = (props.data.steps as Step[] | undefined) ?? [
       <div class="text-center mb-16">
         <p class="text-primary text-xs font-semibold uppercase tracking-[0.15em] mb-4">Our Process</p>
         <h2
-          class="text-white font-black leading-[0.92] tracking-[-0.03em]"
+          class="text-heading font-black leading-[0.92] tracking-[-0.03em]"
           style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3.25rem); text-wrap: balance;"
         >{{ heading }}</h2>
         <p v-if="subheading" class="text-body mt-4 max-w-xl mx-auto leading-relaxed">{{ subheading }}</p>
@@ -35,14 +35,14 @@ const steps: Step[] = (props.data.steps as Step[] | undefined) ?? [
           <!-- Step number + connector line -->
           <div class="flex items-center gap-4 mb-6">
             <span
-              class="text-white font-black leading-none tabular-nums"
+              class="text-heading font-black leading-none tabular-nums"
               style="font-family: var(--font-display); font-size: 3rem; opacity: 0.12;"
             >{{ String(i + 1).padStart(2, '0') }}</span>
             <div v-if="step.icon" class="w-10 h-10 border border-primary/20 bg-primary/8 flex items-center justify-center flex-shrink-0">
               <Icon :name="step.icon" class="w-5 h-5 text-primary" />
             </div>
           </div>
-          <h3 class="text-white font-bold text-lg mb-3">{{ step.title }}</h3>
+          <h3 class="text-heading font-bold text-lg mb-3">{{ step.title }}</h3>
           <p class="text-body text-sm leading-relaxed">{{ step.description }}</p>
         </div>
       </div>
