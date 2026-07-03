@@ -7,7 +7,7 @@
   --color-accent: #f604b9;
   --color-accent-yellow: #e3f800;
 
-  /* Coherent blue-black depth ramp */
+  /* Dark defaults — overridden by html.light below */
   --color-bg: #07080f;
   --color-bg-alt: #0b0d18;
   --color-bg-darker: #050609;
@@ -22,6 +22,23 @@
   --font-display: 'Sora', 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 
+/* ── Light mode overrides ───────────────────────────────────── */
+html.light {
+  color-scheme: light;
+  --color-bg: #f5f6fb;
+  --color-bg-alt: #eceff8;
+  --color-bg-darker: #e2e6f2;
+  --color-surface: #ffffff;
+  --color-surface-alt: #eceef8;
+  --color-heading: #0d0f1f;
+  --color-body: #4b5270;
+  --color-border: #dde1f0;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
 }
@@ -32,6 +49,7 @@ html {
   color: var(--color-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 h1, h2, h3, h4 {

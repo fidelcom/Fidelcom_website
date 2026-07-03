@@ -12,23 +12,40 @@ watch(() => route.path, () => { menuOpen.value = false })
 
 const { y: scrollY } = useWindowScroll()
 const scrolled = computed(() => scrollY.value > 40)
+
+const { isDark, toggle } = useTheme()
+
+const headerBg = computed(() => {
+  if (menuOpen.value || scrolled.value) {
+    return isDark.value ? 'bg-black/96 backdrop-blur-md' : 'bg-white/97 backdrop-blur-md shadow-sm'
+  }
+  return 'bg-transparent'
+})
+
+const headerBorder = computed(() =>
+  scrolled.value
+    ? isDark.value ? 'border-b border-white/[0.07]' : 'border-b border-black/[0.06]'
+    : 'border-b border-transparent'
+)
+
+const textColor = computed(() => isDark.value ? 'text-white' : 'text-heading')
+const mutedText = computed(() => isDark.value ? 'text-white/40 hover:text-white' : 'text-body hover:text-heading')
+const dividerColor = computed(() => isDark.value ? 'border-white/[0.1]' : 'border-black/[0.07]')
 </script>
 
 <template>
   <header
     :class="[
       'fixed top-0 left-0 right-0 z-50 h-[72px] transition-all duration-300',
-      scrolled
-        ? 'bg-black/96 backdrop-blur-md border-b border-white/[0.07]'
-        : 'bg-transparent border-b border-transparent',
+      headerBg,
+      headerBorder,
     ]"
   >
-    <!-- Edge-to-edge flex row — no horizontal padding on the wrapper -->
     <div class="flex items-center h-full w-full">
 
-      <!-- ① Hamburger — touches left viewport edge -->
+      <!-- Hamburger -->
       <button
-        class="flex-shrink-0 w-[64px] h-full flex items-center justify-center border-r border-white/[0.1] text-white/50 hover:text-white transition-colors duration-150"
+        :class="['flex-shrink-0 w-[64px] h-full flex items-center justify-center border-r transition-colors duration-150', dividerColor, mutedText]"
         :aria-expanded="menuOpen"
         aria-label="Toggle navigation"
         @click="menuOpen = !menuOpen"
@@ -36,38 +53,51 @@ const scrolled = computed(() => scrollY.value > 40)
         <Icon :name="menuOpen ? 'i-heroicons-x-mark' : 'i-heroicons-bars-3'" class="w-[18px] h-[18px]" />
       </button>
 
-      <!-- ② Logo -->
+      <!-- Logo -->
       <NuxtLink to="/" class="flex items-center gap-3 flex-shrink-0 group pl-7 pr-10">
         <div class="w-[26px] h-[26px] bg-primary flex items-center justify-center flex-shrink-0 group-hover:bg-primary-alt transition-colors duration-150">
           <span class="text-white font-black text-[11px] leading-none" style="font-family: var(--font-display);">F</span>
         </div>
-        <span class="text-white font-semibold text-[15px] tracking-[-0.01em] hidden sm:block" style="font-family: var(--font-display);">Fidelcom</span>
+        <span :class="['font-semibold text-[15px] tracking-[-0.01em] hidden sm:block transition-colors', textColor]" style="font-family: var(--font-display);">Fidelcom</span>
       </NuxtLink>
 
-      <!-- ③ Desktop nav — centered, flex-1 -->
+      <!-- Desktop nav -->
       <nav class="hidden md:flex items-center justify-center flex-1 gap-1" aria-label="Main navigation">
         <NuxtLink
           v-for="item in menuData?.items"
           :key="item.id"
           :to="item.url"
           :aria-current="(item.url === '/' ? route.path === '/' : route.path.startsWith(item.url)) ? 'page' : undefined"
-          class="px-[14px] py-2 text-[13px] text-white/40 hover:text-white transition-colors duration-150 tracking-[0.01em] font-normal"
-          active-class="!text-white"
+          :class="['px-[14px] py-2 text-[13px] transition-colors duration-150 tracking-[0.01em] font-normal', mutedText]"
+          active-class="!text-primary"
         >{{ item.label }}</NuxtLink>
       </nav>
 
-      <!-- ④ Right: CTA pill + search — search touches right viewport edge -->
+      <!-- Right: CTA + theme toggle + search -->
       <div class="flex items-center flex-shrink-0 ml-auto">
         <NuxtLink
           to="/contact-us"
-          class="hidden md:inline-flex items-center border border-white/50 rounded-full text-white text-[12px] font-medium px-5 py-[7px] hover:border-white hover:bg-white/5 transition-all duration-200 tracking-[0.1em] uppercase mr-5"
+          :class="['hidden md:inline-flex items-center rounded-full text-[12px] font-medium px-5 py-[7px] transition-all duration-200 tracking-[0.1em] uppercase mr-3 border',
+                   isDark
+                     ? 'border-white/50 text-white hover:border-white hover:bg-white/5'
+                     : 'border-primary/50 text-primary hover:border-primary hover:bg-primary/5']"
         >
           Contact Us
         </NuxtLink>
 
-        <!-- Search — touches right viewport edge with left separator -->
+        <!-- Theme toggle -->
         <button
-          class="hidden md:flex flex-shrink-0 w-[64px] h-[72px] items-center justify-center border-l border-white/[0.1] text-white/40 hover:text-white transition-colors duration-150"
+          :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+          :class="['hidden md:flex flex-shrink-0 w-10 h-10 items-center justify-center rounded-lg mr-2 transition-colors duration-150',
+                   isDark ? 'text-white/40 hover:text-white hover:bg-white/8' : 'text-body hover:text-heading hover:bg-black/6']"
+          @click="toggle"
+        >
+          <Icon :name="isDark ? 'i-heroicons-sun' : 'i-heroicons-moon'" class="w-[18px] h-[18px]" />
+        </button>
+
+        <!-- Search -->
+        <button
+          :class="['hidden md:flex flex-shrink-0 w-[64px] h-[72px] items-center justify-center border-l transition-colors duration-150', dividerColor, mutedText]"
           aria-label="Search"
         >
           <Icon name="i-heroicons-magnifying-glass" class="w-[18px] h-[18px]" />
@@ -75,13 +105,15 @@ const scrolled = computed(() => scrollY.value > 40)
       </div>
     </div>
 
-    <!-- Slide-down nav drawer (desktop + mobile) -->
+    <!-- Slide-down nav drawer -->
     <Transition name="slide-down">
       <nav
         v-if="menuOpen"
         :class="[
-          'absolute top-full left-0 right-0 border-b border-white/[0.08] z-50',
-          scrolled || menuOpen ? 'bg-black/97 backdrop-blur-md' : 'bg-black/95 backdrop-blur-md',
+          'absolute top-full left-0 right-0 border-b z-50',
+          isDark
+            ? 'bg-black/97 backdrop-blur-md border-white/[0.08]'
+            : 'bg-white/97 backdrop-blur-md border-black/[0.06] shadow-lg',
         ]"
       >
         <div class="max-w-[1400px] mx-auto px-6 md:px-12 xl:px-16 py-4">
@@ -90,11 +122,24 @@ const scrolled = computed(() => scrollY.value > 40)
             :key="item.id"
             :to="item.url"
             :aria-current="(item.url === '/' ? route.path === '/' : route.path.startsWith(item.url)) ? 'page' : undefined"
-            class="flex items-center py-4 text-[13px] text-white/50 hover:text-white border-b border-white/[0.05] last:border-0 transition-colors tracking-wide font-normal"
+            :class="['flex items-center py-4 text-[13px] border-b last:border-0 transition-colors tracking-wide font-normal',
+                     isDark ? 'text-white/50 hover:text-white border-white/[0.05]' : 'text-body hover:text-heading border-border']"
           >{{ item.label }}</NuxtLink>
+
+          <!-- Mobile theme toggle -->
+          <button
+            :class="['flex items-center gap-3 py-4 text-[13px] tracking-wide font-normal w-full transition-colors',
+                     isDark ? 'text-white/50 hover:text-white' : 'text-body hover:text-heading']"
+            @click="toggle"
+          >
+            <Icon :name="isDark ? 'i-heroicons-sun' : 'i-heroicons-moon'" class="w-4 h-4" />
+            {{ isDark ? 'Light mode' : 'Dark mode' }}
+          </button>
+
           <NuxtLink
             to="/contact-us"
-            class="flex justify-center items-center mt-5 w-full border border-white/20 rounded-full text-white text-[12px] font-medium px-4 py-3 hover:border-primary/60 hover:bg-primary/8 transition-all tracking-[0.06em] uppercase"
+            :class="['flex justify-center items-center mt-3 w-full border rounded-full text-[12px] font-medium px-4 py-3 transition-all tracking-[0.06em] uppercase',
+                     isDark ? 'border-white/20 text-white hover:border-primary/60 hover:bg-primary/8' : 'border-primary/30 text-primary hover:border-primary hover:bg-primary/5']"
           >
             Contact Us
           </NuxtLink>

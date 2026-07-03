@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const auth = reactive(useAuth())
+const { isDark, toggle } = useTheme()
 
 const navGroups = [
   {
@@ -98,6 +99,14 @@ const navGroups = [
             <p class="text-heading text-xs font-medium truncate leading-none mb-0.5">{{ auth.user?.name }}</p>
             <p class="text-body text-[10px] truncate leading-none opacity-60">{{ auth.user?.email }}</p>
           </div>
+          <!-- Theme toggle -->
+          <button
+            :title="isDark ? 'Switch to light mode' : 'Switch to dark mode'"
+            class="w-7 h-7 rounded-lg flex items-center justify-center text-body hover:text-heading hover:bg-surface-alt transition-colors flex-shrink-0"
+            @click="toggle"
+          >
+            <Icon :name="isDark ? 'i-heroicons-sun' : 'i-heroicons-moon'" class="w-4 h-4" />
+          </button>
         </div>
         <button
           class="mt-1 w-full text-left px-2.5 py-1.5 rounded-lg text-xs text-body/60 hover:text-red-400 hover:bg-red-500/6 transition-colors flex items-center gap-2"

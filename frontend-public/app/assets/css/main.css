@@ -5,7 +5,7 @@
   --color-primary-alt: #6a4fff;
   --color-primary-dark: #3d28d4;
 
-  /* True black depth ramp — EPAM-inspired */
+  /* Dark defaults — overridden by html.light below */
   --color-bg: #0a0a0a;
   --color-bg-alt: #111111;
   --color-surface: #161616;
@@ -32,6 +32,24 @@
   --font-display: 'Sora', system-ui, sans-serif;
 }
 
+/* ── Light mode overrides ───────────────────────────────────── */
+html.light {
+  color-scheme: light;
+  --color-bg: #f7f8fc;
+  --color-bg-alt: #eff1f8;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f2f3f8;
+  --color-surface-hover: #e8eaf4;
+  --color-heading: #0d0f1f;
+  --color-body: #4b5270;
+  --color-border: #dde1f0;
+  --color-border-light: #dde1f0;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
@@ -40,6 +58,7 @@ html {
   color: var(--color-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1, h2, h3, h4 { font-family: var(--font-display); }
